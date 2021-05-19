@@ -1,3 +1,9 @@
+## Attention!
+
+This repository is archived, and the source code of these examples is no longer updated. Compatibility with new versions of the product is not guaranteed.
+
+---
+
 # WPF C# samples for WCF
 
 #### This repository contains the source code of the examples of usage Stimulsoft Reports.Wpf using WCF.
