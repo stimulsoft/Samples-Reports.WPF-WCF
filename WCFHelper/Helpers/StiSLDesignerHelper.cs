@@ -1,26 +1,23 @@
-﻿using System;
+﻿using Stimulsoft.Report;
+using Stimulsoft.Report.Check;
+using Stimulsoft.Report.Dictionary;
+using Stimulsoft.Report.WCFService;
 using System.Collections.Generic;
 using System.Data;
-using Stimulsoft.Report;
-using Stimulsoft.Report.Dictionary;
-using Stimulsoft.Cloud.GoogleDocs;
-using Stimulsoft.Base.Json;
-using Stimulsoft.Base;
-using Stimulsoft.Report.WCFService;
-using Stimulsoft.Report.Check;
+using System.IO;
+using System.Linq;
 
 namespace WCFHelper
 {
     public static class StiSLDesignerHelper
     {
         #region Methods.Render
-        public static string RenderReport(string xml, DataSet previewDataSet)
+        public static byte[] RenderReport(byte[] data, DataSet previewDataSet)
         {
-            string result = null;
-            if (!string.IsNullOrEmpty(xml))
+            if (data != null)
             {
-                StiReport report = new StiReport();
-                report.LoadFromString(StiSLEncodingHelper.DecodeString(xml));
+                var report = new StiReport();
+                report.Load(data);
 
                 if (previewDataSet != null)
                     report.RegData("Demo", previewDataSet);
@@ -34,90 +31,85 @@ namespace WCFHelper
                     catch
                     {
                     }
-
-                    if (report.CompilerResults.Errors.Count > 0)
-                        return StiSLRenderingReportHelper.GetErrorListXml(report);
                 }
 
-                bool error = false;
                 try
                 {
                     report.Render(false);
                 }
                 catch
                 {
-                    error = true;
                 }
 
-                if (!error)
-                    result = StiSLRenderingReportHelper.CheckReportOnInteractions(report, true);
+                return StiSLRenderingReportHelper.CheckReportOnInteractions(report, true);
             }
 
-            return result;
+            return null;
         }
         #endregion
 
         #region Methods.LoadConfiguration
-        public static string LoadConfiguration()
+        public static byte[] LoadConfiguration()
         {
-            var writer = new StiXmlWriter();
-            writer.WriteStartElement("XmlResult");
-
-            #region Databases
-            Stimulsoft.Base.Services.StiServiceContainer datas = StiConfig.Services.GetServices(typeof(StiDatabase));
-            foreach (StiDatabase data in datas)
+            using (var stream = new MemoryStream())
+            using (var writer = new StiBinaryWriter(stream))
             {
-                if (data is StiUndefinedDatabase || !data.ServiceEnabled) continue;
-                writer.WriteStartElementAndSimpleEndElement(data.GetType().FullName);
+                var datas = StiConfig.Services.GetServices(typeof(StiDatabase)).ToList().Where(x => !(x is StiUndefinedDatabase) && x.ServiceEnabled).ToList();
+
+                writer.Write(datas.Count);
+                foreach (StiDatabase data in datas)
+                {
+                    writer.WriteNullableString(data.GetType().FullName);
+                }
+
+                writer.Flush();
+                return stream.ToArray();
             }
-            #endregion
-
-            writer.WriteEndElement();
-
-            writer.IsEncodeString = true;
-            string result = writer.ToString();
-            writer = null;
-
-            return result;
         }
         #endregion
 
         #region Methods.TestConnection
-        public static string TestConnection(string xml)
+        public static byte[] TestConnection(byte[] data)
         {
-            var settings = StiDatabaseBuildHelper.Input.ParseTestConnection(xml);
-            return StiSLEncodingHelper.EncodeString((settings.Adapter == null) ? "Type is not found" : settings.Adapter.TestConnection(settings.ConnectionString));
+            var settings = StiDatabaseBuildHelper.Input.ParseTestConnection(data);
+            string message = (settings.Adapter == null) ? "Type is not found" : settings.Adapter.TestConnection(settings.ConnectionString);
+
+            using (var stream = new MemoryStream())
+            using (var writer = new StiBinaryWriter(stream))
+            {
+                writer.WriteNullableString(message);
+
+                writer.Flush();
+                return stream.ToArray();
+            }
         }
         #endregion
 
         #region Methods.BuildObjects
-        public static string BuildObjects(string xml)
+        public static byte[] BuildObjects(byte[] data)
         {
-            var database = StiDatabaseBuildHelper.Input.ParseBuildObjects(xml);
+            var database = StiDatabaseBuildHelper.Input.ParseBuildObjects(data);
 
             if (database != null)
             {
                 var info = database.GetDatabaseInformation();
-                database = null;
                 if (info != null)
-                {
                     return StiDatabaseBuildHelper.Output.ParseBuildObjects(info);
-                }
             }
 
-            return string.Empty;
+            return null;
         }
         #endregion
 
         #region Methods.RetrieveColumns
-        public static string RetrieveColumns(string xml)
+        public static byte[] RetrieveColumns(byte[] buffer)
         {
             StiDataColumnsCollection columns = null;
-            string result = string.Empty;
+            byte[] result = null;
 
             try
             {
-                var settingsRetrieveColumns = StiDatabaseBuildHelper.Input.ParseRetrieveColumns(xml);
+                var settingsRetrieveColumns = StiDatabaseBuildHelper.Input.ParseRetrieveColumns(buffer);
 
                 settingsRetrieveColumns.connection.ConnectionString = settingsRetrieveColumns.ConnectionString;
                 var data = new StiData(settingsRetrieveColumns.Name, settingsRetrieveColumns.connection);
@@ -139,183 +131,66 @@ namespace WCFHelper
         }
         #endregion
 
-        #region Methods.GoogleDocs
-        public static string GoogleDocsGetDocuments(string xml)
-        {
-            var result = StiSLGoogleDocsHelper.GetDocs(xml);
-
-            List<string> docs = null;
-            string error = null;
-            var provider = new StiGoogleDocsProvider();
-
-            try
-            {
-                provider.Login(result[0], result[1]);
-                if (provider.IsLogged)
-                {
-                    docs = provider.GetDocsForSilverlight();
-                    provider.Logout();
-                }
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-            }
-
-            return StiSLGoogleDocsHelper.GetDocsResult(error, docs);
-        }
-
-        public static string GoogleDocsCreateCollection(string xml)
-        {
-            var helper = StiSLGoogleDocsHelper.CreateCollection(xml);
-            var provider = new StiGoogleDocsProvider();
-            StiDocumentEntry entry = null;
-            string error = null;
-
-            try
-            {
-                provider.Login(helper.Login, helper.Password);
-
-                if (provider.IsLogged)
-                {
-                    StiDocumentEntry folder = null;
-                    if (!string.IsNullOrEmpty(helper.ContentURL))
-                    {
-                        folder = new StiDocumentEntry();
-                        folder.ContentURL = helper.ContentURL;
-                    }
-
-                    entry = provider.Create(folder, helper.title, true);
-                    provider.Logout();
-                }
-            }
-            catch (Exception ee)
-            {
-                error = ee.Message;
-            }
-
-            return StiSLGoogleDocsHelper.CreateCollectionResult(error, entry);
-        }
-
-        public static string GoogleDocsDelete(string xml)
-        {
-            var helper = StiSLGoogleDocsHelper.Delete(xml);
-            var provider = new StiGoogleDocsProvider();
-            string error = null;
-
-            try
-            {
-                provider.Login(helper.Login, helper.Password);
-
-                if (provider.IsLogged)
-                {
-                    provider.Delete(helper.doc);
-                    provider.Logout();
-                }
-            }
-            catch (Exception ee)
-            {
-                error = ee.Message;
-            }
-
-            return StiSLGoogleDocsHelper.DeleteResult(error);
-        }
-
-        public static string GoogleDocsOpen(string xml)
-        {
-            var helper = StiSLGoogleDocsHelper.Download(xml);
-            var provider = new StiGoogleDocsProvider();
-            string error = null;
-            string content = null;
-
-            try
-            {
-                provider.Login(helper.Login, helper.Password);
-
-                if (provider.IsLogged)
-                {
-                    content = provider.Download(helper.doc);
-                    provider.Logout();
-                }
-            }
-            catch (Exception ee)
-            {
-                error = ee.Message;
-            }
-
-            return StiSLGoogleDocsHelper.DownloadResult(error, content);
-        }
-
-        public static string GoogleDocsSave(string xml)
-        {
-            var helper = StiSLGoogleDocsHelper.Upload(xml);
-            var provider = new StiGoogleDocsProvider();
-            string error = null;
-            StiDocumentEntry entry = null;
-
-            try
-            {
-                provider.Login(helper.Login, helper.Password);
-
-                if (provider.IsLogged)
-                {
-                    entry = provider.Upload(helper.document, helper.collection, helper.content, helper.title);
-                    provider.Logout();
-                }
-            }
-            catch (Exception ee)
-            {
-                error = ee.Message;
-            }
-
-            return StiSLGoogleDocsHelper.DeleteResult(error);
-        }
-        #endregion
-
         #region Methods.ReportScript
-        public static string OpenReportScript(string xml)
+        public static byte[] OpenReportScript(byte[] data)
         {
-            var report = new StiReport();
-            report.LoadFromString(StiSLEncodingHelper.DecodeString(xml));
+            using (var report = new StiReport())
+            {
+                report.Load(data);
 
-            report.ScriptUnpack();
-            string result = StiSLEncodingHelper.EncodeString(report.Script);
-            report.Dispose();
-            report = null;
+                report.ScriptUnpack();
 
-            return result;
+                using (var stream = new MemoryStream())
+                using (var writer = new StiBinaryWriter(stream))
+                {
+                    writer.WriteNullableString(report.Script);
+
+                    writer.Flush();
+                    return stream.ToArray();
+                }
+            }
         }
 
-        public static string SaveReportScript(string xml)
+        public static byte[] SaveReportScript(byte[] data)
         {
-            var report = StiSLRenderingReportHelper.ParseXmlSaveReportScript(xml);
+            using (var report = StiSLRenderingReportHelper.ParseBinarySaveReportScript(data))
+            {
+                report.ScriptPack();
 
-            report.ScriptPack();
-            string result = StiSLEncodingHelper.EncodeString(report.Script);
-            report.Dispose();
-            report = null;
+                using (var stream = new MemoryStream())
+                using (var writer = new StiBinaryWriter(stream))
+                {
+                    writer.WriteNullableString(report.Script);
 
-            return result;
+                    writer.Flush();
+                    return stream.ToArray();
+                }
+            }
         }
 
-        public static string CheckReport(string xml)
+        public static byte[] CheckReport(byte[] data)
         {
-            var input = new StiReportCheckInput();
-            JsonConvert.PopulateObject(StiSLEncodingHelper.DecodeString(xml), input);
+            byte[] reportByteArray = null;
+            List<string> disabledChecks = null;
+
+            using (var stream = new MemoryStream(data))
+            using (var reader = new StiBinaryReader(stream))
+            {
+                reportByteArray = reader.ReadByteArray();
+                disabledChecks = reader.ReadListString();
+            }
 
             var report = new StiReport();
-            report.LoadFromString(input.Report);
+            report.Load(reportByteArray);
 
             #region Parse Disabled Checks
-
-            if (input.DisabledChecks != null)
+            if (disabledChecks != null)
             {
-                foreach (var key in input.DisabledChecks)
+                foreach (var key in disabledChecks)
                 {
                     StiSettings.Set("ReportChecks", key, false);
                 }
             }
-
             #endregion
 
             #region Compile report in any case
@@ -335,12 +210,7 @@ namespace WCFHelper
 
             #region Preparing summary
 
-            var errorsList = new List<StiCheck>();
-            var warningsList = new List<StiCheck>();
-            var informationMessagesList = new List<StiCheck>();
-            var reportRenderingMessagesList = new List<StiCheck>();
-
-            var container = new StiReportCheckOutput();
+            var container = new List<StiCheckObject>();
 
             foreach (var check in checks)
             {
@@ -439,23 +309,60 @@ namespace WCFHelper
 
                 if (check.Actions.Count > 0)
                 {
-                    obj.Actions = new List<StiActionObject>();
+                    obj.Actions = new List<string>();
                     foreach (var action in check.Actions)
                     {
-                        obj.Actions.Add(new StiActionObject { Name = action.GetType().Name });
+                        obj.Actions.Add(action.GetType().Name);
                     }
                 }
 
-                container.Checks.Add(obj);
+                container.Add(obj);
 
                 #endregion
             }
 
-            var jsonStr = JsonConvert.SerializeObject(container, Formatting.Indented, StiJsonHelper.DefaultSerializerSettings);
-
             #endregion
 
-            return StiSLEncodingHelper.EncodeString(jsonStr);
+            #region Save
+            using (var stream = new MemoryStream())
+            using (var writer = new StiBinaryWriter(stream))
+            {
+                writer.Write(container.Count);
+                foreach (var check in container)
+                {
+                    writer.WriteNullableString(check.Name);
+                    writer.WriteNullableString(check.ElementName);
+                    writer.WriteNullableString(check.ObjectType.ToString());
+
+                    writer.WriteBool(check.Error != null);
+                    if (check.Error != null)
+                    {
+                        writer.WriteNullableString(check.Error.FileName);
+                        writer.Write(check.Error.Line);
+                        writer.Write(check.Error.Column);
+                        writer.WriteNullableString(check.Error.ErrorNumber);
+                        writer.WriteNullableString(check.Error.ErrorText);
+                    }
+
+                    writer.WriteNullableString(check.ComponentName);
+                    writer.WriteNullableString(check.PropertyName);
+
+                    writer.WriteNullableString(check.Columns);
+                    writer.WriteNullableString(check.DataSources);
+
+                    writer.WriteNullableString(check.LostPointsNames);
+                    writer.WriteBool(check.IsDataSource);
+
+                    writer.WriteNullableString(check.RelationsNames);
+                    writer.WriteNullableString(check.RelationsNameInSource);
+
+                    writer.WriteListString(check.Actions);
+                }
+
+                writer.Flush();
+                return stream.ToArray();
+            }
+            #endregion
         }
 
         #endregion

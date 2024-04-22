@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WCF_WPFDesigner.Service</RootNamespace>
     <AssemblyName>WCF_WPFDesigner.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <UseIISExpress>true</UseIISExpress>
@@ -22,6 +22,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,31 +46,31 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Stimulsoft.Base">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Base.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Base\bin\Debug\net472\Stimulsoft.Base.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Database.Wpf">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Database.Wpf.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Database.Wpf\bin\Debug\net472\Stimulsoft.Database.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Editor.Wpf">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Editor.Wpf.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Editor.Wpf\bin\Debug\net472\Stimulsoft.Editor.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Report">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report\bin\Debug\net472\Stimulsoft.Report.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Report.Check">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.Check.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Check\bin\Debug\net472\Stimulsoft.Report.Check.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Report.Helper">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.Helper.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Helper\bin\Debug\net472\Stimulsoft.Report.Helper.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Report.Wpf">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Wpf\bin\Debug\net472\Stimulsoft.Report.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
@@ -76,7 +78,6 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />

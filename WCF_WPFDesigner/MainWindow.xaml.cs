@@ -1,17 +1,15 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Xml;
-using Stimulsoft.Report;
-using Stimulsoft.Report.Dictionary;
-using Stimulsoft.Report.WpfDesign;
-using Stimulsoft.Report.Viewer;
-using Stimulsoft.Report.Wpf;
+﻿using Microsoft.Win32;
 using Stimulsoft.Base.Localization;
-using Microsoft.Win32;
-using System.Data;
-using System;
+using Stimulsoft.Controls.Wpf;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Viewer;
 using Stimulsoft.Report.WCFService;
+using Stimulsoft.Report.Wpf;
+using Stimulsoft.Report.WpfDesign;
+using System;
+using System.Data;
 using System.Threading.Tasks;
+using System.Windows;
 using WCF_WpfDesigner.ServiceReference1;
 
 namespace WCF_WpfDesigner
@@ -26,12 +24,12 @@ namespace WCF_WpfDesigner
         #region Handlers
 
         #region RenderReport
-        private Task<string> RenderReportTask(string xml)
+        private Task<byte[]> RenderReportTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.RenderReport(xml);
+                return service.RenderReport(data);
             });
         }
 
@@ -41,8 +39,8 @@ namespace WCF_WpfDesigner
 
             try
             {
-                string result = await RenderReportTask(e.Xml);
-                if (result != null && result.Length > 2)
+                var result = await RenderReportTask(e.Data);
+                if (result != null)
                 {
                     designer.ApplyRenderedReport(result);
                 }
@@ -58,12 +56,12 @@ namespace WCF_WpfDesigner
 
         #region TestConnection
 
-        private Task<string> TestConnectionTask(string xml)
+        private Task<byte[]> TestConnectionTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.TestConnection(xml);
+                return service.TestConnection(data);
             });
         }
 
@@ -73,9 +71,9 @@ namespace WCF_WpfDesigner
 
             try
             {
-                string result = await TestConnectionTask(e.Xml);
+                var result = await TestConnectionTask(e.Data);
 
-                if (result != null && result.Length > 2)
+                if (result != null)
                 {
                     ((IStiTestConnecting)sender).ApplyResultAfterTestConnection(result);
                 }
@@ -92,12 +90,12 @@ namespace WCF_WpfDesigner
 
         #region BuildObjects
 
-        private Task<string> BuildObjectsTask(string xml)
+        private Task<byte[]> BuildObjectsTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.BuildObjects(xml);
+                return service.BuildObjects(data);
             });
         }
 
@@ -107,7 +105,7 @@ namespace WCF_WpfDesigner
 
             try
             {
-                string result = await BuildObjectsTask(e.Xml);
+                var result = await BuildObjectsTask(e.Data);
 
                 if (!progress.IsBreaked)
                     ((StiSelectDataWindow)sender).ApplyResultAfterBuildObjects(result);
@@ -124,12 +122,12 @@ namespace WCF_WpfDesigner
 
         #region RetrieveColumns
 
-        private Task<string> RetrieveColumnsTask(string xml)
+        private Task<byte[]> RetrieveColumnsTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.RetrieveColumns(xml);
+                return service.RetrieveColumns(data);
             });
         }
 
@@ -139,7 +137,7 @@ namespace WCF_WpfDesigner
 
             try
             {
-                string result = await RetrieveColumnsTask(e.Xml);
+                var result = await RetrieveColumnsTask(e.Data);
 
                 if (!progress.IsBreaked)
                 {
@@ -224,12 +222,12 @@ namespace WCF_WpfDesigner
 
         #region Export Document
 
-        private Task<byte[]> ExportDocumentTask(string xml)
+        private Task<byte[]> ExportDocumentTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.ExportDocument(xml);
+                return service.ExportDocument(data);
             });
         }
 
@@ -239,7 +237,7 @@ namespace WCF_WpfDesigner
 
             try
             {
-                var result = await ExportDocumentTask(e.Xml);
+                var result = await ExportDocumentTask(e.Data);
 
                 if (result != null)
                 {
@@ -271,12 +269,12 @@ namespace WCF_WpfDesigner
 
         #region ReportCheck
 
-        private Task<string> CheckReportTask(string xml)
+        private Task<byte[]> CheckReportTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.CheckReport(xml);
+                return service.CheckReport(data);
             });
         }
 
@@ -286,7 +284,7 @@ namespace WCF_WpfDesigner
 
             try
             {
-                var result = await CheckReportTask(e.Xml);
+                var result = await CheckReportTask(e.Data);
 
                 sender.ApplyResultAfterReportCheck(result);
             }
@@ -301,13 +299,12 @@ namespace WCF_WpfDesigner
         #endregion
 
         #region RenderingInteractions
-
-        private Task<string> RenderingInteractionsTask(string xml)
+        private Task<byte[]> RenderingInteractionsTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.RenderingInteractions(xml);
+                return service.RenderingInteractions(data);
             });
         }
 
@@ -317,11 +314,24 @@ namespace WCF_WpfDesigner
 
             try
             {
-                var result = await RenderingInteractionsTask(e.Xml);
+                var result = await RenderingInteractionsTask(e.Data);
 
-                if (result != null && result.Length > 2)
+                if (result != null)
                 {
-                    ((StiWpfViewerControl)viewer).ApplyChangesAfterSorting(result);
+                    switch (e.InteractionType)
+                    {
+                        case StiInteractionType.Collapsing:
+                            ((StiWpfViewerControl)viewer).ApplyChangesAfterCollapsing(result);
+                            break;
+
+                        case StiInteractionType.DrillDownPage:
+                            ((StiWpfViewerControl)viewer).ApplyChangesAfterDrillDownPage(result, e.DrillDownMode, e.Page);
+                            break;
+
+                        case StiInteractionType.Sorting:
+                            ((StiWpfViewerControl)viewer).ApplyChangesAfterSorting(result);
+                            break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -335,12 +345,12 @@ namespace WCF_WpfDesigner
 
         #region RequestFromUserRenderReport
 
-        private Task<string> RequestFromUserRenderReportTask(string xml)
+        private Task<byte[]> RequestFromUserRenderReportTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.RequestFromUserRenderReport(xml);
+                return service.RequestFromUserRenderReport(data);
             });
         }
 
@@ -350,9 +360,9 @@ namespace WCF_WpfDesigner
 
             try
             {
-                var result = await RequestFromUserRenderReportTask(e.Xml);
+                var result = await RequestFromUserRenderReportTask(e.Data);
 
-                if (result != null && result.Length > 2)
+                if (result != null)
                     ((StiWpfViewerControl)sender).ApplyRenderedReport(result, true);
             }
             catch (Exception ex)
@@ -366,12 +376,12 @@ namespace WCF_WpfDesigner
 
         #region WCFPrepareRequestFromUserVariables
 
-        private Task<string> PrepareRequestFromUserVariablesTask(string xml)
+        private Task<byte[]> PrepareRequestFromUserVariablesTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.PrepareRequestFromUserVariables(xml);
+                return service.PrepareRequestFromUserVariables(data);
             });
         }
 
@@ -381,7 +391,7 @@ namespace WCF_WpfDesigner
 
             try
             {
-                var result = await PrepareRequestFromUserVariablesTask(e.Xml);
+                var result = await PrepareRequestFromUserVariablesTask(e.Data);
 
                 ((StiWpfViewerControl)sender).ApplyResultAfterPrepareRequestFromUserVariables(null, result);
             }
@@ -397,12 +407,12 @@ namespace WCF_WpfDesigner
 
         #region WCFInteractiveDataBandSelection
 
-        private Task<string> InteractiveDataBandSelectionTask(string xml)
+        private Task<byte[]> InteractiveDataBandSelectionTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.DesignerServiceClient();
-                return service.InteractiveDataBandSelection(xml);
+                return service.InteractiveDataBandSelection(data);
             });
         }
 
@@ -412,7 +422,7 @@ namespace WCF_WpfDesigner
 
             try
             {
-                var result = await InteractiveDataBandSelectionTask(e.Xml);
+                var result = await InteractiveDataBandSelectionTask(e.Data);
 
                 if (!this.progress.IsBreaked)
                     ((StiWpfViewerControl)sender).ApplyChangesAfterInteractiveDataBandSelection(result);
@@ -430,7 +440,7 @@ namespace WCF_WpfDesigner
 
         #region Handlers
 
-        private Task<string> LoadConfigurationTask()
+        private Task<byte[]> LoadConfigurationTask()
         {
             return Task.Run(() =>
             {
@@ -461,11 +471,11 @@ namespace WCF_WpfDesigner
         private void LoadReport()
         {
             var dt = new DataSet();
-            dt.ReadXml(@"d:\Data\\Demo.xml");
+            dt.ReadXml("d:\\Data\\Demo.xml");
             //dt.ReadXmlSchema(@"d:\Data\Demo.xsd");
 
             var report = new StiReport();
-            report.Load(@"g:\Report2.mrt");
+            report.Load("d:\\Data\\1. Master-Detail.mrt");
             report.RegData("Demo", "Demo", dt);
             //report.RenderWithWpf(false);
 
@@ -475,7 +485,6 @@ namespace WCF_WpfDesigner
 
         public MainWindow()
         {
-            StiOptions.Wpf.CurrentTheme = StiOptions.Wpf.Themes.Office2013Theme;
             StiOptions.WCFService.UseWCFService = true;
             progress = new StiProgressInformation(this)
             {
@@ -484,29 +493,29 @@ namespace WCF_WpfDesigner
             };
 
             // Designer
-            Stimulsoft.Report.StiOptions.WCFService.WCFRenderReport += WCFService_WCFRenderReport;
-            Stimulsoft.Report.StiOptions.WCFService.WCFTestConnection += WCFService_WCFTestConnection;
-            Stimulsoft.Report.StiOptions.WCFService.WCFBuildObjects += WCFService_WCFBuildObjects;
-            Stimulsoft.Report.StiOptions.WCFService.WCFRetrieveColumns += WCFService_WCFRetrieveColumns;
-            Stimulsoft.Report.StiOptions.WCFService.WCFOpeningReportInDesigner += WCFService_WCFOpeningReportInDesigner;
-            Stimulsoft.Report.StiOptions.WCFService.WCFRequestFromUserRenderReport += WCFService_WCFRequestFromUserRenderReport;
-            Stimulsoft.Report.StiOptions.WCFService.WCFReportCheck += WCFService_WCFReportCheck;
-            Stimulsoft.Report.StiOptions.Engine.GlobalEvents.SavingReportInDesigner += GlobalEvents_SavingReportInDesigner;
+            StiOptions.WCFService.WCFRenderReport += WCFService_WCFRenderReport; // ok
+            StiOptions.WCFService.WCFTestConnection += WCFService_WCFTestConnection; // ok
+            StiOptions.WCFService.WCFBuildObjects += WCFService_WCFBuildObjects; // ok
+            StiOptions.WCFService.WCFRetrieveColumns += WCFService_WCFRetrieveColumns; // ok
+            StiOptions.WCFService.WCFOpeningReportInDesigner += WCFService_WCFOpeningReportInDesigner; // ok
+            StiOptions.WCFService.WCFRequestFromUserRenderReport += WCFService_WCFRequestFromUserRenderReport; // ok
+            StiOptions.WCFService.WCFReportCheck += WCFService_WCFReportCheck; // ok
+            StiOptions.Engine.GlobalEvents.SavingReportInDesigner += GlobalEvents_SavingReportInDesigner; // ok
 
             // Interactions
-            Stimulsoft.Report.StiOptions.WCFService.WCFRenderingInteractions += WCFService_WCFRenderingInteractions;
+            StiOptions.WCFService.WCFRenderingInteractions += WCFService_WCFRenderingInteractions; // ok
 
             // Viewer
-            Stimulsoft.Report.StiOptions.WCFService.WCFExportDocument += WCFService_WCFExportDocument;
+            StiOptions.WCFService.WCFExportDocument += WCFService_WCFExportDocument; // ok
 
             // Prepare RequestFromUser Variables
-            Stimulsoft.Report.StiOptions.WCFService.WCFPrepareRequestFromUserVariables += WCFService_WCFPrepareRequestFromUserVariables;
-            Stimulsoft.Report.StiOptions.WCFService.WCFInteractiveDataBandSelection += WCFService_WCFInteractiveDataBandSelection;
+            StiOptions.WCFService.WCFPrepareRequestFromUserVariables += WCFService_WCFPrepareRequestFromUserVariables; // ok
+            StiOptions.WCFService.WCFInteractiveDataBandSelection += WCFService_WCFInteractiveDataBandSelection;
 
             InitializeComponent();
 
             this.designer = new StiWpfDesignerControl();
-            this.Content = this.designer;
+            panelRoot.Content = this.designer;
         }
     }
 }

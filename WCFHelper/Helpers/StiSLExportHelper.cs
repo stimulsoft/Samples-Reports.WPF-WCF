@@ -6,206 +6,169 @@ using System.Xml;
 using Stimulsoft.Report.Export;
 using System.Drawing.Imaging;
 using System.Globalization;
+using Stimulsoft.Report.WCFService;
 
 namespace WCFHelper
 {
     public static class StiSLExportHelper
     {
         #region Methods
-        public static byte[] StartExport(string xml)
+        public static byte[] StartExport(byte[] data)
         {
-            string exportSettings = null;
-            StiSLExportType? exportFormat = null;
-            var report = ParseExportSettings(xml, ref exportSettings, ref exportFormat);
-            if (report == null || exportFormat == null || exportSettings == null) return null;
-
-            var currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            try
+            using (var stream = new MemoryStream())
+            using (var streamBinary = new MemoryStream(data))
+            using (var reader = new StiBinaryReader(streamBinary))
             {
-                StiPageRangeExportSettings settings = null;
-                using (var stream = new MemoryStream())
+                var format = (StiExportFormat)Enum.Parse(typeof(StiExportFormat), reader.ReadNullableString());
+
+                var report = new StiReport();
+                report.LoadDocument(reader.ReadByteArray());
+
+                switch (format)
                 {
-                    switch (exportFormat)
-                    {
-                        case StiSLExportType.Csv:
-                            settings = GetCsvExportSettings(exportSettings);
+                    case StiExportFormat.Csv:
+                        {
+                            var settings = GetCsvExportSettings(reader);
                             report.ExportDocument(StiExportFormat.Csv, stream, settings);
-                            break;
-
-                        case StiSLExportType.Dbf:
-                            settings = GetDbfExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Dbf, stream, settings);
-                            break;
-
-                        case StiSLExportType.Dif:
-                            settings = GetDifExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Dif, stream, settings);
-                            break;
-
-                        case StiSLExportType.Excel:
-                            settings = GetExcelExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Excel, stream, settings);
-                            break;
-
-                        case StiSLExportType.Excel2007:
-                            settings = GetExcel2007ExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Excel2007, stream, settings);
-                            break;
-
-                        case StiSLExportType.ExcelXml:
-                            settings = GetExcelXmlExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.ExcelXml, stream, settings);
-                            break;
-
-                        case StiSLExportType.Html:
-                            report.ExportDocument(StiExportFormat.Html, stream);
-                            break;
-
-                        case StiSLExportType.Mht:
-                            settings = GetMhtExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Mht, stream, settings);
-                            break;
-
-                        case StiSLExportType.Bmp:
-                            settings = CopyBitmapSettings(new StiBmpExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImageBmp, stream, settings);
-                            break;
-
-                        case StiSLExportType.Gif:
-                            settings = CopyBitmapSettings(new StiGifExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImageGif, stream, settings);
-                            break;
-
-                        case StiSLExportType.Jpeg:
-                            settings = CopyBitmapSettings(new StiJpegExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImageJpeg, stream, settings);
-                            break;
-
-                        case StiSLExportType.Emf:
-                            settings = CopyBitmapSettings(new StiEmfExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImageEmf, stream, settings);
-                            break;
-
-                        case StiSLExportType.Pcx:
-                            settings = CopyBitmapSettings(new StiPcxExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImagePcx, stream, settings);
-                            break;
-
-                        case StiSLExportType.Png:
-                            settings = CopyBitmapSettings(new StiPngExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImagePng, stream, settings);
-                            break;
-
-                        case StiSLExportType.Svg:
-                            settings = CopyBitmapSettings(new StiSvgExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImageSvg, stream, settings);
-                            break;
-
-                        case StiSLExportType.Svgz:
-                            settings = CopyBitmapSettings(new StiSvgzExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImageSvgz, stream, settings);
-                            break;
-
-                        case StiSLExportType.Tiff:
-                            settings = CopyBitmapSettings(new StiTiffExportSettings(), GetImageExportSettings(exportSettings));
-                            report.ExportDocument(StiExportFormat.ImageTiff, stream, settings);
-                            break;
-
-                        case StiSLExportType.Ods:
-                            settings = GetOdsExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Ods, stream, settings);
-                            break;
-
-                        case StiSLExportType.Odt:
-                            settings = GetOdtExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Odt, stream, settings);
-                            break;
-
-                        case StiSLExportType.Pdf:
-                            StiPdfExportSettings pdfExportSettings = GetPdfExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Pdf, stream, pdfExportSettings);
-                            break;
-
-                        case StiSLExportType.Rtf:
-                            settings = GetRtfExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Rtf, stream, settings);
-                            break;
-
-                        case StiSLExportType.Sylk:
-                            settings = GetSylkExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Sylk, stream, settings);
-                            break;
-
-                        case StiSLExportType.Text:
-                            settings = GetTextExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Text, stream, settings);
-                            break;
-
-                        case StiSLExportType.Word2007:
-                            settings = GetWord2007ExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Word2007, stream, settings);
-                            break;
-
-                        case StiSLExportType.Xps:
-                            settings = GetXpsExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Xps, stream, settings);
-                            break;
-
-                        case StiSLExportType.Ppt2007:
-                            settings = GetPpt2007ExportSettings(exportSettings);
-                            report.ExportDocument(StiExportFormat.Ppt2007, stream, settings);
-                            break;
-
-                        case StiSLExportType.Xml:
-                            report.ExportDocument(StiExportFormat.Xml, stream);
-                            break;
-                    }
-
-                    return stream.ToArray();
-                }
-            }
-            finally
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = currentCulture;
-            }
-        }
-
-        private static StiReport ParseExportSettings(string xml, ref string exportSettings, ref StiSLExportType? exportFormat)
-        {
-            var report = new StiReport();
-            xml = StiSLEncodingHelper.DecodeString(xml);
-
-            #region Read Format and Size
-            int lastPos = 0;
-            int index = 0;
-            int reportLength = 0;
-            while (true)
-            {
-                if (xml[index] == ',')
-                {
-                    if (exportFormat == null)
-                    {
-                        exportFormat = (StiSLExportType)int.Parse(xml.Substring(0, index++));
-                        lastPos = index;
-                    }
-                    else
-                    {
-                        reportLength = int.Parse(xml.Substring(lastPos, index - lastPos));
-                        lastPos = index + 1;
+                        }
                         break;
-                    }
+
+                    case StiExportFormat.Dbf:
+                        {
+                            var settings = GetDbfExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Dbf, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Dif:
+                        {
+                            var settings = GetDifExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Dif, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Excel:
+                        {
+                            var settings = GetExcelExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Excel, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.ExcelXml:
+                        {
+                            var settings = GetExcelXmlExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.ExcelXml, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Html:
+                        {
+                            var settings = GetHtmlExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Html, stream);
+                        }
+                        break;
+
+                    case StiExportFormat.Html5:
+                        {
+                            var settings = GetHtml5ExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Html5, stream);
+                        }
+                        break;
+
+                    case StiExportFormat.Mht:
+                        {
+                            var settings = GetMhtExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Mht, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Image:
+                        {
+                            var settings = CopyBitmapSettings(new StiBmpExportSettings(), GetImageExportSettings(reader));
+                            report.ExportDocument(StiExportFormat.ImageBmp, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Ods:
+                        {
+                            var settings = GetOdsExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Ods, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Odt:
+                        {
+                            var settings = GetOdtExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Odt, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Pdf:
+                        {
+                            var pdfExportSettings = GetPdfExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Pdf, stream, pdfExportSettings);
+                        }
+                        break;
+
+                    case StiExportFormat.Rtf:
+                        {
+                            var settings = GetRtfExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Rtf, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Sylk:
+                        {
+                            var settings = GetSylkExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Sylk, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Text:
+                        {
+                            var settings = GetTextExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Text, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Word:
+                        {
+                            var settings = GetWordExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Word, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Xps:
+                        {
+                            var settings = GetXpsExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Xps, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.PowerPoint:
+                        {
+                            var settings = GetPowerPointExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.PowerPoint, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Xml:
+                        {
+                            var settings = GetXmlExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Xml, stream, settings);
+                        }
+                        break;
+
+                    case StiExportFormat.Json:
+                        {
+                            var settings = GetJsonExportSettings(reader);
+                            report.ExportDocument(StiExportFormat.Json, stream, settings);
+                        }
+                        break;
                 }
 
-                index++;
+                return stream.ToArray();
             }
-            #endregion
-
-            report.LoadDocumentFromString(xml.Substring(lastPos, reportLength));
-            lastPos += reportLength;
-            exportSettings = xml.Substring(lastPos, xml.Length - lastPos);
-
-            return report;
         }
 
         private static StiImageExportSettings CopyBitmapSettings(StiImageExportSettings settings1, StiImageExportSettings settings2)
@@ -224,340 +187,353 @@ namespace WCFHelper
         #endregion
 
         #region Methods.ParseExportSettings
-        private static StiCsvExportSettings GetCsvExportSettings(string xml)
+        private static StiCsvExportSettings GetCsvExportSettings(StiBinaryReader reader)
         {
             var settings = new StiCsvExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.Encoding = ParseEncoding(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[1]);
-            settings.Separator = (rootNode.ChildNodes[2].FirstChild == null) ? string.Empty : rootNode.ChildNodes[2].FirstChild.Value;
-            settings.SkipColumnHeaders = rootNode.ChildNodes[3].FirstChild.Value == "1";
+            settings.Encoding = ParseEncoding(reader.ReadInt32());
+            settings.Separator = reader.ReadNullableString();
+            settings.SkipColumnHeaders = reader.ReadBoolean();
+
+            int mode = reader.ReadInt32();
+            if (mode == 1) settings.DataExportMode = StiDataExportMode.DataAndHeadersFooters;
+            if (mode == 2) settings.DataExportMode = StiDataExportMode.AllBands;
 
             return settings;
         }
 
-        private static StiDbfExportSettings GetDbfExportSettings(string xml)
+        private static StiDbfExportSettings GetDbfExportSettings(StiBinaryReader reader)
         {
             var settings = new StiDbfExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.CodePage = (StiDbfCodePages)int.Parse(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[1]);
+            settings.CodePage = (StiDbfCodePages)reader.ReadInt32();
 
             return settings;
         }
 
-        private static StiDifExportSettings GetDifExportSettings(string xml)
+        private static StiDifExportSettings GetDifExportSettings(StiBinaryReader reader)
         {
             var settings = new StiDifExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.Encoding = Encoding.GetEncoding(int.Parse(rootNode.ChildNodes[0].FirstChild.Value));
-            settings.ExportDataOnly = rootNode.ChildNodes[1].FirstChild.Value == "1";
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[2]);
-            settings.UseDefaultSystemEncoding = rootNode.ChildNodes[3].FirstChild.Value == "1";
+            settings.Encoding = ParseEncoding(reader.ReadInt32());
+            settings.ExportDataOnly = reader.ReadBoolean();
+            settings.UseDefaultSystemEncoding = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiExcelExportSettings GetExcelExportSettings(string xml)
+        private static StiExcelExportSettings GetExcelExportSettings(StiBinaryReader reader)
         {
             var settings = new StiExcelExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.ExportDataOnly = rootNode.ChildNodes[0].FirstChild.Value == "1";
-            settings.ExportEachPageToSheet = rootNode.ChildNodes[1].FirstChild.Value == "1";
-            settings.ExportObjectFormatting = rootNode.ChildNodes[2].FirstChild.Value == "1";
-            settings.ExportPageBreaks = rootNode.ChildNodes[3].FirstChild.Value == "1";
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[4].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[5].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[6]);
-            settings.UseOnePageHeaderAndFooter = rootNode.ChildNodes[7].FirstChild.Value == "1";
-
-            return settings;
-        }
-
-        private static StiExcel2007ExportSettings GetExcel2007ExportSettings(string xml)
-        {
-            var settings = new StiExcel2007ExportSettings();
-
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            XmlNode rootNode = xmlDoc.DocumentElement;
-
-            settings.ExportDataOnly = rootNode.ChildNodes[0].FirstChild.Value == "1";
-            settings.ExportEachPageToSheet = rootNode.ChildNodes[1].FirstChild.Value == "1";
-            settings.ExportObjectFormatting = rootNode.ChildNodes[2].FirstChild.Value == "1";
-            settings.ExportPageBreaks = rootNode.ChildNodes[3].FirstChild.Value == "1";
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[4].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[5].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[6]);
-            settings.UseOnePageHeaderAndFooter = rootNode.ChildNodes[7].FirstChild.Value == "1";
+            settings.UseOnePageHeaderAndFooter = reader.ReadBoolean();
+            settings.DataExportMode = (StiDataExportMode)reader.ReadInt32();
+            settings.ExportObjectFormatting = reader.ReadBoolean();
+            settings.ExportEachPageToSheet = reader.ReadBoolean();
+            settings.ExportPageBreaks = reader.ReadBoolean();
+            settings.ImageResolution = reader.ReadSingle();
+            settings.ImageQuality = reader.ReadSingle();
+            settings.RestrictEditing = (StiExcel2007RestrictEditing)reader.ReadInt32();
+            settings.EncryptionPassword = reader.ReadNullableString();
+            settings.ProtectionPassword = reader.ReadNullableString();
+            settings.ImageFormat = new ImageFormat(new Guid(reader.ReadNullableString()));
+            settings.ImageResolutionMode = (StiImageResolutionMode)reader.ReadInt32();
 
             return settings;
         }
 
-        private static StiExcelXmlExportSettings GetExcelXmlExportSettings(string xml)
+        private static StiExcelXmlExportSettings GetExcelXmlExportSettings(StiBinaryReader reader)
         {
             var settings = new StiExcelXmlExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[0]);
+            settings.EncryptionPassword = reader.ReadNullableString();
+            settings.ProtectionPassword = reader.ReadNullableString();
 
             return settings;
         }
 
-        private static StiHtmlExportSettings GetHtmlExportSettings(string xml)
+        private static StiHtmlExportSettings GetHtmlExportSettings(StiBinaryReader reader)
         {
             var settings = new StiHtmlExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xml);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.AddPageBreaks = rootNode.ChildNodes[0].FirstChild.Value == "1";
-            settings.ExportMode = (StiHtmlExportMode)int.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.ExportQuality = (StiHtmlExportQuality)int.Parse(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.ImageFormat = new ImageFormat(new Guid(rootNode.ChildNodes[3].FirstChild.Value));
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[4]);
-            settings.Zoom = double.Parse(rootNode.ChildNodes[5].FirstChild.Value);
+            settings.Zoom = reader.ReadSingle();
+            settings.ImageFormat = new ImageFormat(new Guid(reader.ReadNullableString()));
+            settings.ExportMode = (StiHtmlExportMode)reader.ReadInt32();
+            settings.ExportQuality = (StiHtmlExportQuality)reader.ReadInt32();
+            settings.AddPageBreaks = reader.ReadBoolean();
+            settings.CompressToArchive = reader.ReadBoolean();
+            settings.UseEmbeddedImages = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiHtml5ExportSettings GetHtml5ExportSettings(string xmlSettings)
+        private static StiHtml5ExportSettings GetHtml5ExportSettings(StiBinaryReader reader)
         {
             var settings = new StiHtml5ExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.ImageFormat = new ImageFormat(new Guid(rootNode.ChildNodes[2].FirstChild.Value));
-            settings.ContinuousPages = rootNode.ChildNodes[3].FirstChild.Value == "1";
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[4]);
+            settings.ImageFormat = new ImageFormat(new Guid(reader.ReadNullableString()));
+            settings.ImageResolution = reader.ReadSingle();
+            settings.ImageQuality = reader.ReadSingle();
+            settings.ContinuousPages = reader.ReadBoolean();
+            settings.CompressToArchive = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiMhtExportSettings GetMhtExportSettings(string xmlSettings)
+        private static StiMhtExportSettings GetMhtExportSettings(StiBinaryReader reader)
         {
             var settings = new StiMhtExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.AddPageBreaks = rootNode.ChildNodes[0].FirstChild.Value == "1";
+            settings.Zoom = reader.ReadSingle();
+            settings.ImageFormat = new ImageFormat(new Guid(reader.ReadNullableString()));
+            settings.ExportMode = (StiHtmlExportMode)reader.ReadInt32();
+            settings.ExportQuality = (StiHtmlExportQuality)reader.ReadInt32();
+            settings.AddPageBreaks = reader.ReadBoolean();
             settings.Encoding = Encoding.UTF8;
-            settings.ExportMode = (StiHtmlExportMode)int.Parse(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.ExportQuality = (StiHtmlExportQuality)int.Parse(rootNode.ChildNodes[3].FirstChild.Value);
-            settings.ImageFormat = new ImageFormat(new Guid(rootNode.ChildNodes[4].FirstChild.Value));
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[5]);
-            settings.Zoom = double.Parse(rootNode.ChildNodes[6].FirstChild.Value);
 
             return settings;
         }
 
-        private static StiImageExportSettings GetImageExportSettings(string xmlSettings)
+        private static StiImageExportSettings GetImageExportSettings(StiBinaryReader reader)
         {
-            var settings = new StiImageExportSettings();
+            var imageType = (StiImageType)reader.ReadInt32();
+            var settings = new StiImageExportSettings(imageType);
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.CutEdges = rootNode.ChildNodes[0].FirstChild.Value == "1";
-            settings.DitheringType = (StiMonochromeDitheringType)int.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.ImageFormat = (StiImageFormat)int.Parse(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.ImageResolution = int.Parse(rootNode.ChildNodes[3].FirstChild.Value);
-            settings.ImageZoom = double.Parse(rootNode.ChildNodes[4].FirstChild.Value);
-            settings.MultipleFiles = rootNode.ChildNodes[5].FirstChild.Value == "1";
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[6]);
-            settings.TiffCompressionScheme = (StiTiffCompressionScheme)int.Parse(rootNode.ChildNodes[7].FirstChild.Value);
+            settings.ImageZoom = reader.ReadDouble();
+            settings.ImageResolution = reader.ReadInt32();
+            settings.CutEdges = reader.ReadBoolean();
+            settings.ImageFormat = (StiImageFormat)reader.ReadInt32();
+            settings.MultipleFiles = reader.ReadBoolean();
+            settings.TiffCompressionScheme = (StiTiffCompressionScheme)reader.ReadInt32();
+            settings.DitheringType = (StiMonochromeDitheringType)reader.ReadInt32();
+            settings.CompressToArchive = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiOdsExportSettings GetOdsExportSettings(string xmlSettings)
+        private static StiOdsExportSettings GetOdsExportSettings(StiBinaryReader reader)
         {
             var settings = new StiOdsExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[2]);
+            settings.ImageQuality = reader.ReadSingle();
+            settings.ImageResolution = reader.ReadSingle();
 
             return settings;
         }
 
-        private static StiOdtExportSettings GetOdtExportSettings(string xmlSettings)
+        private static StiOdtExportSettings GetOdtExportSettings(StiBinaryReader reader)
         {
             var settings = new StiOdtExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[2]);
-            settings.UsePageHeadersAndFooters = rootNode.ChildNodes[3].FirstChild.Value == "1";
-            settings.RemoveEmptySpaceAtBottom = rootNode.ChildNodes[4].FirstChild.Value == "1";
+            settings.UsePageHeadersAndFooters = reader.ReadBoolean();
+            settings.ImageQuality = reader.ReadSingle();
+            settings.ImageResolution = reader.ReadSingle();
+            settings.RemoveEmptySpaceAtBottom = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiPdfExportSettings GetPdfExportSettings(string xmlSettings)
+        private static StiPdfExportSettings GetPdfExportSettings(StiBinaryReader reader)
         {
             var settings = new StiPdfExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[0]);
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.ImageCompressionMethod = (StiPdfImageCompressionMethod)int.Parse(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[3].FirstChild.Value);
-            settings.EmbeddedFonts = rootNode.ChildNodes[4].FirstChild.Value == "1";
-            settings.StandardPdfFonts = rootNode.ChildNodes[5].FirstChild.Value == "1";
-            settings.Compressed = rootNode.ChildNodes[6].FirstChild.Value == "1";
-            settings.ExportRtfTextAsImage = rootNode.ChildNodes[7].FirstChild.Value == "1";
-            if (rootNode.ChildNodes[8].FirstChild != null)
-                settings.PasswordInputUser = rootNode.ChildNodes[8].FirstChild.Value;
-            if (rootNode.ChildNodes[9].FirstChild != null)
-                settings.PasswordInputOwner = rootNode.ChildNodes[9].FirstChild.Value;
-            settings.UserAccessPrivileges = (StiUserAccessPrivileges)int.Parse(rootNode.ChildNodes[10].FirstChild.Value);
-            settings.KeyLength = (StiPdfEncryptionKeyLength)int.Parse(rootNode.ChildNodes[11].FirstChild.Value);
-            settings.UseUnicode = rootNode.ChildNodes[12].FirstChild.Value == "1";
-            settings.GetCertificateFromCryptoUI = rootNode.ChildNodes[13].FirstChild.Value == "1";
-            settings.UseDigitalSignature = rootNode.ChildNodes[14].FirstChild.Value == "1";
-            if (rootNode.ChildNodes[15].FirstChild != null)
-                settings.SubjectNameString = rootNode.ChildNodes[15].FirstChild.Value;
-            settings.PdfACompliance = rootNode.ChildNodes[16].FirstChild.Value == "1";
-            settings.ImageFormat = (StiImageFormat)int.Parse(rootNode.ChildNodes[17].FirstChild.Value);
-            settings.DitheringType = (StiMonochromeDitheringType)int.Parse(rootNode.ChildNodes[18].FirstChild.Value);
+            settings.ImageQuality = reader.ReadSingle();
+            settings.ImageCompressionMethod = (StiPdfImageCompressionMethod)reader.ReadInt32();
+            settings.ImageResolution = reader.ReadSingle();
+            settings.EmbeddedFonts = reader.ReadBoolean();
+            settings.ExportRtfTextAsImage = reader.ReadBoolean();
+            settings.PasswordInputUser = reader.ReadNullableString();
+            settings.PasswordInputOwner = reader.ReadNullableString();
+            settings.UserAccessPrivileges = (StiUserAccessPrivileges)reader.ReadInt32();
+            settings.KeyLength = (StiPdfEncryptionKeyLength)reader.ReadInt32();
+            settings.GetCertificateFromCryptoUI = reader.ReadBoolean();
+            settings.UseDigitalSignature = reader.ReadBoolean();
+            settings.SubjectNameString = reader.ReadNullableString();
+            settings.PdfComplianceMode = (StiPdfComplianceMode)reader.ReadInt32();
+            settings.ImageFormat = (StiImageFormat)reader.ReadInt32();
+            settings.DitheringType = (StiMonochromeDitheringType)reader.ReadInt32();
+            settings.AllowEditable = (StiPdfAllowEditable)reader.ReadInt32();
+            settings.ImageResolutionMode = (StiImageResolutionMode)reader.ReadInt32();
+            settings.CertificateThumbprint = reader.ReadNullableString();
 
             return settings;
         }
 
-        private static StiRtfExportSettings GetRtfExportSettings(string xmlSettings)
+        private static StiRtfExportSettings GetRtfExportSettings(StiBinaryReader reader)
         {
             var settings = new StiRtfExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.ExportMode = (StiRtfExportMode)int.Parse(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[3]);
-            settings.RemoveEmptySpaceAtBottom = rootNode.ChildNodes[4].FirstChild.Value == "1";
+            settings.ExportMode = (StiRtfExportMode)reader.ReadInt32();
+            settings.UsePageHeadersAndFooters = reader.ReadBoolean();
+            settings.ImageQuality = reader.ReadSingle();
+            settings.ImageResolution = reader.ReadSingle();
+            settings.RemoveEmptySpaceAtBottom = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiSylkExportSettings GetSylkExportSettings(string xmlSettings)
+        private static StiSylkExportSettings GetSylkExportSettings(StiBinaryReader reader)
         {
             var settings = new StiSylkExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.Encoding = Encoding.GetEncoding(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.ExportDataOnly = rootNode.ChildNodes[1].FirstChild.Value == "1";
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[2]);
-            settings.UseDefaultSystemEncoding = rootNode.ChildNodes[3].FirstChild.Value == "1";
+            settings.ExportDataOnly = reader.ReadBoolean();
+            settings.Encoding = ParseEncoding(reader.ReadInt32());
+            settings.UseDefaultSystemEncoding = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiTxtExportSettings GetTextExportSettings(string xmlSettings)
+        private static StiTxtExportSettings GetTextExportSettings(StiBinaryReader reader)
         {
             var settings = new StiTxtExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.BorderType = (StiTxtBorderType)int.Parse(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.CutLongLines = rootNode.ChildNodes[1].FirstChild.Value == "1";
-            settings.Encoding = ParseEncoding(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[3]);
-            settings.ZoomX = float.Parse(rootNode.ChildNodes[4].FirstChild.Value);
-            settings.ZoomY = float.Parse(rootNode.ChildNodes[5].FirstChild.Value);
+            settings.Encoding = ParseEncoding(reader.ReadInt32());
+            settings.DrawBorder = reader.ReadBoolean();
+            settings.BorderType = (StiTxtBorderType)reader.ReadInt32();
+            settings.KillSpaceLines = reader.ReadBoolean();
+            settings.PutFeedPageCode = reader.ReadBoolean();
+            settings.CutLongLines = reader.ReadBoolean();
+            settings.ZoomX = reader.ReadSingle();
+            settings.ZoomY = reader.ReadSingle();
 
             return settings;
         }
 
-        private static StiWord2007ExportSettings GetWord2007ExportSettings(string xmlSettings)
+        private static StiWordExportSettings GetWordExportSettings(StiBinaryReader reader)
         {
-            var settings = new StiWord2007ExportSettings();
+            var settings = new StiWordExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[0]);
-            settings.UsePageHeadersAndFooters = rootNode.ChildNodes[1].FirstChild.Value == "1";
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[3].FirstChild.Value);
-            settings.RemoveEmptySpaceAtBottom = rootNode.ChildNodes[4].FirstChild.Value == "1";
+            settings.UsePageHeadersAndFooters = reader.ReadBoolean();
+            settings.ImageQuality = reader.ReadSingle();
+            settings.ImageResolution = reader.ReadSingle();
+            settings.RemoveEmptySpaceAtBottom = reader.ReadBoolean();
+            settings.RestrictEditing = (StiWord2007RestrictEditing)reader.ReadInt32();
+            settings.EncryptionPassword = reader.ReadNullableString();
+            settings.ProtectionPassword = reader.ReadNullableString();
+            settings.ImageFormat = new ImageFormat(new Guid(reader.ReadNullableString()));
+            settings.ImageResolutionMode = (StiImageResolutionMode)reader.ReadInt32();
 
             return settings;
         }
 
-        private static StiXpsExportSettings GetXpsExportSettings(string xmlSettings)
+        private static StiXpsExportSettings GetXpsExportSettings(StiBinaryReader reader)
         {
             var settings = new StiXpsExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.ExportRtfTextAsImage = rootNode.ChildNodes[0].FirstChild.Value == "1";
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[2].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[3]);
+            settings.ImageQuality = reader.ReadSingle();
+            settings.ImageResolution = reader.ReadSingle();
+            settings.ExportRtfTextAsImage = reader.ReadBoolean();
 
             return settings;
         }
 
-        private static StiPpt2007ExportSettings GetPpt2007ExportSettings(string xmlSettings)
+        private static StiPowerPointExportSettings GetPowerPointExportSettings(StiBinaryReader reader)
         {
-            var settings = new StiPpt2007ExportSettings();
+            var settings = new StiPowerPointExportSettings();
 
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlSettings);
-            XmlNode rootNode = xmlDoc.DocumentElement;
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
 
-            settings.ImageQuality = float.Parse(rootNode.ChildNodes[0].FirstChild.Value);
-            settings.ImageResolution = float.Parse(rootNode.ChildNodes[1].FirstChild.Value);
-            settings.PageRange = GetPagesRange(rootNode.ChildNodes[2]);
+            settings.ImageResolution = reader.ReadSingle();
+            settings.ImageQuality = reader.ReadSingle();
+            settings.EncryptionPassword = reader.ReadNullableString();
+            settings.ImageResolutionMode = (StiImageResolutionMode)reader.ReadInt32();
+            settings.ImageFormat = new ImageFormat(new Guid(reader.ReadNullableString()));
+
+            return settings;
+        }
+
+        private static StiXmlExportSettings GetXmlExportSettings(StiBinaryReader reader)
+        {
+            var settings = new StiXmlExportSettings();
+
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
+
+            settings.DataExportMode = (StiDataExportMode)reader.ReadInt32();
+
+            return settings;
+        }
+
+        private static StiJsonExportSettings GetJsonExportSettings(StiBinaryReader reader)
+        {
+            var settings = new StiJsonExportSettings();
+
+            settings.PageRange.CurrentPage = reader.ReadInt32();
+            settings.PageRange.PageRanges = reader.ReadNullableString();
+            settings.PageRange.RangeType = (StiRangeType)reader.ReadInt32();
+
+            settings.DataExportMode = (StiDataExportMode)reader.ReadInt32();
 
             return settings;
         }
@@ -570,9 +546,9 @@ namespace WCFHelper
             return new StiPagesRange(rangeType, (pageRange.ChildNodes[1].FirstChild == null) ? string.Empty : pageRange.ChildNodes[1].FirstChild.Value, int.Parse(pageRange.ChildNodes[0].FirstChild.Value));
         }
 
-        private static Encoding ParseEncoding(string value)
+        private static Encoding ParseEncoding(int codepage)
         {
-            return Encoding.GetEncoding(int.Parse(value));
+            return Encoding.GetEncoding(codepage);
         }
         #endregion
     }

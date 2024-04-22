@@ -11,20 +11,18 @@ namespace WCFHelper
     {
         #region Fields
         public string TypeDrillDown;
-
+        public StiReport Report;
         public string DrillDownPageName;
-        public Dictionary<string, object> DrillDownParameters;
+        public int CollapsingIndex;
+        public bool IsCollapsed;
         public int PageIndex;
         public int CompIndex;
-        public StiReport Report;
-
+        public Dictionary<string, object> DrillDownParameters;
         public string DataBandName;
         public string[] DataBandColumns;
         public string DataBandColumnString;
         public StiInteractionSortDirection SortingDirection;
         public bool IsControlPress;
-        public int CollapsingIndex;
-        public bool IsCollapsed;
         public Hashtable InteractionCollapsingStates;
         #endregion
 

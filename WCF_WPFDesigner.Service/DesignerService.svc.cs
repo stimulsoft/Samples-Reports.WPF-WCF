@@ -1,7 +1,6 @@
-﻿using System.IO;
-using System.ServiceModel.Activation;
+﻿using Stimulsoft.Report;
 using System.Data;
-using Stimulsoft.Report;
+using System.IO;
 using WCFHelper;
 
 namespace WCF_WPFDesigner.Service
@@ -45,7 +44,7 @@ namespace WCF_WPFDesigner.Service
 
         public bool SaveReport(byte[] buffer)
         {
-            var fileStream = new FileStream("g:\\Report2.mrt", FileMode.CreateNew);
+            var fileStream = new FileStream("d:\\Data\\1. Master-Detail.mrt", FileMode.CreateNew);
             fileStream.Write(buffer, 0, buffer.Length);
             fileStream.Flush();
             fileStream.Close();
@@ -57,107 +56,80 @@ namespace WCF_WPFDesigner.Service
         #endregion
 
         #region Methods.LoadConfiguration
-        public string LoadConfiguration()
+        public byte[] LoadConfiguration()
         {
             return StiSLDesignerHelper.LoadConfiguration();
         }
         #endregion
 
         #region Methods.Viewer
-        public string RenderingInteractions(string xml)
+        public byte[] RenderingInteractions(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.RenderingInteractions(xml, PreviewDataSet);
+            return StiSLRenderingReportHelper.RenderingInteractions(data, PreviewDataSet);
         }
 
-        public string RequestFromUserRenderReport(string xml)
+        public byte[] RequestFromUserRenderReport(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.RequestFromUserRenderReport(xml, PreviewDataSet);
+            return StiSLRenderingReportHelper.RequestFromUserRenderReport(data, PreviewDataSet);
         }
 
-        public byte[] ExportDocument(string xml)
+        public byte[] ExportDocument(byte[] data)
         {
-            return StiSLExportHelper.StartExport(xml);
+            return StiSLExportHelper.StartExport(data);
         }
 
-        public string PrepareRequestFromUserVariables(string xml)
-        {
-            InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.PrepareRequestFromUserVariables(xml, PreviewDataSet);
-        }
-
-        public string InteractiveDataBandSelection(string xml)
+        public byte[] PrepareRequestFromUserVariables(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.InteractiveDataBandSelection(xml, PreviewDataSet);
+            return StiSLRenderingReportHelper.PrepareRequestFromUserVariables(data, PreviewDataSet);
+        }
+
+        public byte[] InteractiveDataBandSelection(byte[] data)
+        {
+            InvokePreviewDataSet();
+            return StiSLRenderingReportHelper.InteractiveDataBandSelection(data, PreviewDataSet);
         }
         #endregion
 
         #region Methods.Designer
-        public string RenderReport(string xml)
+        public byte[] RenderReport(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLDesignerHelper.RenderReport(xml, PreviewDataSet);
+            return StiSLDesignerHelper.RenderReport(data, PreviewDataSet);
         }
 
-        public string TestConnection(string xml)
+        public byte[] TestConnection(byte[] data)
         {
-            return StiSLDesignerHelper.TestConnection(xml);
+            return StiSLDesignerHelper.TestConnection(data);
         }
 
-        public string BuildObjects(string xml)
+        public byte[] BuildObjects(byte[] data)
         {
-            return StiSLDesignerHelper.BuildObjects(xml);
+            return StiSLDesignerHelper.BuildObjects(data);
         }
 
-        public string RetrieveColumns(string xml)
+        public byte[] RetrieveColumns(byte[] data)
         {
-            return StiSLDesignerHelper.RetrieveColumns(xml);
+            return StiSLDesignerHelper.RetrieveColumns(data);
         }
-
-        #region GoogleDocs
-        public string GoogleDocsGetDocuments(string xml)
-        {
-            return StiSLDesignerHelper.GoogleDocsGetDocuments(xml);
-        }
-
-        public string GoogleDocsCreateCollection(string xml)
-        {
-            return StiSLDesignerHelper.GoogleDocsCreateCollection(xml);
-        }
-
-        public string GoogleDocsDelete(string xml)
-        {
-            return StiSLDesignerHelper.GoogleDocsDelete(xml);
-        }
-
-        public string GoogleDocsOpen(string xml)
-        {
-            return StiSLDesignerHelper.GoogleDocsOpen(xml);
-        }
-
-        public string GoogleDocsSave(string xml)
-        {
-            return StiSLDesignerHelper.GoogleDocsSave(xml);
-        }
-        #endregion
         #endregion
 
         #region Methods.ReportScript
-        public string OpenReportScript(string xml)
+        public byte[] OpenReportScript(byte[] data)
         {
-            return StiSLDesignerHelper.OpenReportScript(xml);
+            return StiSLDesignerHelper.OpenReportScript(data);
         }
 
-        public string SaveReportScript(string xml)
+        public byte[] SaveReportScript(byte[] data)
         {
-            return StiSLDesignerHelper.SaveReportScript(xml);
+            return StiSLDesignerHelper.SaveReportScript(data);
         }
 
-        public string CheckReport(string xml)
+        public byte[] CheckReport(byte[] data)
         {
-            return StiSLDesignerHelper.CheckReport(xml);
+            return StiSLDesignerHelper.CheckReport(data);
         }
         #endregion
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d132b93a-ae49-4bbb-89de-7c27d05e3969" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="539f112b-c4f6-404c-a9ef-40c918ed7eeb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,10 +22,10 @@
     <MetadataSource Address="http://localhost:61389/DesignerService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="DesignerService.wsdl" MetadataType="Wsdl" ID="bcb80e11-39e6-4799-871a-a7a33e0d3129" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?wsdl" />
-    <MetadataFile FileName="DesignerService.xsd" MetadataType="Schema" ID="dbbd202b-4ea7-463e-bfb6-cda5327c5a41" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?xsd=xsd0" />
-    <MetadataFile FileName="DesignerService.disco" MetadataType="Disco" ID="36c643ab-9801-47bf-8c4a-638574bae8b1" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?disco" />
-    <MetadataFile FileName="DesignerService1.xsd" MetadataType="Schema" ID="68c94670-9851-41ce-b962-5417def1b7f6" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DesignerService.xsd" MetadataType="Schema" ID="d7f26af8-8ee4-473a-8090-d086df7a1da8" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DesignerService.wsdl" MetadataType="Wsdl" ID="4317689d-26a9-43b0-be21-16101cea0ba9" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?wsdl" />
+    <MetadataFile FileName="DesignerService.disco" MetadataType="Disco" ID="38b5b3f6-e725-4a12-8dfc-6f770047d6a9" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?disco" />
+    <MetadataFile FileName="DesignerService1.xsd" MetadataType="Schema" ID="e281a446-81aa-411d-9819-2a4eeb1c2c68" SourceId="1" SourceUrl="http://localhost:61389/DesignerService.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

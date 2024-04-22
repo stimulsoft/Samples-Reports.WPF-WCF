@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Stimulsoft.Report;
+using Stimulsoft.Report.Dictionary;
+using Stimulsoft.Report.WCFService;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Xml;
-
-using Stimulsoft.Report.Dictionary;
-using System.Text;
+using System.IO;
+using System.Linq;
 using WCFHelper.Helpers;
-using Stimulsoft.Report;
-using System.Collections.Generic;
 
 namespace WCFHelper
 {
@@ -29,7 +29,7 @@ namespace WCFHelper
             public string Alias;
             public string NameInSource;
             public string ConnectionString;
-            public string PromptUserNameAndPassword;
+            public bool PromptUserNameAndPassword; // sqlDatabase.PromptUserNameAndPassword ? "1" : "0"
             public string SqlCommand;
 
             public StiSqlAdapterService adapter;
@@ -43,230 +43,81 @@ namespace WCFHelper
         #region Input
         public static class Input
         {
-            public static SettingsTestConnection ParseTestConnection(string xml)
+            public static SettingsTestConnection ParseTestConnection(byte[] data)
             {
                 var settings = new SettingsTestConnection();
 
-                using (var stringReader = new System.IO.StringReader(StiSLEncodingHelper.DecodeString(xml)))
-                using (var tr = new XmlTextReader(stringReader))
+                using (var stream = new MemoryStream(data))
+                using (var reader = new StiBinaryReader(stream))
                 {
-                    tr.Read();
-                    if (tr.Name == "XmlResult")
-                    {
-                        while (tr.Read())
-                        {
-                            if (tr.Depth == 0)
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                switch (tr.Name)
-                                {
-                                    case "TypeAdapter":
-                                        string typeStr = tr.ReadString();
-                                        if (!string.IsNullOrEmpty(typeStr))
-                                            settings.Adapter = Stimulsoft.Base.StiActivator.CreateObject(typeStr) as StiSqlAdapterService;
-                                        break;
+                    var typeStr = reader.ReadNullableString();
+                    if (!string.IsNullOrEmpty(typeStr))
+                        settings.Adapter = Stimulsoft.Base.StiActivator.CreateObject(typeStr) as StiSqlAdapterService;
 
-                                    case "ConnectionString":
-                                        settings.ConnectionString = tr.ReadString();
-                                        break;
-                                }
-                            }
-                        }
-                    }
+                    settings.ConnectionString = reader.ReadNullableString();
                 }
 
                 return settings;
             }
 
             #region BuildObjects
-            public static StiDatabase ParseBuildObjects(string xml)
+            public static StiDatabase ParseBuildObjects(byte[] data)
             {
                 StiDatabase result = null;
 
-                string decodeString = StiSLEncodingHelper.DecodeString(xml);
-                using (var stringReader = new System.IO.StringReader(decodeString))
-                using (var tr = new XmlTextReader(stringReader))
+                using (var stream = new MemoryStream(data))
+                using (var reader = new StiBinaryReader(stream))
                 {
-                    tr.Read();
+                    string databaseType = reader.ReadNullableString();
 
-                    if (tr.Name == "XmlResult")
+                    result = Stimulsoft.Base.StiActivator.CreateObject(databaseType) as StiDatabase;
+                    if (result == null) return result;
+
+                    if (result is StiXmlDatabase xml)
                     {
-                        while (tr.Read())
-                        {
-                            if (tr.Depth == 0)
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                string str = tr.ReadString();
-
-                                // BrightEye
-                                //if (str.StartsWith("MEScontrol.Reporting"))
-                                //    str = typeof(MesDatabase).ToString();
-
-                                result = Stimulsoft.Base.StiActivator.CreateObject(str) as StiDatabase;
-                                if (result == null) break;
-
-                                if (result is StiXmlDatabase)
-                                {
-                                    result = GetXmlDatabase(tr);
-                                }
-                                else if (result is StiSqlDatabase)
-                                {
-                                    result = GetSqlDatabase(tr, result as StiSqlDatabase);
-                                }
-
-                                break;
-                            }
-                        }
+                        xml.Name = reader.ReadNullableString();
+                        xml.Alias = reader.ReadNullableString();
+                        xml.PathData = reader.ReadNullableString();
+                        xml.PathSchema = reader.ReadNullableString();
+                    }
+                    else if (result is StiSqlDatabase sql)
+                    {
+                        sql.Name = reader.ReadNullableString();
+                        sql.Alias = reader.ReadNullableString();
+                        sql.ConnectionString = reader.ReadNullableString();
+                        sql.PromptUserNameAndPassword = reader.ReadBoolean();
                     }
                 }
 
                 return result;
             }
-
-            private static StiDatabase GetXmlDatabase(XmlTextReader tr)
-            {
-                var xmlDatabase = new StiXmlDatabase();
-
-                while (tr.Read())
-                {
-                    if (tr.Depth == 1)
-                    {
-                        switch (tr.Name)
-                        {
-                            case "Name":
-                                xmlDatabase.Name = tr.ReadString();
-                                break;
-
-                            case "Alias":
-                                xmlDatabase.Alias = tr.ReadString();
-                                break;
-
-                            case "PathData":
-                                xmlDatabase.PathData = tr.ReadString();
-                                break;
-
-                            case "PathSchema":
-                                xmlDatabase.PathSchema = tr.ReadString();
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                return xmlDatabase;
-            }
-
-            private static StiDatabase GetSqlDatabase(XmlTextReader tr, StiSqlDatabase database)
-            {
-                StiSqlDatabase sqlDatabase = database;
-
-                while (tr.Read())
-                {
-                    if (tr.Depth == 1)
-                    {
-                        switch (tr.Name)
-                        {
-                            case "Name":
-                                sqlDatabase.Name = tr.ReadString();
-                                break;
-
-                            case "Alias":
-                                sqlDatabase.Alias = tr.ReadString();
-                                break;
-
-                            case "ConnectionString":
-                                sqlDatabase.ConnectionString = tr.ReadString();
-                                break;
-
-                            case "PromptUserNameAndPassword":
-                                sqlDatabase.PromptUserNameAndPassword = (tr.ReadString() == "1");
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                return sqlDatabase;
-            }
             #endregion
 
             #region ParseRetrieveColumns
-            public static SettingsRetrieveColumns ParseRetrieveColumns(string xml)
+            public static SettingsRetrieveColumns ParseRetrieveColumns(byte[] data)
             {
                 var settings = new SettingsRetrieveColumns();
 
-                string decodeString = StiSLEncodingHelper.DecodeString(xml);
-                using (var stringReader = new System.IO.StringReader(decodeString))
-                using (var tr = new XmlTextReader(stringReader))
+                using (var stream = new MemoryStream(data))
+                using (var reader = new StiBinaryReader(stream))
                 {
-                    tr.Read();
-                    if (tr.Name == "XmlResult")
-                    {
-                        while (tr.Read())
-                        {
-                            if (tr.Depth == 0)
-                                break;
-                            else
-                            {
-                                switch (tr.Name)
-                                {
-                                    case "Report":
-                                        settings.Report = new StiReport();
-                                        settings.Report.LoadFromString(tr.ReadString());
-                                        break;
+                    settings.Report = new StiReport();
+                    settings.Report.Load(reader.ReadByteArray());
 
-                                    case "DataAdapterType":
-                                        string typeStr = tr.ReadString();
+                    #region DataAdapterType
+                    var typeStr = reader.ReadNullableString();
 
-                                        // BrightEye
-                                        //if (typeStr.StartsWith("MEScontrol.Reporting"))
-                                        //    typeStr = typeof(MesDataAdapterService).ToString();
+                    settings.adapter = Stimulsoft.Base.StiActivator.CreateObject(typeStr) as StiSqlAdapterService;
+                    settings.dataSource = Stimulsoft.Base.StiActivator.CreateObject(settings.adapter.GetDataSourceType()) as StiSqlSource;
+                    settings.connection = CreateDataAdapterTypeByName(settings.adapter.GetType().Name);
+                    #endregion
 
-                                        settings.adapter = Stimulsoft.Base.StiActivator.CreateObject(typeStr) as StiSqlAdapterService;
-                                        settings.dataSource = Stimulsoft.Base.StiActivator.CreateObject(settings.adapter.GetDataSourceType()) as StiSqlSource;
-
-                                        settings.connection = CreateDataAdapterTypeByName(settings.adapter.GetType().Name);
-                                        break;
-
-                                    case "Name":
-                                        settings.Name = tr.ReadString();
-                                        break;
-
-                                    case "Alias":
-                                        settings.Alias = tr.ReadString();
-                                        break;
-
-                                    case "NameInSource":
-                                        settings.NameInSource = tr.ReadString();
-                                        break;
-
-                                    case "ConnectionString":
-                                        settings.ConnectionString = tr.ReadString();
-                                        break;
-
-                                    case "PromptUserNameAndPassword":
-                                        settings.PromptUserNameAndPassword = tr.ReadString();
-                                        break;
-
-                                    case "SqlCommand":
-                                        settings.SqlCommand = tr.ReadString();
-                                        break;
-                                }
-                            }
-                        }
-                    }
+                    settings.Name = reader.ReadNullableString();
+                    settings.Alias = reader.ReadNullableString();
+                    settings.NameInSource = reader.ReadNullableString();
+                    settings.ConnectionString = reader.ReadNullableString();
+                    settings.PromptUserNameAndPassword = reader.ReadBoolean();
+                    settings.SqlCommand = reader.ReadNullableString();
                 }
 
                 return settings;
@@ -383,183 +234,126 @@ namespace WCFHelper
         #region Output
         public static class Output
         {
-            public static string ParseBuildObjects(StiDatabaseInformation info)
+            public static byte[] ParseBuildObjects(StiDatabaseInformation info)
             {
-                using (var str = new System.IO.StringWriter())
-                using (var writer = new XmlTextWriter(str))
-                {
-                    var hashTypes = new Dictionary<Type, int>();
-                    int typeIdent = 0;
-                    writer.WriteStartElement("Result");
+                var hashTypes = new List<Type>();
 
+                byte[] buffer = null;
+                using (var stream = new MemoryStream())
+                using (var writer = new StiBinaryWriter(stream))
+                {
                     #region Tables
+                    writer.Write(info.Tables.Count);
                     if (info.Tables.Count > 0)
                     {
-                        writer.WriteStartElement("Tables");
                         foreach (DataTable table in info.Tables)
                         {
-                            string tableName = CheckName(table.TableName);
-                            writer.WriteStartElement(tableName);
+                            writer.WriteNullableString(table.TableName);
+                            writer.Write(table.Columns.Count);
 
                             foreach (DataColumn column in table.Columns)
                             {
-                                // Берем сокращенный вариант типа
-                                int ident;
-                                if (hashTypes.ContainsKey(column.DataType))
-                                    ident = hashTypes[column.DataType];
-                                else
+                                if (!hashTypes.Contains(column.DataType))
                                 {
-                                    ident = typeIdent;
-                                    hashTypes.Add(column.DataType, ident);
-                                    typeIdent++;
+                                    hashTypes.Add(column.DataType);
                                 }
+                                int ident = hashTypes.IndexOf(column.DataType);
 
-                                writer.WriteStartElement(CheckName(column.ColumnName));
-                                writer.WriteAttributeString("id", ident.ToString());
-                                writer.WriteEndElement();
+                                writer.WriteNullableString(column.ColumnName);
+                                writer.Write(ident);
                             }
-
-                            writer.WriteEndElement();
                         }
-                        writer.WriteEndElement();
                     }
                     #endregion
 
                     #region Views
+                    writer.Write(info.Views.Count);
                     if (info.Views.Count > 0)
                     {
-                        writer.WriteStartElement("Views");
                         foreach (DataTable table in info.Views)
                         {
-                            string tableName = CheckName(table.TableName);
-                            writer.WriteStartElement(tableName);
+                            writer.WriteNullableString(table.TableName);
+                            writer.Write(table.Columns.Count);
 
                             foreach (DataColumn column in table.Columns)
                             {
-                                // Берем сокращенный вариант типа
-                                int ident;
-                                if (hashTypes.ContainsKey(column.DataType))
-                                    ident = hashTypes[column.DataType];
-                                else
+                                if (!hashTypes.Contains(column.DataType))
                                 {
-                                    ident = typeIdent;
-                                    hashTypes.Add(column.DataType, ident);
-                                    typeIdent++;
+                                    hashTypes.Add(column.DataType);
                                 }
+                                int ident = hashTypes.IndexOf(column.DataType);
 
-                                writer.WriteStartElement(CheckName(column.ColumnName));
-                                writer.WriteAttributeString("id", ident.ToString());
-                                writer.WriteEndElement();
+                                writer.WriteNullableString(column.ColumnName);
+                                writer.Write(ident);
                             }
-
-                            writer.WriteEndElement();
                         }
-                        writer.WriteEndElement();
                     }
                     #endregion
 
                     #region StoredProcedures
-                    if (info.StoredProcedures.Count > 0)
+                    var storedProcedures = info.StoredProcedures.Where(x => x.TableName.IndexOfAny(new char[] { '~', '(', ')' }) == -1).ToList();
+                    writer.Write(storedProcedures.Count);
+                    if (storedProcedures.Count > 0)
                     {
-                        writer.WriteStartElement("StoredProcedures");
-                        foreach (DataTable table in info.StoredProcedures)
+                        foreach (DataTable table in storedProcedures)
                         {
-                            if (table.TableName.IndexOfAny(new char[] { '~', '(', ')' }) != -1) continue;
-
-                            string tableName = CheckName(table.TableName);
-                            writer.WriteStartElement(tableName);
+                            writer.WriteNullableString(table.TableName);
+                            writer.Write(table.Columns.Count);
 
                             foreach (DataColumn column in table.Columns)
                             {
-                                // Берем сокращенный вариант типа
-                                int ident;
-                                if (hashTypes.ContainsKey(column.DataType))
-                                    ident = hashTypes[column.DataType];
-                                else
+                                if (!hashTypes.Contains(column.DataType))
                                 {
-                                    ident = typeIdent;
-                                    hashTypes.Add(column.DataType, ident);
-                                    typeIdent++;
+                                    hashTypes.Add(column.DataType);
                                 }
+                                int ident = hashTypes.IndexOf(column.DataType);
 
-                                writer.WriteStartElement(CheckName(column.ColumnName));
-                                writer.WriteAttributeString("id", ident.ToString());
-                                writer.WriteEndElement();
+                                writer.WriteNullableString(column.ColumnName);
+                                writer.Write(ident);
                             }
-
-                            writer.WriteEndElement();
                         }
-                        writer.WriteEndElement();
                     }
                     #endregion
 
-                    #region Сохраняем кэш типов
-                    writer.WriteStartElement("hash");
-                    foreach (var pair in hashTypes)
+                    writer.Flush();
+                    buffer = stream.ToArray();
+                }
+
+                using (var stream = new MemoryStream())
+                using (var writer = new StiBinaryWriter(stream))
+                {
+                    writer.Write(hashTypes.Count);
+                    foreach (var type in hashTypes)
                     {
-                        writer.WriteStartElement("i" + pair.Value.ToString());
-                        writer.WriteString(pair.Key.ToString());
-                        writer.WriteEndElement();
+                        writer.WriteNullableString(type.ToString());
                     }
-                    writer.WriteEndElement();
-                    #endregion
 
-                    writer.WriteEndElement();
+                    writer.WriteByteArray(buffer);
 
-                    hashTypes.Clear();
-                    hashTypes = null;
-
-                    return StiSLEncodingHelper.EncodeString(str.ToString());
+                    writer.Flush();
+                    return stream.ToArray();
                 }
             }
 
-            public static string ParseRetrieveColumns(StiDataColumnsCollection columns)
+            public static byte[] ParseRetrieveColumns(StiDataColumnsCollection columns)
             {
-                if (columns == null || columns.Count == 0) return " ";
+                if (columns == null || columns.Count == 0) return null;
 
-                using (var str = new System.IO.StringWriter())
-                using (var writer = new XmlTextWriter(str))
+                using (var stream = new MemoryStream())
+                using (var writer = new StiBinaryWriter(stream))
                 {
-                    writer.WriteStartElement("Result");
+                    writer.Write(columns.Count);
 
-                    #region Columns
-                    writer.WriteStartElement("Columns");
                     foreach (StiDataColumn column in columns)
                     {
-                        string columnName = CheckName(column.Name);
-
-                        writer.WriteStartElement(columnName);
-                        writer.WriteValue(column.Type.ToString());
-                        writer.WriteEndElement();
+                        writer.WriteNullableString(column.Name);
+                        writer.WriteNullableString(column.Type.ToString());
                     }
-                    writer.WriteEndElement();
-                    #endregion
 
-                    writer.WriteEndElement();
-                    return StiSLEncodingHelper.EncodeString(str.ToString());
+                    writer.Flush();
+                    return stream.ToArray();
                 }
             }
-        }
-        #endregion
-
-        #region Methods.Helpers
-        public static string CheckName(string name)
-        {
-            var builder = new StringBuilder(name);
-            builder.Replace(" ", "_x0020_");
-            builder.Replace("@", "_x0040_");
-            builder.Replace("~", "_x007e_");
-            builder.Replace("$", "_x0024_");
-            builder.Replace("#", "_x0023_");
-            builder.Replace("%", "_x0025_");
-            builder.Replace("&", "_x0026_");
-            builder.Replace("*", "_x002A_");
-            builder.Replace("^", "_x005E_");
-            builder.Replace("(", "_x0028_");
-            builder.Replace(")", "_x0029_");
-            builder.Replace("!", "_x0021_");
-
-            return builder.ToString();
         }
         #endregion
     }

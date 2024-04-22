@@ -1,36 +1,34 @@
-﻿using System;
+﻿using Stimulsoft.Base;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Components;
+using Stimulsoft.Report.Dictionary;
+using Stimulsoft.Report.WCFService;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Xml;
-using System.Linq;
-using System.Reflection;
-
-using Stimulsoft.Base;
-using Stimulsoft.Report;
-using Stimulsoft.Report.Components;
-using Stimulsoft.Report.Dictionary;
-using Stimulsoft.Report.Export;
+using System.Diagnostics;
+using System.IO;
 
 namespace WCFHelper
 {
     public static class StiSLRenderingReportHelper
     {
         #region Methods.RenderingInteractions
-        public static string RenderingInteractions(string xml, DataSet previewDataSet)
+        public static byte[] RenderingInteractions(byte[] data, DataSet previewDataSet)
         {
-            var drillDownContainer = DecodeXmlRenderingInteractions(xml);
+            var drillDownContainer = DecodeBinaryRenderingInteractions(data);
 
-            string result = null;
+            byte[] result = null;
             switch (drillDownContainer.TypeDrillDown)
             {
-                case "DrillDownPage":
-                    result = StartDrillDownPage(drillDownContainer, previewDataSet);
-                    break;
-
                 case "Sorting":
                     result = StartSorting(drillDownContainer, previewDataSet);
+                    break;
+
+                case "DrillDownPage":
+                    result = StartDrillDownPage(drillDownContainer, previewDataSet);
                     break;
 
                 case "Collapsing":
@@ -41,121 +39,85 @@ namespace WCFHelper
             return result;
         }
 
-        private static StiDrillDownContainer DecodeXmlRenderingInteractions(string xml)
+        private static StiDrillDownContainer DecodeBinaryRenderingInteractions(byte[] data)
         {
             var drillDownContainer = new StiDrillDownContainer();
-            using (var stringReader = new System.IO.StringReader(StiSLEncodingHelper.DecodeString(xml)))
-            using (var tr = new XmlTextReader(stringReader))
+
+            using (var stream = new MemoryStream(data))
+            using (var reader = new StiBinaryReader(stream))
             {
-                tr.Read();
+                drillDownContainer.TypeDrillDown = reader.ReadNullableString();
+                drillDownContainer.Report.Load(reader.ReadByteArray());
+                drillDownContainer.DrillDownPageName = reader.ReadNullableString();
+                drillDownContainer.CollapsingIndex = reader.ReadInt32();
+                drillDownContainer.IsCollapsed = reader.ReadBoolean();
+                drillDownContainer.PageIndex = reader.ReadInt32();
+                drillDownContainer.CompIndex = reader.ReadInt32();
 
-                if (tr.Name == "XmlResult")
+                if (reader.ReadBoolean())
                 {
-                    while (tr.Read())
+                    int count = reader.ReadInt32();
+                    for (int index = 0; index < count; index++)
                     {
-                        string name = tr.Name;
+                        string key = reader.ReadNullableString();
+                        string value = reader.ReadNullableString();
 
-                        switch (name)
-                        {
-                            case "TypeDD":
-                                drillDownContainer.TypeDrillDown = tr.ReadString();
-                                break;
-                            case "Report":
-                                drillDownContainer.Report.LoadFromString(tr.ReadString());
-                                break;
-                            case "DDPName":
-                                drillDownContainer.DrillDownPageName = tr.ReadString();
-                                break;
-                            case "CollIndex":
-                                drillDownContainer.CollapsingIndex = int.Parse(tr.ReadString());
-                                break;
-                            case "IsCollapsed":
-                                drillDownContainer.IsCollapsed = (tr.ReadString() == "1") ? true : false;
-                                break;
-                            case "PIndex":
-                                drillDownContainer.PageIndex = int.Parse(tr.ReadString());
-                                break;
-                            case "CIndex":
-                                drillDownContainer.CompIndex = int.Parse(tr.ReadString());
-                                break;
-
-                            case "DDParameters":
-                                while (tr.Read())
-                                {
-                                    if (tr.Depth == 2)
-                                    {
-                                        drillDownContainer.DrillDownParameters.Add(tr.Name, tr.ReadString());
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                }
-                                break;
-
-                            case "DBandName":
-                                drillDownContainer.DataBandName = tr.ReadString();
-                                break;
-                            case "DBandColumns":
-                                drillDownContainer.DataBandColumns = tr.ReadString().Split(new char[] { ',' });
-                                break;
-                            case "DBandColStr":
-                                drillDownContainer.DataBandColumnString = tr.ReadString();
-                                break;
-                            case "SDirec":
-                                drillDownContainer.SortingDirection = ((StiInteractionSortDirection)int.Parse(tr.ReadString()));
-                                break;
-                            case "ControlPress":
-                                drillDownContainer.IsControlPress = (tr.ReadString() == "1") ? true : false;
-                                break;
-
-                            case "ICollStates":
-                                drillDownContainer.InteractionCollapsingStates = new System.Collections.Hashtable();
-                                System.Collections.Hashtable currentTable = null;
-                                string compName = string.Empty;
-
-                                while (tr.Read())
-                                {
-                                    if (tr.Depth == 1)
-                                    {
-                                        break;
-                                    }
-                                    else if (tr.Depth == 2)
-                                    {
-                                        compName = tr.Name;
-                                        if (!drillDownContainer.InteractionCollapsingStates.ContainsKey(compName))
-                                        {
-                                            drillDownContainer.InteractionCollapsingStates.Add(compName, new System.Collections.Hashtable());
-                                        }
-                                        currentTable = drillDownContainer.InteractionCollapsingStates[compName] as System.Collections.Hashtable;
-                                    }
-                                    else if (tr.Depth == 3)
-                                    {
-                                        int keyValue = int.Parse(tr.Name.Remove(0, 1));
-                                        switch (tr.ReadString())
-                                        {
-                                            case "1":
-                                                currentTable.Add(keyValue, true);
-                                                break;
-                                            case "0":
-                                                currentTable.Add(keyValue, false);
-                                                break;
-                                            default:
-                                                currentTable.Add(keyValue, null);
-                                                break;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
+                        drillDownContainer.DrillDownParameters.Add(key, value);
                     }
                 }
 
-                return drillDownContainer;
+                drillDownContainer.DataBandName = reader.ReadNullableString();
+                drillDownContainer.DataBandColumns = reader.ReadArrayString();
+                drillDownContainer.DataBandColumnString = reader.ReadNullableString();
+
+                var sortingDirection = reader.ReadNullableString();
+                if (sortingDirection != null)
+                    drillDownContainer.SortingDirection = (StiInteractionSortDirection)Enum.Parse(typeof(StiInteractionSortDirection), sortingDirection);
+
+                drillDownContainer.IsControlPress = reader.ReadBoolean();
+
+                if (reader.ReadBoolean())
+                {
+                    drillDownContainer.InteractionCollapsingStates = new Hashtable();
+
+                    int count = reader.ReadInt32();
+                    for (int index = 0; index < count; index++)
+                    {
+                        var compName = reader.ReadNullableString();
+                        if (!drillDownContainer.InteractionCollapsingStates.ContainsKey(compName))
+                        {
+                            drillDownContainer.InteractionCollapsingStates.Add(compName, new Hashtable());
+                        }
+                        var currentTable = (Hashtable)drillDownContainer.InteractionCollapsingStates[compName];
+
+                        int count2 = reader.ReadInt32();
+                        for (int index2 = 0; index2 < count2; index2++)
+                        {
+                            int keyValue = reader.ReadInt32();
+                            int value = reader.ReadInt32();
+                            switch (value)
+                            {
+                                case 1:
+                                    currentTable.Add(keyValue, true);
+                                    break;
+
+                                case 0:
+                                    currentTable.Add(keyValue, false);
+                                    break;
+
+                                default:
+                                    currentTable.Add(keyValue, null);
+                                    break;
+                            }
+                        }
+                    }
+                }
             }
+
+            return drillDownContainer;
         }
 
-        private static string StartDrillDownPage(StiDrillDownContainer drillDownContainer, System.Data.DataSet ds)
+        private static byte[] StartDrillDownPage(StiDrillDownContainer drillDownContainer, System.Data.DataSet ds)
         {
             drillDownContainer.Report.RegData(ds);
 
@@ -230,7 +192,7 @@ namespace WCFHelper
             }
         }
 
-        private static string StartCollapsing(StiDrillDownContainer drillDownContainer, System.Data.DataSet ds)
+        private static byte[] StartCollapsing(StiDrillDownContainer drillDownContainer, System.Data.DataSet ds)
         {
             drillDownContainer.Report.RegData(ds);
 
@@ -271,20 +233,20 @@ namespace WCFHelper
             }
             else
             {
-                return " ";
+                return null;
             }
         }
 
-        private static string StartSorting(StiDrillDownContainer drillDownContainer, System.Data.DataSet ds)
+        private static byte[] StartSorting(StiDrillDownContainer drillDownContainer, DataSet ds)
         {
             drillDownContainer.Report.RegData(ds);
 
             drillDownContainer.Report.Compile();
             drillDownContainer.Report.Render(false);
 
-            StiReport compileReport = drillDownContainer.Report.CompiledReport == null ? drillDownContainer.Report : drillDownContainer.Report.CompiledReport;
+            var compileReport = drillDownContainer.Report.CompiledReport == null ? drillDownContainer.Report : drillDownContainer.Report.CompiledReport;
 
-            StiComponent interactionComp = compileReport.RenderedPages[drillDownContainer.PageIndex].Components[drillDownContainer.CompIndex];
+            var interactionComp = compileReport.RenderedPages[drillDownContainer.PageIndex].Components[drillDownContainer.CompIndex];
             interactionComp.Interaction.SortingDirection = drillDownContainer.SortingDirection;
 
             StiDataBand dataBand = null;
@@ -299,8 +261,18 @@ namespace WCFHelper
 
             if (dataBand != null)
             {
-                string sort = (drillDownContainer.SortingDirection == StiInteractionSortDirection.Descending) ? "ASC" : "DESC";
-                dataBand.Sort = new string[] { sort, drillDownContainer.DataBandColumnString };
+                if (StiOptions.Engine.Interaction.ForceSortingWithFullTypeConversion)
+                {
+                    if (drillDownContainer.Report.CalculationMode == StiCalculationMode.Interpretation || StiOptions.Engine.ForceInterpretationMode)
+                    {
+                        if (dataBand.DataSource != null)
+                            drillDownContainer.DataBandColumnString = "{" + StiNameValidator.CorrectName(dataBand.DataSource.Name, drillDownContainer.Report) + "." + drillDownContainer.DataBandColumnString + "}";
+                    }
+                    else
+                    {
+                        drillDownContainer.DataBandColumnString = "{Get" + StiNameValidator.CorrectName(dataBand.Name + "." + drillDownContainer.DataBandColumnString, drillDownContainer.Report) + "_Sort}";
+                    }
+                }
 
                 #region Set Sorting
                 if (dataBand.Sort == null || dataBand.Sort.Length == 0)
@@ -310,33 +282,30 @@ namespace WCFHelper
                 else
                 {
                     int sortIndex = StiSortHelper.GetColumnIndexInSorting(dataBand.Sort, drillDownContainer.DataBandColumnString);
-
                     if (drillDownContainer.IsControlPress)
                     {
-                        if (sortIndex == -1)
-                        {
-                            dataBand.Sort = StiSortHelper.AddColumnToSorting(dataBand.Sort, drillDownContainer.DataBandColumnString, true);
-                        }
-                        else
-                        {
-                            dataBand.Sort = StiSortHelper.ChangeColumnSortDirection(dataBand.Sort, drillDownContainer.DataBandColumnString);
-                        }
+                        dataBand.Sort = (sortIndex == -1)
+                            ? StiSortHelper.AddColumnToSorting(dataBand.Sort, drillDownContainer.DataBandColumnString, true)
+                            : StiSortHelper.ChangeColumnSortDirection(dataBand.Sort, drillDownContainer.DataBandColumnString);
                     }
                     else
                     {
                         if (sortIndex != -1)
                         {
-                            StiInteractionSortDirection direction = StiSortHelper.GetColumnSortDirection(dataBand.Sort, drillDownContainer.DataBandColumnString);
-
-                            if (direction == StiInteractionSortDirection.Ascending) direction = StiInteractionSortDirection.Descending;
-                            else direction = StiInteractionSortDirection.Ascending;
+                            var direction = StiSortHelper.GetColumnSortDirection(dataBand.Sort, drillDownContainer.DataBandColumnString);
+                            direction = (direction == StiInteractionSortDirection.Ascending) 
+                                ? StiInteractionSortDirection.Descending
+                                : StiInteractionSortDirection.Ascending;
 
                             dataBand.Sort = StiSortHelper.AddColumnToSorting(new string[0],
-                                drillDownContainer.DataBandColumnString, direction == StiInteractionSortDirection.Ascending);
+                                drillDownContainer.DataBandColumnString, 
+                                direction == StiInteractionSortDirection.Ascending);
                         }
                         else
                         {
-                            dataBand.Sort = StiSortHelper.AddColumnToSorting(new string[0], drillDownContainer.DataBandColumnString, true);
+                            dataBand.Sort = StiSortHelper.AddColumnToSorting(new string[0], 
+                                drillDownContainer.DataBandColumnString, 
+                                drillDownContainer.SortingDirection == StiInteractionSortDirection.Ascending);
                         }
                     }
                 }
@@ -347,455 +316,360 @@ namespace WCFHelper
                 {
                     drillDownContainer.Report.IsInteractionRendering = true;
                     drillDownContainer.Report.CompiledReport.IsInteractionRendering = true;
-                    drillDownContainer.Report.Render(false);
+                    compileReport.Render(false);
 
                     RefreshInteractions(drillDownContainer.Report);
                 }
                 finally
                 {
+                    drillDownContainer.Report.IsInteractionRendering = false;
                     drillDownContainer.Report.CompiledReport.IsInteractionRendering = false;
                     interactionComp = drillDownContainer.Report.CompiledReport.RenderedPages[drillDownContainer.PageIndex].Components[drillDownContainer.CompIndex];
                     interactionComp.Interaction.SortingDirection = drillDownContainer.SortingDirection;
                 }
                 #endregion
 
+                compileReport = drillDownContainer.Report.CompiledReport == null ? drillDownContainer.Report : drillDownContainer.Report.CompiledReport;
                 return CheckReportOnInteractions(drillDownContainer.Report, false);
             }
 
             return null;
         }
 
-        public static string CheckReportOnInteractions(StiReport report, bool useBaseReport)
+        public static byte[] CheckReportOnInteractions(StiReport report, bool useBaseReport)
         {
-            var listComps = new List<StiComponent>();
-
-            #region Search Components
-            bool isSort = false;
-            foreach (StiPage page in report.RenderedPages)
+            using (var stream = new MemoryStream())
+            using (var writer = new StiBinaryWriter(stream))
             {
-                foreach (StiComponent comp in page.Components)
+                writer.WriteBool(report.CompilerResults != null && report.CompilerResults.Errors.Count > 0);
+                if (report.CompilerResults != null && report.CompilerResults.Errors.Count > 0)
                 {
-                    var interaction = comp.Interaction;
-                    var bandInteraction = comp.Interaction as StiBandInteraction;
+                    writer.Write(report.CompilerResults.Errors.Count);
 
-                    if (interaction != null)
+                    foreach (CompilerError error in report.CompilerResults.Errors)
                     {
-                        if ((!string.IsNullOrEmpty(interaction.SortingColumn) ||
-                            interaction.DrillDownEnabled && !string.IsNullOrEmpty(interaction.DrillDownPageGuid) ||
-                            (bandInteraction != null && (bandInteraction.CollapsingEnabled || bandInteraction.SelectionEnabled))))
+                        writer.WriteNullableString(error.ErrorText);
+                    }
+
+                    writer.Flush();
+                    return stream.ToArray();
+                }
+
+                var listComps = new List<StiComponent>();
+
+                #region Search Components
+                bool isSort = false;
+                foreach (StiPage page in report.RenderedPages)
+                {
+                    foreach (StiComponent comp in page.Components)
+                    {
+                        var interaction = comp.Interaction;
+                        var bandInteraction = comp.Interaction as StiBandInteraction;
+
+                        if (interaction != null)
                         {
-                            comp.Guid = string.Format("Guid_{0}", Guid.NewGuid().ToString().Replace("-", ""));
-
-                            if (!isSort && interaction.SortingDirection != StiInteractionSortDirection.None)
+                            if ((!string.IsNullOrEmpty(interaction.SortingColumn) ||
+                                interaction.DrillDownEnabled && !string.IsNullOrEmpty(interaction.DrillDownPageGuid) ||
+                                (bandInteraction != null && (bandInteraction.CollapsingEnabled || bandInteraction.SelectionEnabled))))
                             {
-                                isSort = true;
-                            }
+                                comp.Guid = string.Format("Guid_{0}", Guid.NewGuid().ToString().Replace("-", ""));
 
-                            listComps.Add(comp);
+                                if (!isSort && interaction.SortingDirection != StiInteractionSortDirection.None)
+                                {
+                                    isSort = true;
+                                }
+
+                                listComps.Add(comp);
+                            }
                         }
                     }
                 }
-            }
-            #endregion
+                #endregion
 
-            #region Check Variables
-            bool isRequestFromUser = false;
-            foreach (StiVariable variable in report.Dictionary.Variables)
-            {
-                if (variable.RequestFromUser)
+                #region Check Variables
+                bool isRequestFromUser = false;
+                foreach (StiVariable variable in report.Dictionary.Variables)
                 {
-                    isRequestFromUser = true;
-                    break;
-                }
-            }
-            #endregion
-
-            #region Set Sorting
-            if (!isSort)
-            {
-                foreach (StiComponent comp in listComps)
-                {
-                    if (!string.IsNullOrEmpty(comp.Interaction.SortingColumn))
+                    if (variable.RequestFromUser)
                     {
-                        comp.Interaction.SortingDirection = StiInteractionSortDirection.Ascending;
+                        isRequestFromUser = true;
                         break;
                     }
                 }
-            }
-            #endregion
+                #endregion
 
-            using (var str = new System.IO.StringWriter())
-            using (var writer = new XmlTextWriter(str))
-            {
-                writer.WriteStartElement("XmlResult");
-
-                writer.WriteStartElement("Report");
-                writer.WriteValue(report.SaveDocumentToString());
-                writer.WriteEndElement();
-
-                if (useBaseReport && (listComps.Count > 0 || isRequestFromUser))
+                #region Set Sorting
+                if (!isSort)
                 {
-                    writer.WriteStartElement("BaseReport");
-                    writer.WriteValue(report.SaveToString());
-                    writer.WriteEndElement();
-                }
-
-                if (listComps.Count > 0)
-                {
-                    writer.WriteStartElement("Comps");
-
                     foreach (StiComponent comp in listComps)
                     {
-                        writer.WriteStartElement(comp.Guid);
+                        if (!string.IsNullOrEmpty(comp.Interaction.SortingColumn))
+                        {
+                            comp.Interaction.SortingDirection = StiInteractionSortDirection.Ascending;
+                            break;
+                        }
+                    }
+                }
+                #endregion
+
+                #region Report
+                var compileReport = report.CompiledReport == null ? report : report.CompiledReport;
+
+                writer.WriteByteArray(compileReport.SaveDocumentToByteArray());
+                #endregion
+
+                #region BaseReport
+                byte[] baseReport = null;
+                if (useBaseReport && (listComps.Count > 0 || isRequestFromUser))
+                    baseReport = report.SaveToByteArray();
+                writer.WriteByteArray(baseReport);
+                #endregion
+
+                #region Comps
+                writer.WriteBool(listComps.Count > 0);
+                if (listComps.Count > 0)
+                {
+                    writer.Write(listComps.Count);
+                    foreach (StiComponent comp in listComps)
+                    {
+                        writer.WriteNullableString(comp.Guid);
 
                         #region StiInteraction
-                        StiInteraction interaction = comp.Interaction;
-                        if (interaction is StiBandInteraction)
+                        var interaction = comp.Interaction;
+
+                        writer.WriteNullableString(interaction is StiBandInteraction ? "StiBandInteraction" : "StiInteraction");
+
+                        writer.WriteBool(interaction is StiBandInteraction);
+                        if (interaction is StiBandInteraction bandInteraction)
                         {
-                            writer.WriteStartElement("StiBandInteraction");
-
-                            #region StiBandInteraction
-                            StiBandInteraction bandInteraction = interaction as StiBandInteraction;
-
-                            if (bandInteraction.CollapseGroupFooter)
-                            {
-                                writer.WriteStartElement("CollGroupFooter");
-                                writer.WriteValue(bandInteraction.CollapseGroupFooter ? "1" : "0");
-                                writer.WriteEndElement();
-                            }
-
-                            if (bandInteraction.CollapsingEnabled)
-                            {
-                                writer.WriteStartElement("CollEnabled");
-                                writer.WriteValue(bandInteraction.CollapsingEnabled ? "1" : "0");
-                                writer.WriteEndElement();
-                            }
-
-                            if (bandInteraction.SelectionEnabled)
-                            {
-                                writer.WriteStartElement("SelEnabled");
-                                writer.WriteValue(bandInteraction.SelectionEnabled ? "1" : "0");
-                                writer.WriteEndElement();
-                            }
-                            #endregion
-                        }
-                        else
-                        {
-                            writer.WriteStartElement("StiInteraction");
+                            writer.WriteBool(bandInteraction.CollapseGroupFooter);
+                            writer.WriteBool(bandInteraction.CollapsingEnabled);
+                            writer.WriteBool(bandInteraction.SelectionEnabled);
                         }
 
-                        if (!string.IsNullOrEmpty(comp.Page.Guid))
-                        {
-                            writer.WriteStartElement("PGuid");
-                            writer.WriteValue(comp.Page.Guid);
-                            writer.WriteEndElement();
-                        }
-
-                        if (interaction.DrillDownEnabled)
-                        {
-                            writer.WriteStartElement("DDEnabled");
-                            writer.WriteValue(interaction.DrillDownEnabled ? "1" : "0");
-                            writer.WriteEndElement();
-                        }
-
-                        if (!string.IsNullOrEmpty(interaction.DrillDownPageGuid))
-                        {
-                            writer.WriteStartElement("DDPGuid");
-                            writer.WriteValue(interaction.DrillDownPageGuid);
-                            writer.WriteEndElement();
-                        }
-
-                        #region Sort
-                        if (!string.IsNullOrEmpty(interaction.SortingColumn))
-                        {
-                            writer.WriteStartElement("SCol");
-                            writer.WriteValue(interaction.SortingColumn);
-                            writer.WriteEndElement();
-                        }
-
-                        if (interaction.SortingDirection != StiInteractionSortDirection.None)
-                        {
-                            writer.WriteStartElement("SDirect");
-                            writer.WriteValue((int)interaction.SortingDirection);
-                            writer.WriteEndElement();
-                        }
-
-                        if (interaction.SortingEnabled)
-                        {
-                            writer.WriteStartElement("SEnabled");
-                            writer.WriteValue(interaction.SortingEnabled ? "1" : "0");
-                            writer.WriteEndElement();
-                        }
-
-                        writer.WriteStartElement("SIndex");
-                        writer.WriteValue(interaction.SortingIndex);
-                        writer.WriteEndElement();
+                        writer.WriteNullableString(comp.Page.Guid);
+                        writer.WriteBool(interaction.DrillDownEnabled);
+                        writer.WriteNullableString(interaction.DrillDownPageGuid);
+                        writer.WriteNullableString(interaction.SortingColumn);
+                        writer.Write((int)interaction.SortingDirection);
+                        writer.WriteBool(interaction.SortingEnabled);
+                        writer.Write(interaction.SortingIndex);
                         #endregion
 
-                        writer.WriteEndElement();
-                        #endregion
-
-                        #region CollapsingIndex
-                        StiContainer container = comp as StiContainer;
+                        #region Collapsing
+                        var container = comp as StiContainer;
+                        writer.WriteBool(container != null);
                         if (container != null)
                         {
-
-                            writer.WriteStartElement("CollapsingIndex");
-                            writer.WriteValue(container.CollapsingIndex.ToString());
-                            writer.WriteEndElement();
-
-                            writer.WriteStartElement("CollapsedValue");
-                            writer.WriteValue(Stimulsoft.Report.Engine.StiDataBandV2Builder.IsCollapsed(container, false) ? "1" : "0");
-                            writer.WriteEndElement();
+                            writer.Write(container.CollapsingIndex);
+                            writer.WriteBool(Stimulsoft.Report.Engine.StiDataBandV2Builder.IsCollapsed(container, false));
                         }
                         #endregion
 
                         #region DrillDownParameters
+                        writer.WriteBool(comp.DrillDownParameters != null && comp.DrillDownParameters.Count > 0);
                         if (comp.DrillDownParameters != null && comp.DrillDownParameters.Count > 0)
                         {
-                            writer.WriteStartElement("DrillDownParameters");
+                            writer.Write(comp.DrillDownParameters.Count);
+
                             foreach (string key in comp.DrillDownParameters.Keys)
                             {
-                                writer.WriteStartElement(key);
-                                writer.WriteValue(comp.DrillDownParameters[key]);
-                                writer.WriteEndElement();
+                                var obj = comp.DrillDownParameters[key];
+
+                                writer.WriteNullableString(key);
+                                writer.WriteNullableString(obj != null ? obj.ToString() : null);
                             }
-                            writer.WriteEndElement();
                         }
                         #endregion
-
-                        writer.WriteEndElement();
                     }
-
-                    writer.WriteEndElement(); // End Comps
-                }
-
-                #region InteractionCollapsingStates
-                StiReport currentReport = report.CompiledReport == null ? report : report.CompiledReport;
-                if (currentReport.InteractionCollapsingStates != null && currentReport.InteractionCollapsingStates.Count > 0)
-                {
-                    writer.WriteStartElement("InteractionCollapsingStates");
-                    foreach (string key in currentReport.InteractionCollapsingStates.Keys)
-                    {
-                        Hashtable list = currentReport.InteractionCollapsingStates[key] as Hashtable;
-                        if (list != null)
-                        {
-                            writer.WriteStartElement("_" + key);
-                            foreach (object key1 in list.Keys)
-                            {
-                                writer.WriteStartElement("_" + key1.ToString());
-                                writer.WriteValue(list[key1].ToString());
-                                writer.WriteEndElement();
-                            }
-                            writer.WriteEndElement();
-                        }
-                    }
-                    writer.WriteEndElement();
                 }
                 #endregion
 
-                writer.WriteEndElement();
+                #region InteractionCollapsingStates
+                var currentReport = (report.CompiledReport == null)
+                    ? report
+                    : report.CompiledReport;
 
-                return StiSLEncodingHelper.EncodeString(str.ToString());
+                writer.WriteBool(currentReport.InteractionCollapsingStates != null && currentReport.InteractionCollapsingStates.Count > 0);
+                if (currentReport.InteractionCollapsingStates != null && currentReport.InteractionCollapsingStates.Count > 0)
+                {
+                    writer.Write(currentReport.InteractionCollapsingStates.Count);
+
+                    foreach (string key in currentReport.InteractionCollapsingStates.Keys)
+                    {
+                        writer.WriteNullableString(key);
+
+                        var list = currentReport.InteractionCollapsingStates[key] as Hashtable;
+
+                        writer.WriteBool(list != null);
+                        if (list != null)
+                        {
+                            writer.Write(list.Count);
+                            foreach (object key1 in list.Keys)
+                            {
+                                writer.WriteNullableString(key1.ToString());
+                                writer.WriteNullableString(list[key1].ToString());
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                writer.Flush();
+                return stream.ToArray();
             }
         }
         #endregion
 
         #region Methods.RequestFromUser
-        public static string RequestFromUserRenderReport(string xml, DataSet previewDataSet)
+        public static byte[] RequestFromUserRenderReport(byte[] data, DataSet previewDataSet)
         {
-            StiReport report = DecodeXmlRequestFromUser(xml, previewDataSet);
+            var report = DecodeXmlRequestFromUser(data, previewDataSet);
 
-            if (report.CompilerResults.Errors.Count > 0)
+            if (report.CompilerResults != null && report.CompilerResults.Errors.Count > 0)
             {
-                return GetErrorListXml(report);
+                using (var stream = new MemoryStream())
+                using (var writer = new StiBinaryWriter(stream))
+                {
+                    writer.WriteBool(report.CompilerResults.Errors.Count > 0);
+                    if (report.CompilerResults.Errors.Count > 0)
+                    {
+                        writer.Write(report.CompilerResults.Errors.Count);
+                        foreach (CompilerError compilerError in report.CompilerResults.Errors)
+                        {
+                            writer.WriteNullableString(compilerError.ErrorText);
+                        }
+
+                        writer.Flush();
+                        return stream.ToArray();
+                    }
+                }
             }
 
-            bool error = false;
             try
             {
                 report.Render(false);
             }
             catch
             {
-                error = true;
             }
 
-            if (!error)
-            {
-                return CheckReportOnInteractions(report, false);
-            }
-
-            return null;
+            return CheckReportOnInteractions(report, false);
         }
 
-        public static string PrepareRequestFromUserVariables(string xml, DataSet previewDataSet)
+        public static byte[] PrepareRequestFromUserVariables(byte[] data, DataSet previewDataSet)
         {
-            StiReport report = DecodeXmlPrepareRequestFromUserVariables(xml, previewDataSet);
+            var report = DecodeXmlPrepareRequestFromUserVariables(data, previewDataSet);
 
-            string result = string.Empty;
+            byte[] result = null;
             if (report.CompiledReport != null)
             {
                 report.CompiledReport.Dictionary.Connect();
                 Stimulsoft.Report.Engine.StiVariableHelper.FillItemsOfVariables(report.CompiledReport != null ? report.CompiledReport : report);
 
-                result = GetPrepareRequestFromUserVariablesXml(report.CompiledReport);
+                result = GetPrepareRequestFromUserVariables(report.CompiledReport);
                 report.CompiledReport.Dictionary.Disconnect();
             }
 
             return result;
         }
 
-        private static StiReport DecodeXmlPrepareRequestFromUserVariables(string xml, System.Data.DataSet previewDataSet)
+        private static StiReport DecodeXmlPrepareRequestFromUserVariables(byte[] data, DataSet previewDataSet)
         {
             var report = new StiReport();
 
-            using (var stringReader = new System.IO.StringReader(StiSLEncodingHelper.DecodeString(xml)))
-            using (var tr = new XmlTextReader(stringReader))
+            report.Load(data);
+            //report.Dictionary.DataSources.Clear();
+            //report.Dictionary.Databases.Clear();
+            //report.Dictionary.DataStore.Clear();
+
+            if (previewDataSet != null) report.RegData(previewDataSet);
+            report.Dictionary.Synchronize();
+
+            try
             {
-                tr.Read();
-                if (tr.Name == "XmlResult")
-                {
-                    while (tr.Read())
-                    {
-                        if (tr.Name == "Report")
-                        {
-                            report.LoadFromString(tr.ReadString());
-                            //report.Dictionary.DataSources.Clear();
-                            //report.Dictionary.Databases.Clear();
-                            //report.Dictionary.DataStore.Clear();
-
-                            if (previewDataSet != null) report.RegData(previewDataSet);
-                            report.Dictionary.Synchronize();
-
-                            try
-                            {
-                                report.Compile();
-                            }
-                            catch
-                            {
-                                return report;
-                            }
-
-                            break;
-                        }
-                    }
-                }
-
+                report.Compile();
+            }
+            catch
+            {
                 return report;
             }
+
+            return report;
         }
 
-        private static string GetPrepareRequestFromUserVariablesXml(StiReport compileReport)
+        private static byte[] GetPrepareRequestFromUserVariables(StiReport compileReport)
         {
-            using (var str = new System.IO.StringWriter())
-            using (var writer = new XmlTextWriter(str))
+            using (var stream = new MemoryStream())
+            using (var writer = new StiBinaryWriter(stream))
             {
-                writer.WriteStartElement("XmlResult");
-
-                #region Variables
-                writer.WriteStartElement("Variables");
+                writer.Write(compileReport.Dictionary.Variables.Count);
 
                 foreach (StiVariable variable in compileReport.Dictionary.Variables)
                 {
-                    List<StiDialogInfoItem> infos = variable.DialogInfo.GetDialogInfoItems(variable.Type);
+                    var infos = variable.DialogInfo.GetDialogInfoItems(variable.Type);
+
+                    writer.WriteBool(infos != null && infos.Count > 0);
                     if (infos != null && infos.Count > 0)
                     {
-                        string varName = StiDatabaseBuildHelper.CheckName(variable.Name);
-
-                        writer.WriteStartElement(varName);
-                        writer.WriteAttributeString("count", infos.Count.ToString());
+                        writer.WriteNullableString(variable.Name);
+                        writer.Write(infos.Count);
 
                         foreach (StiDialogInfoItem info in infos)
                         {
-                            writer.WriteStartElement("Key");
-                            writer.WriteValue(info.KeyObject.ToString());
-                            writer.WriteEndElement();
+                            string keyObjectTo = (info.KeyObjectTo != null) 
+                                ? info.KeyObjectTo.ToString() 
+                                : string.Empty;
 
-                            string keyObjectTo = (info.KeyObjectTo != null) ? info.KeyObjectTo.ToString() : string.Empty;
-                            writer.WriteStartElement("KeyTo");
-                            writer.WriteValue(keyObjectTo);
-                            writer.WriteEndElement();
-
-                            writer.WriteStartElement("Value");
-                            writer.WriteValue(info.Value);
-                            writer.WriteEndElement();
+                            writer.WriteNullableString(info.KeyObject.ToString());
+                            writer.WriteNullableString(keyObjectTo);
+                            writer.WriteNullableString(info.Value);
                         }
-
-                        writer.WriteEndElement();
                     }
                 }
 
-                writer.WriteEndElement();
-                #endregion
-
-                writer.WriteEndElement();
-
-                return StiSLEncodingHelper.EncodeString(str.ToString());
+                writer.Flush();
+                return stream.ToArray();
             }
         }
 
-        private static StiReport DecodeXmlRequestFromUser(string xml, System.Data.DataSet ds)
+        private static StiReport DecodeXmlRequestFromUser(byte[] data, System.Data.DataSet ds)
         {
             var report = new StiReport();
 
-            using (var stringReader = new System.IO.StringReader(StiSLEncodingHelper.DecodeString(xml)))
-            using (var tr = new XmlTextReader(stringReader))
+            using (var stream = new MemoryStream(data))
+            using (var reader = new StiBinaryReader(stream))
             {
-                tr.Read();
-                if (tr.Name == "XmlResult")
+                #region Report
+                report.Load(reader.ReadByteArray());
+                if (ds != null) report.RegData("Demo", ds);
+
+                try
                 {
-                    while (tr.Read())
-                    {
-                        string name = tr.Name;
-
-                        switch (name)
-                        {
-                            case "Report":
-                                report.LoadFromString(tr.ReadString());
-                                if (ds != null) report.RegData("Demo", ds);
-                                try
-                                {
-                                    report.Compile();
-                                }
-                                catch
-                                {
-                                    return report;
-                                }
-                                break;
-
-                            case "RequestFromUser":
-                                string variableName = string.Empty;
-                                StiRequestFromUserType? variableType = null;
-                                while (tr.Read())
-                                {
-                                    if (tr.Depth == 1)
-                                    {
-                                        break;
-                                    }
-                                    else if (tr.Depth == 2)
-                                    {
-                                        if (tr.NodeType == System.Xml.XmlNodeType.Element)
-                                        {
-                                            variableName = tr.Name;
-                                            variableType = (StiRequestFromUserType)int.Parse(tr.GetAttribute("Type"));
-                                        }
-                                    }
-                                    else if (tr.Depth == 3)
-                                    {
-                                        ParseVariable(report, variableName, variableType.Value, tr);
-                                    }
-                                }
-                                break;
-                        }
-                    }
+                    report.Compile();
                 }
+                catch
+                {
+                    return report;
+                }
+                #endregion
 
-                return report;
+                #region RequestFromUser
+                int count = reader.ReadInt32();
+                for (int index = 0; index < count; index++)
+                {
+                    string variableName = reader.ReadNullableString();
+                    var variableType = (StiRequestFromUserType)reader.ReadInt32();
+
+                    ParseVariable(report, variableName, variableType, reader);
+                }
+                #endregion
             }
+
+            return report;
         }
 
-        private static void ParseVariable(StiReport report, string variableName, StiRequestFromUserType type, XmlTextReader tr)
+        private static void ParseVariable(StiReport report, string variableName, StiRequestFromUserType type, StiBinaryReader reader)
         {
             var currentReport = (report.CompiledReport != null) ? report.CompiledReport : report;
             var variable = report.Dictionary.Variables[variableName];
@@ -886,259 +760,252 @@ namespace WCFHelper
             }
             #endregion
 
-            bool isFind = false;
-            int iType = (int)type;
-            do
+            #region Range
+            if (list is Range)
             {
-                if (tr.Depth == 3)
-                {
-                    string tmp = tr.ReadString();
+                string from = reader.ReadNullableString();
+                string to = reader.ReadNullableString();
 
-                    #region List & Value
-                    if (tr.Name == "Value")
+                switch (type)
+                {
+                    case StiRequestFromUserType.RangeByte:
+                        range.FromObject = byte.Parse(from);
+                        range.ToObject = byte.Parse(to);
+                        break;
+
+                    case StiRequestFromUserType.RangeChar:
+                        range.FromObject = char.Parse(from);
+                        range.ToObject = char.Parse(to);
+                        break;
+
+                    case StiRequestFromUserType.RangeDateTime:
+                        range.FromObject = DateTime.Parse(from);
+                        range.ToObject = DateTime.Parse(to);
+                        break;
+
+                    case StiRequestFromUserType.RangeDecimal:
+                        range.FromObject = decimal.Parse(from);
+                        range.ToObject = decimal.Parse(to);
+                        break;
+
+                    case StiRequestFromUserType.RangeDouble:
+                        range.FromObject = double.Parse(from);
+                        range.ToObject = double.Parse(to);
+                        break;
+
+                    case StiRequestFromUserType.RangeFloat:
+                        range.FromObject = float.Parse(from);
+                        range.ToObject = float.Parse(to);
+                        break;
+
+                    case StiRequestFromUserType.RangeGuid:
+                        range.FromObject = Guid.Parse(from);
+                        range.ToObject = Guid.Parse(to);
+                        break;
+
+                    case StiRequestFromUserType.RangeInt:
+                        range.FromObject = int.Parse(from);
+                        range.ToObject = int.Parse(to);
+                        break;
+                    case StiRequestFromUserType.RangeLong:
+                        range.FromObject = long.Parse(from);
+                        range.ToObject = long.Parse(to);
+                        break;
+                    case StiRequestFromUserType.RangeShort:
+                        range.FromObject = short.Parse(from);
+                        range.ToObject = short.Parse(to);
+                        break;
+                    case StiRequestFromUserType.RangeString:
+                        range.FromObject = from;
+                        range.ToObject = to;
+                        break;
+                    case StiRequestFromUserType.RangeTimeSpan:
+                        range.FromObject = TimeSpan.Parse(from);
+                        range.ToObject = TimeSpan.Parse(to);
+                        break;
+                }
+            }
+            #endregion
+
+            #region IStiList
+            else if (list is IStiList)
+            {
+                if (!reader.ReadBoolean())
+                {
+                    var values = reader.ReadListString();
+                    if (values != null && values.Count > 0)
                     {
-                        #region List
-                        if (iType >= 0 && iType <= (int)StiRequestFromUserType.ListString)
+                        foreach (var textValue in values)
                         {
                             switch (type)
                             {
                                 case StiRequestFromUserType.ListBool:
-                                    list.AddElement(bool.Parse(tmp));
+                                    list.AddElement(bool.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListChar:
-                                    list.AddElement(char.Parse(tmp));
+                                    list.AddElement(char.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListDateTime:
-                                    list.AddElement(DateTime.Parse(tmp));
+                                    list.AddElement(DateTime.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListTimeSpan:
-                                    list.AddElement(TimeSpan.Parse(tmp));
+                                    list.AddElement(TimeSpan.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListDecimal:
-                                    list.AddElement(decimal.Parse(tmp));
+                                    list.AddElement(decimal.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListFloat:
-                                    list.AddElement(float.Parse(tmp));
+                                    list.AddElement(float.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListDouble:
-                                    list.AddElement(double.Parse(tmp));
+                                    list.AddElement(double.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListByte:
-                                    list.AddElement(byte.Parse(tmp));
+                                    list.AddElement(byte.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListShort:
-                                    list.AddElement(short.Parse(tmp));
+                                    list.AddElement(short.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListInt:
-                                    list.AddElement(int.Parse(tmp));
+                                    list.AddElement(int.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListLong:
-                                    list.AddElement(long.Parse(tmp));
+                                    list.AddElement(long.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListGuid:
-                                    list.AddElement(Guid.Parse(tmp));
+                                    list.AddElement(Guid.Parse(textValue));
                                     break;
                                 case StiRequestFromUserType.ListString:
-                                    list.AddElement(tmp);
+                                    list.AddElement(textValue);
                                     break;
                             }
-                            continue;
                         }
-                        #endregion
-
-                        #region Nullablealue
-                        else if ((int)type >= (int)StiRequestFromUserType.ValueNullableBool)
-                        {
-                            isFind = true;
-                            if (string.IsNullOrEmpty(tmp))
-                            {
-                                variable.ValueObject = null;
-                                break;
-                            }
-                        }
-                        #endregion
-
-                        #region Value
-                        isFind = true;
-                        switch (type)
-                        {
-                            case StiRequestFromUserType.ValueBool:
-                            case StiRequestFromUserType.ValueNullableBool:
-                                variable.ValueObject = bool.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableByte:
-                            case StiRequestFromUserType.ValueByte:
-                                variable.ValueObject = byte.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableChar:
-                            case StiRequestFromUserType.ValueChar:
-                                variable.ValueObject = char.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableDateTime:
-                            case StiRequestFromUserType.ValueDateTime:
-                                variable.ValueObject = DateTime.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableDecimal:
-                            case StiRequestFromUserType.ValueDecimal:
-                                variable.ValueObject = decimal.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableDouble:
-                            case StiRequestFromUserType.ValueDouble:
-                                variable.ValueObject = double.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableFloat:
-                            case StiRequestFromUserType.ValueFloat:
-                                variable.ValueObject = float.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableGuid:
-                            case StiRequestFromUserType.ValueGuid:
-                                variable.ValueObject = Guid.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableInt:
-                            case StiRequestFromUserType.ValueInt:
-                                variable.ValueObject = int.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableLong:
-                            case StiRequestFromUserType.ValueLong:
-                                variable.ValueObject = long.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableSbyte:
-                            case StiRequestFromUserType.ValueSbyte:
-                                variable.ValueObject = sbyte.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableShort:
-                            case StiRequestFromUserType.ValueShort:
-                                variable.ValueObject = short.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableTimeSpan:
-                            case StiRequestFromUserType.ValueTimeSpan:
-                                variable.ValueObject = TimeSpan.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableUint:
-                            case StiRequestFromUserType.ValueUint:
-                                variable.ValueObject = uint.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableUlong:
-                            case StiRequestFromUserType.ValueUlong:
-                                variable.ValueObject = ulong.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueNullableUshort:
-                            case StiRequestFromUserType.ValueUshort:
-                                variable.ValueObject = ushort.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.ValueString:
-                                variable.ValueObject = tmp;
-                                break;
-                            case StiRequestFromUserType.ValueImage:
-                                variable.ValueObject = tmp;
-                                break;
-                        }
-
-                        #region Reflection
-                        FieldInfo fi = currentReport.GetType().GetField(variable.Name);
-                        if (fi != null)
-                        {
-                            var initBy = variable.InitBy;
-                            variable.InitBy = StiVariableInitBy.Value;
-
-                            fi.SetValue(currentReport, variable.ValueObject);
-
-                            variable.InitBy = initBy;
-                        }
-                        #endregion
-
-                        break;
-                        #endregion
                     }
-                    #endregion
+                }
+            }
+            #endregion
 
-                    #region Range
-                    else if (tr.Name == "From" || tr.Name == "To")
+            #region Value & Nullable Value
+            else
+            {
+                var valueStr = reader.ReadNullableString();
+
+                #region Nullablealue
+                if ((int)type >= (int)StiRequestFromUserType.ValueNullableBool)
+                {
+                    if (string.IsNullOrEmpty(valueStr))
                     {
-                        switch (type)
-                        {
-                            case StiRequestFromUserType.RangeByte:
-                                if (tr.Name == "To")
-                                    range.ToObject = byte.Parse(tmp);
-                                else
-                                    range.FromObject = byte.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeChar:
-                                if (tr.Name == "To")
-                                    range.ToObject = char.Parse(tmp);
-                                else
-                                    range.FromObject = char.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeDateTime:
-                                if (tr.Name == "To")
-                                    range.ToObject = DateTime.Parse(tmp);
-                                else
-                                    range.FromObject = DateTime.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeDecimal:
-                                if (tr.Name == "To")
-                                    range.ToObject = decimal.Parse(tmp);
-                                else
-                                    range.FromObject = decimal.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeDouble:
-                                if (tr.Name == "To")
-                                    range.ToObject = double.Parse(tmp);
-                                else
-                                    range.FromObject = double.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeFloat:
-                                if (tr.Name == "To")
-                                    range.ToObject = float.Parse(tmp);
-                                else
-                                    range.FromObject = float.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeGuid:
-                                if (tr.Name == "To")
-                                    range.ToObject = Guid.Parse(tmp);
-                                else
-                                    range.FromObject = Guid.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeInt:
-                                if (tr.Name == "To")
-                                    range.ToObject = int.Parse(tmp);
-                                else
-                                    range.FromObject = int.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeLong:
-                                if (tr.Name == "To")
-                                    range.ToObject = long.Parse(tmp);
-                                else
-                                    range.FromObject = long.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeShort:
-                                if (tr.Name == "To")
-                                    range.ToObject = short.Parse(tmp);
-                                else
-                                    range.FromObject = short.Parse(tmp);
-                                break;
-                            case StiRequestFromUserType.RangeString:
-                                if (tr.Name == "To")
-                                    range.ToObject = tmp;
-                                else
-                                    range.FromObject = tmp;
-                                break;
-                            case StiRequestFromUserType.RangeTimeSpan:
-                                if (tr.Name == "To")
-                                    range.ToObject = TimeSpan.Parse(tmp);
-                                else
-                                    range.FromObject = TimeSpan.Parse(tmp);
-                                break;
-                        }
+                        variable.ValueObject = null;
+                    }
+                }
+                else
+                {
+                    switch (type)
+                    {
+                        case StiRequestFromUserType.ValueBool:
+                        case StiRequestFromUserType.ValueNullableBool:
+                            variable.ValueObject = bool.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableByte:
+                        case StiRequestFromUserType.ValueByte:
+                            variable.ValueObject = byte.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableChar:
+                        case StiRequestFromUserType.ValueChar:
+                            variable.ValueObject = char.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableDateTime:
+                        case StiRequestFromUserType.ValueDateTime:
+                            variable.ValueObject = DateTime.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableDecimal:
+                        case StiRequestFromUserType.ValueDecimal:
+                            variable.ValueObject = decimal.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableDouble:
+                        case StiRequestFromUserType.ValueDouble:
+                            variable.ValueObject = double.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableFloat:
+                        case StiRequestFromUserType.ValueFloat:
+                            variable.ValueObject = float.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableGuid:
+                        case StiRequestFromUserType.ValueGuid:
+                            variable.ValueObject = Guid.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableInt:
+                        case StiRequestFromUserType.ValueInt:
+                            variable.ValueObject = int.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableLong:
+                        case StiRequestFromUserType.ValueLong:
+                            variable.ValueObject = long.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableSbyte:
+                        case StiRequestFromUserType.ValueSbyte:
+                            variable.ValueObject = sbyte.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableShort:
+                        case StiRequestFromUserType.ValueShort:
+                            variable.ValueObject = short.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableTimeSpan:
+                        case StiRequestFromUserType.ValueTimeSpan:
+                            variable.ValueObject = TimeSpan.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableUint:
+                        case StiRequestFromUserType.ValueUint:
+                            variable.ValueObject = uint.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableUlong:
+                        case StiRequestFromUserType.ValueUlong:
+                            variable.ValueObject = ulong.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueNullableUshort:
+                        case StiRequestFromUserType.ValueUshort:
+                            variable.ValueObject = ushort.Parse(valueStr);
+                            break;
+
+                        case StiRequestFromUserType.ValueString:
+                            variable.ValueObject = valueStr;
+                            break;
+                        case StiRequestFromUserType.ValueImage:
+                            variable.ValueObject = valueStr;
+                            break;
+                    }
+
+                    #region Reflection
+                    var fi = currentReport.GetType().GetField(variable.Name);
+                    if (fi != null)
+                    {
+                        var initBy = variable.InitBy;
+                        variable.InitBy = StiVariableInitBy.Value;
+
+                        fi.SetValue(currentReport, variable.ValueObject);
+
+                        variable.InitBy = initBy;
                     }
                     #endregion
                 }
-                else if (tr.Depth == 2)
-                    break;
-
-                if (isFind) break;
+                #endregion
             }
-            while (tr.Read());
+            #endregion
 
             StiReport compileReport = report.CompiledReport;
             if (compileReport != null)
@@ -1158,12 +1025,11 @@ namespace WCFHelper
         #endregion
 
         #region Methods.Interactive
-        public static string InteractiveDataBandSelection(string xml, DataSet previewDataSet)
+        public static byte[] InteractiveDataBandSelection(byte[] data, DataSet previewDataSet)
         {
-            var helper = DecodeXmlDataBandSelection(xml);
+            var helper = DecodeXmlDataBandSelection(data);
             if (previewDataSet != null) helper.Report.RegData(previewDataSet);
 
-            bool error = false;
             helper.Report.IsInteractionRendering = true;
 
             try
@@ -1186,64 +1052,34 @@ namespace WCFHelper
             }
             catch
             {
-                error = true;
             }
+
             helper.Report.IsInteractionRendering = false;
 
-            string result = null;
-            if (error || helper.Report.CompilerResults.Errors.Count > 0)
-                result = GetErrorListXml(helper.Report);
-            else
-                result = CheckReportOnInteractions(helper.Report, true);
+            var result = CheckReportOnInteractions(helper.Report, true);
 
             return result;
         }
 
-        private static StiDataBandSelectionContainer DecodeXmlDataBandSelection(string xml)
+        private static StiDataBandSelectionContainer DecodeXmlDataBandSelection(byte[] data)
         {
             var helper = new StiDataBandSelectionContainer();
 
-            System.IO.StringReader stringReader = new System.IO.StringReader(StiSLEncodingHelper.DecodeString(xml));
-            XmlTextReader tr = new XmlTextReader(stringReader);
-
-            tr.Read();
-            if (tr.Name == "XmlResult")
+            using (var stream = new MemoryStream(data))
+            using (var reader = new StiBinaryReader(stream))
             {
-                while (tr.Read())
+                helper.Report.Load(reader.ReadByteArray());
+
+                int count = reader.ReadInt32();
+                helper.DataBandNames = new string[count];
+                helper.SelectedLines = new int[count];
+
+                for (int index = 0; index < count; index++)
                 {
-                    string name = tr.Name;
-
-                    switch (name)
-                    {
-                        case "Report":
-                            helper.Report.LoadFromString(tr.ReadString());
-                            break;
-                        case "SelectedLines":
-                            int count = int.Parse(tr.GetAttribute("Count"));
-                            helper.DataBandNames = new string[count];
-                            helper.SelectedLines = new int[count];
-
-                            tr.Read();
-                            for (int index = 0; index < count; index++)
-                            {
-                                // Name
-                                helper.DataBandNames[index] = tr.ReadString();
-                                tr.Read();
-
-                                // SelectedLine
-                                helper.SelectedLines[index] = int.Parse(tr.ReadString());
-                                tr.Read();
-                            }
-                            break;
-                    }
+                    helper.DataBandNames[index] = reader.ReadNullableString();
+                    helper.SelectedLines[index] = reader.ReadInt32();
                 }
             }
-
-            tr.Close();
-            stringReader.Close();
-            stringReader.Dispose();
-            tr = null;
-            stringReader = null;
 
             return helper;
         }
@@ -1252,52 +1088,57 @@ namespace WCFHelper
         {
             if (report == null || report.RenderedPages.CacheMode) return;
 
-            StiReport templateReport = report.CompiledReport == null ? report : report.CompiledReport;
+            var templateReport = report.CompiledReport == null ? report : report.CompiledReport;
 
             #region Create List of DataBand's
-            List<StiDataBand> dataBands = new List<StiDataBand>();
-            StiComponentsCollection comps = templateReport.GetComponents();
+            var dataBands = new List<StiDataBand>();
+            var comps = templateReport.GetComponents();
             foreach (StiComponent comp in comps)
             {
-                StiDataBand dataBand = comp as StiDataBand;
+                var dataBand = comp as StiDataBand;
                 if (dataBand != null && dataBand.Sort != null && dataBand.Sort.Length > 0)
-                {
                     dataBands.Add(dataBand);
-                }
             }
             #endregion
 
             #region Create List of Interaction's
-            Hashtable interactions = GetListOfInteractions(report);
+            var interactions = GetListOfInteractions(report);
             #endregion
 
-            foreach (StiDataBand dataBand in dataBands)
+            foreach (var dataBand in dataBands)
             {
-                List<StiInteraction> addedInteractions = new List<StiInteraction>();
-                List<StiInteraction> list = interactions[dataBand.Name] as List<StiInteraction>;
-
+                var list = interactions[dataBand.Name] as List<StiInteraction>;
                 if (list != null)
                 {
-                    #region Reset current Interaction's states
-                    foreach (StiInteraction interaction in list)
+                    //sort interactions by SortColumns
+                    var hashSortColumns = new Hashtable();
+                    foreach (var interaction in list)
                     {
-                        interaction.SortingIndex = 0;
-                        interaction.SortingDirection = StiInteractionSortDirection.None;
+                        var str2 = interaction.GetSortColumnsString();
+                        var list2 = hashSortColumns[str2] as List<StiInteraction>;
+                        if (list2 == null)
+                        {
+                            list2 = new List<StiInteraction>();
+                            hashSortColumns[str2] = list2;
+                        }
+                        list2.Add(interaction);
                     }
-                    #endregion
 
                     #region Process Interaction's for specified DataBand
-                    int sortIndex = 1;
-                    string sortStr = string.Empty;
-                    bool isAsc = true;
-                    int index = 0;
-                    foreach (string str in dataBand.Sort)
+                    var addedLists = new ArrayList();
+                    var sortIndex = 1;
+                    var sortStr = "";
+                    var isAsc = true;
+                    var index = 0;
+                    foreach (var str in dataBand.Sort)
                     {
                         #region Add sorting str
                         if (str != "ASC" && str != "DESC")
                         {
-                            if (sortStr.Length == 0) sortStr = str;
-                            else sortStr += "." + str;
+                            if (sortStr.Length == 0)
+                                sortStr = str;
+                            else
+                                sortStr += "." + str;
                         }
                         #endregion
 
@@ -1307,43 +1148,50 @@ namespace WCFHelper
                             if (sortStr.Length > 0)
                             {
                                 #region Try to Search sorting string in Interaction's
-                                foreach (StiInteraction interaction in list)
+                                foreach (var key in hashSortColumns.Keys)
                                 {
-                                    string str2 = interaction.GetSortColumnsString();
-                                    if (str2 == sortStr)
+                                    var str2 = key as string;
+                                    if (sortStr.Contains(str2) || sortStr.Contains(str2.Replace(".", "_")))
                                     {
                                         #region We have finded sorting string
-                                        if (isAsc) interaction.SortingDirection = StiInteractionSortDirection.Ascending;
-                                        else interaction.SortingDirection = StiInteractionSortDirection.Descending;
-
-                                        interaction.SortingIndex = sortIndex;
-                                        list.Remove(interaction);
-                                        addedInteractions.Add(interaction);
+                                        var list2 = hashSortColumns[key] as List<StiInteraction>;
+                                        foreach (var interaction in list2)
+                                        {
+                                            interaction.SortingDirection = isAsc
+                                                ? StiInteractionSortDirection.Ascending
+                                                : StiInteractionSortDirection.Descending;
+                                            interaction.SortingIndex = sortIndex;
+                                        }
+                                        hashSortColumns.Remove(key);
+                                        addedLists.Add(list2);
                                         break;
                                         #endregion
                                     }
                                 }
                                 #endregion
 
-                                sortStr = string.Empty;
+                                sortStr = "";
                                 sortIndex++;
 
                                 //if we don't have more Interaction's in our list for specified 
                                 //DataBand then breaks search
-                                if (list.Count == 0) break;
+                                if (hashSortColumns.Count == 0) break;
                             }
                             #endregion
 
-                            if (str == "ASC") isAsc = true;
-                            else isAsc = false;
+                            isAsc = str == "ASC";
                         }
                         index++;
                     }
                     #endregion
 
-                    if (addedInteractions.Count == 1)
+                    if (addedLists.Count == 1)
                     {
-                        addedInteractions[0].SortingIndex = 0;
+                        var list2 = addedLists[0] as List<StiInteraction>;
+                        foreach (var interaction in list2)
+                        {
+                            interaction.SortingIndex = 0;
+                        }
                     }
                 }
             }
@@ -1351,21 +1199,19 @@ namespace WCFHelper
 
         private static Hashtable GetListOfInteractions(StiReport report)
         {
-            Hashtable interactions = new Hashtable();
-            StiReport currentReport = (report.CompiledReport == null) ? report : report.CompiledReport;
-
-            foreach (StiPage page in currentReport.RenderedPages)
+            var interactions = new Hashtable();
+            foreach (StiPage page in report.RenderedPages)
             {
-                StiComponentsCollection comps2 = page.GetComponents();
+                var comps2 = page.GetComponents();
                 foreach (StiComponent comp in comps2)
                 {
                     if (comp is IStiInteraction)
                     {
-                        StiInteraction interaction = ((IStiInteraction)comp).Interaction;
+                        var interaction = ((IStiInteraction)comp).Interaction;
                         if (interaction != null && interaction.SortingEnabled)
                         {
-                            string dataBandName = interaction.GetSortDataBandName();
-                            List<StiInteraction> list = interactions[dataBandName] as List<StiInteraction>;
+                            var dataBandName = interaction.GetSortDataBandName();
+                            var list = interactions[dataBandName] as List<StiInteraction>;
                             if (list == null)
                             {
                                 list = new List<StiInteraction>();
@@ -1382,75 +1228,20 @@ namespace WCFHelper
         }
         #endregion
 
-        #region Methods.Helpers
-        internal static string GetErrorListXml(StiReport report)
-        {
-            System.IO.StringWriter str = new System.IO.StringWriter();
-            XmlTextWriter writer = new XmlTextWriter(str);
-
-            writer.WriteStartElement("XmlResult");
-            writer.WriteStartElement("ErrorList");
-
-            foreach (CompilerError error in report.CompilerResults.Errors)
-            {
-                writer.WriteStartElement("Error");
-                writer.WriteValue(error.ErrorText);
-                writer.WriteEndElement();
-            }
-
-            writer.WriteEndElement();
-            writer.WriteEndElement();
-
-            string result = StiSLEncodingHelper.EncodeString(str.ToString());
-
-            writer = null;
-            str.Dispose();
-            str = null;
-
-            return result;
-        }
-        #endregion
-
         #region Methods.SaveReportScript.Input
-        public static StiReport ParseXmlSaveReportScript(string xml)
+        public static StiReport ParseBinarySaveReportScript(byte[] data)
         {
             var report = new StiReport();
 
-            var stringReader = new System.IO.StringReader(xml);
-            var tr = new XmlTextReader(stringReader);
-
-            tr.Read();
-            if (tr.Name == "XmlResult")
+            using (var stream = new MemoryStream(data))
+            using (var reader = new StiBinaryReader(stream))
             {
-                while (tr.Read())
-                {
-                    if (tr.Depth == 0)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        switch (tr.Name)
-                        {
-                            case "Report":
-                                report.LoadFromString(StiSLEncodingHelper.DecodeString(tr.ReadString()));
-                                break;
+                var reportData = reader.ReadByteArray();
+                report.Load(reportData);
 
-                            case "Script":
-                                report.Script = StiSLEncodingHelper.DecodeString(tr.ReadString());
-                                break;
-                        }
-                    }
-                }
+                report.Script = reader.ReadNullableString();
             }
-
-
-            tr.Close();
-            stringReader.Close();
-            stringReader.Dispose();
-            stringReader = null;
-            tr = null;
-
+            
             return report;
         }
         #endregion

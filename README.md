@@ -1,36 +1,26 @@
-## Attention!
+# WPF samples for Stimulsoft Reports.WPF using WCF
 
-This repository is archived, and the source code of these examples is no longer updated. Compatibility with new versions of the product is not guaranteed.
+#### This repository contains the source code of the examples of usage Stimulsoft Reports.WPF using Windows Communication Foundation (WCF).
 
----
+## Overview
+This repository has a set of examples (Visual Studio projects), each in different folders:
+* [WCF_WPFDesigner.Service](https://github.com/stimulsoft/Samples-Reports.WPF-WCF/tree/master/WCF_WPFDesigner.Service)
+* [WCF_WPFDesigner](https://github.com/stimulsoft/Samples-Reports.WPF-WCF/tree/master/WCF_WPFDesigner)
+* [WCF_WPFViewer.Web](https://github.com/stimulsoft/Samples-Reports.WPF-WCF/tree/master/WCF_WPFViewer.Web)
+* [WCF_WPFViewer](https://github.com/stimulsoft/Samples-Reports.WPF-WCF/tree/master/WCF_WPFViewer)
 
-# WPF C# samples for WCF
+All examples are combined into Visual Studio solutions (.sln files).
 
-#### This repository contains the source code of the examples of usage Stimulsoft Reports.Wpf using WCF.
+## Running samples
+In order to start simply open the Visual Studio solution file in the IDE and run the required project as Startup Project. The required libraries will be automatically downloaded from the NuGet repository.
 
-# Overview
-This repository has some examples (Visual Studio Projects) each in different folders:
-* WCF_WPFDesigner.Service
-* WCF_WPFDesigner
-* WCF_WPFViewer.Web
-* WCF_WPFViewer
+## Stimulsoft Reports.WPF
+Stimulsoft Reports.WPF is a powerful and flexible report generator for the Windows Presentation Foundation platform. The product includes wide features for creating, viewing, printing, exporting reports. The product contains a powerful engine for report rendering, a user-friendly designer with a familiar interface and a rapid report viewer for observing. Our product is based on many years of experience in creating products for data visualization and analysis.
 
-They are all combined in a Visual Studio solution (.sln-file).
-
-# Running samples
-In order to start simply open the Visual Studio solution file in the IDE Visual Studio and run the required project.
-
-# Stimulsoft Reports.Wpf
-Stimulsoft Reports.Wpf is a reporting tool that is developed for Windows Presentation Foundation. Rich capabilities of rendering, viewing, printing and exporting reports – it's all about Stimulsoft Reports.Wpf. The product uses the reports engine for creating reports which is based on the many years experience of developing and using reporting tools. Great many components, properties and parameters, thought over the structure of reports.
-
-You can try the [Live Demo](http://demo.stimulsoft.com/#Net)
-
-Also you can install and run the [WPF Demo](https://www.stimulsoft.com/en/products/reports-wpf-demo)
-
-Read more about [Stimulsoft Reports.Wpf](https://www.stimulsoft.com/en/products/reports-wpf)
-
-[Free Download](https://www.stimulsoft.com/en/downloads)
-
-[NuGet](https://www.nuget.org/packages/Stimulsoft.Reports.Wpf)
-
-[License](LICENSE.md)
+## Useful links
+* [Live Demo](http://demo.stimulsoft.com/#Net)
+* [Product Page](https://www.stimulsoft.com/en/products/reports-wpf)
+* [Free Download](https://www.stimulsoft.com/en/downloads)
+* [NuGet](https://www.nuget.org/packages/Stimulsoft.Reports.Wpf)
+* [Documentation](https://www.stimulsoft.com/en/documentation/online/programming-manual/reports_wpf.htm)
+* [License](LICENSE.md)

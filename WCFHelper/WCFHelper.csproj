@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WCFHelper</RootNamespace>
     <AssemblyName>WCFHelper</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -43,22 +43,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Stimulsoft.Base">
-      <HintPath>..\..\bin\Stimulsoft.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Database.Wpf">
-      <HintPath>..\..\bin\Stimulsoft.Database.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Editor.Wpf">
-      <HintPath>..\..\bin\Stimulsoft.Editor.Wpf.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Base\bin\Debug\net472\Stimulsoft.Base.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Report">
-      <HintPath>..\..\bin\Stimulsoft.Report.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report\bin\Debug\net472\Stimulsoft.Report.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Report.Check">
-      <HintPath>..\..\bin\Stimulsoft.Report.Check.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Check\bin\Debug\net472\Stimulsoft.Report.Check.dll</HintPath>
     </Reference>
     <Reference Include="Stimulsoft.Report.Helper">
-      <HintPath>..\..\bin\Stimulsoft.Report.Helper.dll</HintPath>
+      <HintPath>..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Helper\bin\Debug\net472\Stimulsoft.Report.Helper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,7 +72,6 @@
     <Compile Include="Helpers\StiSLDesignerHelper.cs" />
     <Compile Include="Helpers\StiSLEncodingHelper.cs" />
     <Compile Include="Helpers\StiSLExportHelper.cs" />
-    <Compile Include="Helpers\StiSLGoogleDocsHelper.cs" />
     <Compile Include="Helpers\StiSLRenderingReportHelper.cs" />
     <Compile Include="Helpers\StiXmlWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,6 +104,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Stimulsoft.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Map\Stimulsoft.Map.csproj">
+      <Project>{af210875-d25e-4acf-93b0-fc80a52b1b65}</Project>
+      <Name>Stimulsoft.Map</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

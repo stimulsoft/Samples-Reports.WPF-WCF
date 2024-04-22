@@ -21,12 +21,12 @@ namespace WCF_WPFViewer
         #region ExportDocument
         private string exportFilter;
 
-        private Task<byte[]> ExportDocumentRask(string xml)
+        private Task<byte[]> ExportDocumentRask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.ViewerServiceClient();
-                return service.ExportDocument(xml);
+                return service.ExportDocument(data);
             });
         }
 
@@ -38,7 +38,7 @@ namespace WCF_WPFViewer
 
             try
             {
-                var result = await ExportDocumentRask(e.Xml);
+                var result = await ExportDocumentRask(e.Data);
                 progress.Hide();
 
                 if (result != null)
@@ -69,12 +69,12 @@ namespace WCF_WPFViewer
 
         #region buttonLoad_Click
 
-        private Task<string> LoadReportTask(string xml)
+        private Task<byte[]> LoadReportTask(string reportName)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.ViewerServiceClient();
-                return service.LoadReportAsync(xml);
+                return service.LoadReportAsync(reportName);
             });
         }
 
@@ -86,7 +86,7 @@ namespace WCF_WPFViewer
 
                 try
                 {
-                    string result = await LoadReportTask(((ComboBoxItem)cbReports.SelectedItem).Content.ToString());
+                    var result = await LoadReportTask(((ComboBoxItem)cbReports.SelectedItem).Content.ToString());
 
                     progress.Hide();
                     if (result != null && result.Length > 2)
@@ -103,12 +103,12 @@ namespace WCF_WPFViewer
 
         #region RenderingInteractions
 
-        private Task<string> RenderingInteractionsTask(string xml)
+        private Task<byte[]> RenderingInteractionsTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.ViewerServiceClient();
-                return service.RenderingInteractions(xml);
+                return service.RenderingInteractions(data);
             });
         }
 
@@ -120,8 +120,8 @@ namespace WCF_WPFViewer
 
             try
             {
-                var result = await RenderingInteractionsTask(e.Xml);
-                if (result != null && result.Length > 2)
+                var result = await RenderingInteractionsTask(e.Data);
+                if (result != null)
                 {
                     switch (interactionType)
                     {
@@ -130,7 +130,7 @@ namespace WCF_WPFViewer
                             break;
 
                         case StiInteractionType.DrillDownPage:
-                            viewerControl.ApplyChangesAfterDrillDownPage(result);
+                            viewerControl.ApplyChangesAfterDrillDownPage(result, e.DrillDownMode, e.Page);
                             break;
 
                         case StiInteractionType.Sorting:
@@ -151,12 +151,12 @@ namespace WCF_WPFViewer
 
         #region RequestFromUserRenderReport
 
-        private Task<string> RequestFromUserRenderReportTask(string xml)
+        private Task<byte[]> RequestFromUserRenderReportTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.ViewerServiceClient();
-                return service.RequestFromUserRenderReport(xml);
+                return service.RequestFromUserRenderReport(data);
             });
         }
 
@@ -166,7 +166,7 @@ namespace WCF_WPFViewer
 
             try
             {
-                var result = await RequestFromUserRenderReportTask(e.Xml);
+                var result = await RequestFromUserRenderReportTask(e.Data);
 
                 if (result != null && result.Length > 2)
                     viewerControl.ApplyRenderedReport(result, true);
@@ -183,12 +183,12 @@ namespace WCF_WPFViewer
 
         #region WCFPrepareRequestFromUserVariables
 
-        private Task<string> PrepareRequestFromUserVariablesTask(string xml)
+        private Task<byte[]> PrepareRequestFromUserVariablesTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.ViewerServiceClient();
-                return service.PrepareRequestFromUserVariables(xml);
+                return service.PrepareRequestFromUserVariables(data);
             });
         }
 
@@ -197,7 +197,7 @@ namespace WCF_WPFViewer
             var service = new ServiceReference1.ViewerServiceClient();
             try
             {
-                var result = await PrepareRequestFromUserVariablesTask(e.Xml);
+                var result = await PrepareRequestFromUserVariablesTask(e.Data);
                 viewerControl.ApplyResultAfterPrepareRequestFromUserVariables(null, result);
             }
             catch (Exception ex)
@@ -210,12 +210,12 @@ namespace WCF_WPFViewer
 
         #region WCFInteractiveDataBandSelection
 
-        private Task<string> InteractiveDataBandSelectionTask(string xml)
+        private Task<byte[]> InteractiveDataBandSelectionTask(byte[] data)
         {
             return Task.Run(() =>
             {
                 var service = new ServiceReference1.ViewerServiceClient();
-                return service.InteractiveDataBandSelection(xml);
+                return service.InteractiveDataBandSelection(data);
             });
         }
 
@@ -225,7 +225,7 @@ namespace WCF_WPFViewer
 
             try
             {
-                var result = await InteractiveDataBandSelectionTask(e.Xml);
+                var result = await InteractiveDataBandSelectionTask(e.Data);
                 this.viewerControl.ApplyChangesAfterInteractiveDataBandSelection(result);
                 progress.Hide();
             }
@@ -242,7 +242,6 @@ namespace WCF_WPFViewer
 
         public MainWindow()
         {
-            StiOptions.Wpf.CurrentTheme = StiOptions.Wpf.Themes.Office2013Theme;
             StiOptions.WCFService.UseWCFService = true;
             progress = new StiProgressInformation(this);
             progress.IsDialog = false;

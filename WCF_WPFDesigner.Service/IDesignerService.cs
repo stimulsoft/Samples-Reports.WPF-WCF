@@ -10,63 +10,47 @@ namespace WCF_WPFDesigner.Service
         byte[] LoadReport();
 
         [OperationContract]
-        string RenderingInteractions(string xml);
+        byte[] RenderingInteractions(byte[] data);
 
         [OperationContract]
-        string RequestFromUserRenderReport(string xml);
+        byte[] RequestFromUserRenderReport(byte[] data);
 
         [OperationContract]
-        byte[] ExportDocument(string xml);
+        byte[] ExportDocument(byte[] data);
 
         [OperationContract]
-        string PrepareRequestFromUserVariables(string xml);
+        byte[] PrepareRequestFromUserVariables(byte[] data);
 
         [OperationContract]
-        string InteractiveDataBandSelection(string xml);
+        byte[] InteractiveDataBandSelection(byte[] data);
 
         //Designer
         [OperationContract]
         bool SaveReport(byte[] buffer);
 
         [OperationContract]
-        string LoadConfiguration();
+        byte[] LoadConfiguration();
 
         [OperationContract]
-        string RenderReport(string xml);
+        byte[] RenderReport(byte[] data);
 
         [OperationContract]
-        string TestConnection(string settings);
+        byte[] TestConnection(byte[] data);
 
         [OperationContract]
-        string BuildObjects(string settings);
+        byte[] BuildObjects(byte[] data);
 
         [OperationContract]
-        string RetrieveColumns(string settings);
-
-        // Designer.GoogleDocs
-        [OperationContract]
-        string GoogleDocsGetDocuments(string xml);
-
-        [OperationContract]
-        string GoogleDocsCreateCollection(string xml);
-
-        [OperationContract]
-        string GoogleDocsDelete(string xml);
-
-        [OperationContract]
-        string GoogleDocsOpen(string xml);
-
-        [OperationContract]
-        string GoogleDocsSave(string xml);
+        byte[] RetrieveColumns(byte[] data);
 
         // Designer.Script
         [OperationContract]
-        string OpenReportScript(string xml);
+        byte[] OpenReportScript(byte[] data);
 
         [OperationContract]
-        string SaveReportScript(string xml);
+        byte[] SaveReportScript(byte[] data);
 
         [OperationContract]
-        string CheckReport(string xml);
+        byte[] CheckReport(byte[] data);
     }
 }

@@ -22,34 +22,34 @@ namespace WCF_WpfDesigner.ServiceReference1 {
         System.Threading.Tasks.Task<byte[]> LoadReportAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RenderingInteractions", ReplyAction="http://tempuri.org/IDesignerService/RenderingInteractionsResponse")]
-        string RenderingInteractions(string xml);
+        byte[] RenderingInteractions(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RenderingInteractions", ReplyAction="http://tempuri.org/IDesignerService/RenderingInteractionsResponse")]
-        System.Threading.Tasks.Task<string> RenderingInteractionsAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> RenderingInteractionsAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RequestFromUserRenderReport", ReplyAction="http://tempuri.org/IDesignerService/RequestFromUserRenderReportResponse")]
-        string RequestFromUserRenderReport(string xml);
+        byte[] RequestFromUserRenderReport(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RequestFromUserRenderReport", ReplyAction="http://tempuri.org/IDesignerService/RequestFromUserRenderReportResponse")]
-        System.Threading.Tasks.Task<string> RequestFromUserRenderReportAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> RequestFromUserRenderReportAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/ExportDocument", ReplyAction="http://tempuri.org/IDesignerService/ExportDocumentResponse")]
-        byte[] ExportDocument(string xml);
+        byte[] ExportDocument(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/ExportDocument", ReplyAction="http://tempuri.org/IDesignerService/ExportDocumentResponse")]
-        System.Threading.Tasks.Task<byte[]> ExportDocumentAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> ExportDocumentAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/PrepareRequestFromUserVariables", ReplyAction="http://tempuri.org/IDesignerService/PrepareRequestFromUserVariablesResponse")]
-        string PrepareRequestFromUserVariables(string xml);
+        byte[] PrepareRequestFromUserVariables(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/PrepareRequestFromUserVariables", ReplyAction="http://tempuri.org/IDesignerService/PrepareRequestFromUserVariablesResponse")]
-        System.Threading.Tasks.Task<string> PrepareRequestFromUserVariablesAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> PrepareRequestFromUserVariablesAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/InteractiveDataBandSelection", ReplyAction="http://tempuri.org/IDesignerService/InteractiveDataBandSelectionResponse")]
-        string InteractiveDataBandSelection(string xml);
+        byte[] InteractiveDataBandSelection(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/InteractiveDataBandSelection", ReplyAction="http://tempuri.org/IDesignerService/InteractiveDataBandSelectionResponse")]
-        System.Threading.Tasks.Task<string> InteractiveDataBandSelectionAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> InteractiveDataBandSelectionAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/SaveReport", ReplyAction="http://tempuri.org/IDesignerService/SaveReportResponse")]
         bool SaveReport(byte[] buffer);
@@ -58,82 +58,52 @@ namespace WCF_WpfDesigner.ServiceReference1 {
         System.Threading.Tasks.Task<bool> SaveReportAsync(byte[] buffer);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/LoadConfiguration", ReplyAction="http://tempuri.org/IDesignerService/LoadConfigurationResponse")]
-        string LoadConfiguration();
+        byte[] LoadConfiguration();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/LoadConfiguration", ReplyAction="http://tempuri.org/IDesignerService/LoadConfigurationResponse")]
-        System.Threading.Tasks.Task<string> LoadConfigurationAsync();
+        System.Threading.Tasks.Task<byte[]> LoadConfigurationAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RenderReport", ReplyAction="http://tempuri.org/IDesignerService/RenderReportResponse")]
-        string RenderReport(string xml);
+        byte[] RenderReport(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RenderReport", ReplyAction="http://tempuri.org/IDesignerService/RenderReportResponse")]
-        System.Threading.Tasks.Task<string> RenderReportAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> RenderReportAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/TestConnection", ReplyAction="http://tempuri.org/IDesignerService/TestConnectionResponse")]
-        string TestConnection(string settings);
+        byte[] TestConnection(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/TestConnection", ReplyAction="http://tempuri.org/IDesignerService/TestConnectionResponse")]
-        System.Threading.Tasks.Task<string> TestConnectionAsync(string settings);
+        System.Threading.Tasks.Task<byte[]> TestConnectionAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/BuildObjects", ReplyAction="http://tempuri.org/IDesignerService/BuildObjectsResponse")]
-        string BuildObjects(string settings);
+        byte[] BuildObjects(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/BuildObjects", ReplyAction="http://tempuri.org/IDesignerService/BuildObjectsResponse")]
-        System.Threading.Tasks.Task<string> BuildObjectsAsync(string settings);
+        System.Threading.Tasks.Task<byte[]> BuildObjectsAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RetrieveColumns", ReplyAction="http://tempuri.org/IDesignerService/RetrieveColumnsResponse")]
-        string RetrieveColumns(string settings);
+        byte[] RetrieveColumns(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/RetrieveColumns", ReplyAction="http://tempuri.org/IDesignerService/RetrieveColumnsResponse")]
-        System.Threading.Tasks.Task<string> RetrieveColumnsAsync(string settings);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsGetDocuments", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsGetDocumentsResponse")]
-        string GoogleDocsGetDocuments(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsGetDocuments", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsGetDocumentsResponse")]
-        System.Threading.Tasks.Task<string> GoogleDocsGetDocumentsAsync(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsCreateCollection", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsCreateCollectionResponse")]
-        string GoogleDocsCreateCollection(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsCreateCollection", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsCreateCollectionResponse")]
-        System.Threading.Tasks.Task<string> GoogleDocsCreateCollectionAsync(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsDelete", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsDeleteResponse")]
-        string GoogleDocsDelete(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsDelete", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsDeleteResponse")]
-        System.Threading.Tasks.Task<string> GoogleDocsDeleteAsync(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsOpen", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsOpenResponse")]
-        string GoogleDocsOpen(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsOpen", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsOpenResponse")]
-        System.Threading.Tasks.Task<string> GoogleDocsOpenAsync(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsSave", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsSaveResponse")]
-        string GoogleDocsSave(string xml);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/GoogleDocsSave", ReplyAction="http://tempuri.org/IDesignerService/GoogleDocsSaveResponse")]
-        System.Threading.Tasks.Task<string> GoogleDocsSaveAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> RetrieveColumnsAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/OpenReportScript", ReplyAction="http://tempuri.org/IDesignerService/OpenReportScriptResponse")]
-        string OpenReportScript(string xml);
+        byte[] OpenReportScript(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/OpenReportScript", ReplyAction="http://tempuri.org/IDesignerService/OpenReportScriptResponse")]
-        System.Threading.Tasks.Task<string> OpenReportScriptAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> OpenReportScriptAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/SaveReportScript", ReplyAction="http://tempuri.org/IDesignerService/SaveReportScriptResponse")]
-        string SaveReportScript(string xml);
+        byte[] SaveReportScript(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/SaveReportScript", ReplyAction="http://tempuri.org/IDesignerService/SaveReportScriptResponse")]
-        System.Threading.Tasks.Task<string> SaveReportScriptAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> SaveReportScriptAsync(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/CheckReport", ReplyAction="http://tempuri.org/IDesignerService/CheckReportResponse")]
-        string CheckReport(string xml);
+        byte[] CheckReport(byte[] data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDesignerService/CheckReport", ReplyAction="http://tempuri.org/IDesignerService/CheckReportResponse")]
-        System.Threading.Tasks.Task<string> CheckReportAsync(string xml);
+        System.Threading.Tasks.Task<byte[]> CheckReportAsync(byte[] data);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -171,44 +141,44 @@ namespace WCF_WpfDesigner.ServiceReference1 {
             return base.Channel.LoadReportAsync();
         }
         
-        public string RenderingInteractions(string xml) {
-            return base.Channel.RenderingInteractions(xml);
+        public byte[] RenderingInteractions(byte[] data) {
+            return base.Channel.RenderingInteractions(data);
         }
         
-        public System.Threading.Tasks.Task<string> RenderingInteractionsAsync(string xml) {
-            return base.Channel.RenderingInteractionsAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> RenderingInteractionsAsync(byte[] data) {
+            return base.Channel.RenderingInteractionsAsync(data);
         }
         
-        public string RequestFromUserRenderReport(string xml) {
-            return base.Channel.RequestFromUserRenderReport(xml);
+        public byte[] RequestFromUserRenderReport(byte[] data) {
+            return base.Channel.RequestFromUserRenderReport(data);
         }
         
-        public System.Threading.Tasks.Task<string> RequestFromUserRenderReportAsync(string xml) {
-            return base.Channel.RequestFromUserRenderReportAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> RequestFromUserRenderReportAsync(byte[] data) {
+            return base.Channel.RequestFromUserRenderReportAsync(data);
         }
         
-        public byte[] ExportDocument(string xml) {
-            return base.Channel.ExportDocument(xml);
+        public byte[] ExportDocument(byte[] data) {
+            return base.Channel.ExportDocument(data);
         }
         
-        public System.Threading.Tasks.Task<byte[]> ExportDocumentAsync(string xml) {
-            return base.Channel.ExportDocumentAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> ExportDocumentAsync(byte[] data) {
+            return base.Channel.ExportDocumentAsync(data);
         }
         
-        public string PrepareRequestFromUserVariables(string xml) {
-            return base.Channel.PrepareRequestFromUserVariables(xml);
+        public byte[] PrepareRequestFromUserVariables(byte[] data) {
+            return base.Channel.PrepareRequestFromUserVariables(data);
         }
         
-        public System.Threading.Tasks.Task<string> PrepareRequestFromUserVariablesAsync(string xml) {
-            return base.Channel.PrepareRequestFromUserVariablesAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> PrepareRequestFromUserVariablesAsync(byte[] data) {
+            return base.Channel.PrepareRequestFromUserVariablesAsync(data);
         }
         
-        public string InteractiveDataBandSelection(string xml) {
-            return base.Channel.InteractiveDataBandSelection(xml);
+        public byte[] InteractiveDataBandSelection(byte[] data) {
+            return base.Channel.InteractiveDataBandSelection(data);
         }
         
-        public System.Threading.Tasks.Task<string> InteractiveDataBandSelectionAsync(string xml) {
-            return base.Channel.InteractiveDataBandSelectionAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> InteractiveDataBandSelectionAsync(byte[] data) {
+            return base.Channel.InteractiveDataBandSelectionAsync(data);
         }
         
         public bool SaveReport(byte[] buffer) {
@@ -219,108 +189,68 @@ namespace WCF_WpfDesigner.ServiceReference1 {
             return base.Channel.SaveReportAsync(buffer);
         }
         
-        public string LoadConfiguration() {
+        public byte[] LoadConfiguration() {
             return base.Channel.LoadConfiguration();
         }
         
-        public System.Threading.Tasks.Task<string> LoadConfigurationAsync() {
+        public System.Threading.Tasks.Task<byte[]> LoadConfigurationAsync() {
             return base.Channel.LoadConfigurationAsync();
         }
         
-        public string RenderReport(string xml) {
-            return base.Channel.RenderReport(xml);
+        public byte[] RenderReport(byte[] data) {
+            return base.Channel.RenderReport(data);
         }
         
-        public System.Threading.Tasks.Task<string> RenderReportAsync(string xml) {
-            return base.Channel.RenderReportAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> RenderReportAsync(byte[] data) {
+            return base.Channel.RenderReportAsync(data);
         }
         
-        public string TestConnection(string settings) {
-            return base.Channel.TestConnection(settings);
+        public byte[] TestConnection(byte[] data) {
+            return base.Channel.TestConnection(data);
         }
         
-        public System.Threading.Tasks.Task<string> TestConnectionAsync(string settings) {
-            return base.Channel.TestConnectionAsync(settings);
+        public System.Threading.Tasks.Task<byte[]> TestConnectionAsync(byte[] data) {
+            return base.Channel.TestConnectionAsync(data);
         }
         
-        public string BuildObjects(string settings) {
-            return base.Channel.BuildObjects(settings);
+        public byte[] BuildObjects(byte[] data) {
+            return base.Channel.BuildObjects(data);
         }
         
-        public System.Threading.Tasks.Task<string> BuildObjectsAsync(string settings) {
-            return base.Channel.BuildObjectsAsync(settings);
+        public System.Threading.Tasks.Task<byte[]> BuildObjectsAsync(byte[] data) {
+            return base.Channel.BuildObjectsAsync(data);
         }
         
-        public string RetrieveColumns(string settings) {
-            return base.Channel.RetrieveColumns(settings);
+        public byte[] RetrieveColumns(byte[] data) {
+            return base.Channel.RetrieveColumns(data);
         }
         
-        public System.Threading.Tasks.Task<string> RetrieveColumnsAsync(string settings) {
-            return base.Channel.RetrieveColumnsAsync(settings);
+        public System.Threading.Tasks.Task<byte[]> RetrieveColumnsAsync(byte[] data) {
+            return base.Channel.RetrieveColumnsAsync(data);
         }
         
-        public string GoogleDocsGetDocuments(string xml) {
-            return base.Channel.GoogleDocsGetDocuments(xml);
+        public byte[] OpenReportScript(byte[] data) {
+            return base.Channel.OpenReportScript(data);
         }
         
-        public System.Threading.Tasks.Task<string> GoogleDocsGetDocumentsAsync(string xml) {
-            return base.Channel.GoogleDocsGetDocumentsAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> OpenReportScriptAsync(byte[] data) {
+            return base.Channel.OpenReportScriptAsync(data);
         }
         
-        public string GoogleDocsCreateCollection(string xml) {
-            return base.Channel.GoogleDocsCreateCollection(xml);
+        public byte[] SaveReportScript(byte[] data) {
+            return base.Channel.SaveReportScript(data);
         }
         
-        public System.Threading.Tasks.Task<string> GoogleDocsCreateCollectionAsync(string xml) {
-            return base.Channel.GoogleDocsCreateCollectionAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> SaveReportScriptAsync(byte[] data) {
+            return base.Channel.SaveReportScriptAsync(data);
         }
         
-        public string GoogleDocsDelete(string xml) {
-            return base.Channel.GoogleDocsDelete(xml);
+        public byte[] CheckReport(byte[] data) {
+            return base.Channel.CheckReport(data);
         }
         
-        public System.Threading.Tasks.Task<string> GoogleDocsDeleteAsync(string xml) {
-            return base.Channel.GoogleDocsDeleteAsync(xml);
-        }
-        
-        public string GoogleDocsOpen(string xml) {
-            return base.Channel.GoogleDocsOpen(xml);
-        }
-        
-        public System.Threading.Tasks.Task<string> GoogleDocsOpenAsync(string xml) {
-            return base.Channel.GoogleDocsOpenAsync(xml);
-        }
-        
-        public string GoogleDocsSave(string xml) {
-            return base.Channel.GoogleDocsSave(xml);
-        }
-        
-        public System.Threading.Tasks.Task<string> GoogleDocsSaveAsync(string xml) {
-            return base.Channel.GoogleDocsSaveAsync(xml);
-        }
-        
-        public string OpenReportScript(string xml) {
-            return base.Channel.OpenReportScript(xml);
-        }
-        
-        public System.Threading.Tasks.Task<string> OpenReportScriptAsync(string xml) {
-            return base.Channel.OpenReportScriptAsync(xml);
-        }
-        
-        public string SaveReportScript(string xml) {
-            return base.Channel.SaveReportScript(xml);
-        }
-        
-        public System.Threading.Tasks.Task<string> SaveReportScriptAsync(string xml) {
-            return base.Channel.SaveReportScriptAsync(xml);
-        }
-        
-        public string CheckReport(string xml) {
-            return base.Channel.CheckReport(xml);
-        }
-        
-        public System.Threading.Tasks.Task<string> CheckReportAsync(string xml) {
-            return base.Channel.CheckReportAsync(xml);
+        public System.Threading.Tasks.Task<byte[]> CheckReportAsync(byte[] data) {
+            return base.Channel.CheckReportAsync(data);
         }
     }
 }

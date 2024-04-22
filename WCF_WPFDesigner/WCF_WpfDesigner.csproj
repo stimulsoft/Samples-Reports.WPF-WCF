@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WCF_WpfDesigner</RootNamespace>
     <AssemblyName>WCF_WpfDesigner</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -60,64 +60,6 @@
     <AssemblyOriginatorKeyFile>Stimulsoft.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Stimulsoft.Base">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Database.Wpf">
-      <HintPath>..\..\bin\Stimulsoft.Database.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Editor.Wpf">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Editor.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Check">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.Check.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Helper">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.Helper.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.BlackTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.BlackTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2003BlueTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2003BlueTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2003OliveGreenTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2003OliveGreenTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2003SilverTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2003SilverTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2007BlackTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2007BlackTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2007BlueTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2007BlueTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2007SilverTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2007SilverTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2010BlueTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2010BlueTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.Wpf.Office2010WhiteTheme">
-      <HintPath>..\..\bin\Stimulsoft.Report.Wpf.Office2010WhiteTheme.dll</HintPath>
-    </Reference>
-    <Reference Include="Stimulsoft.Report.WpfDesign">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Stimulsoft.Report.WpfDesign.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -214,6 +156,56 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Base\Stimulsoft.Base.csproj">
+      <Project>{376cc7ad-21a9-4b6a-b471-0e7186222ca7}</Project>
+      <Name>Stimulsoft.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.BlocklyEditor.Wpf\Stimulsoft.BlocklyEditor.Wpf.csproj">
+      <Project>{6510a8e9-ae61-4763-84f3-0b09dc109887}</Project>
+      <Name>Stimulsoft.BlocklyEditor.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Blockly\Stimulsoft.Blockly.csproj">
+      <Project>{c1a90990-1e3b-4142-94cd-2c1ab84f231e}</Project>
+      <Name>Stimulsoft.Blockly</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Controls.Wpf\Stimulsoft.Controls.Wpf.csproj">
+      <Project>{2abab279-dada-4aec-958d-22241a021bb2}</Project>
+      <Name>Stimulsoft.Controls.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Database.Wpf\Stimulsoft.Database.Wpf.csproj">
+      <Project>{36b0a3b0-7952-4f67-a6af-1c0f3b1ba5bf}</Project>
+      <Name>Stimulsoft.Database.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Editor.Wpf\Stimulsoft.Editor.Wpf.csproj">
+      <Project>{6d259724-cb1d-4b49-8388-7da342ec3491}</Project>
+      <Name>Stimulsoft.Editor.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Map\Stimulsoft.Map.csproj">
+      <Project>{af210875-d25e-4acf-93b0-fc80a52b1b65}</Project>
+      <Name>Stimulsoft.Map</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Check\Stimulsoft.Report.Check.csproj">
+      <Project>{18fe8170-7c80-44b9-a178-6b76c91f8c8b}</Project>
+      <Name>Stimulsoft.Report.Check</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Helper\Stimulsoft.Report.Helper.csproj">
+      <Project>{28ec19c0-5a29-4136-bc0f-13fc182587b3}</Project>
+      <Name>Stimulsoft.Report.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.WpfDesign\Stimulsoft.Report.WpfDesign.csproj">
+      <Project>{aec9a7b4-acde-40fe-b68b-4b8be6989163}</Project>
+      <Name>Stimulsoft.Report.WpfDesign</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report.Wpf\Stimulsoft.Report.Wpf.csproj">
+      <Project>{321830e0-5f88-4707-b79c-4d312aaff70e}</Project>
+      <Name>Stimulsoft.Report.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Stimulsoft\Stimulsoft.Reports\Stimulsoft.Report\Stimulsoft.Report.csproj">
+      <Project>{490a2f2e-98ff-40da-a7d4-98d5e3910d6c}</Project>
+      <Name>Stimulsoft.Report</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ServiceReference1\" />

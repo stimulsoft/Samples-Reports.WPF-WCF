@@ -34,13 +34,11 @@ namespace WCF_WPFViewer.Web
         #endregion
 
         #region Methods
-        public string LoadReport(string reportName)
+        public byte[] LoadReport(string reportName)
         {
-            string result = null;
-
             if (!string.IsNullOrEmpty(reportName))
             {
-                StiReport report = new StiReport();
+                var report = new StiReport();
                 report.Load(@"c:\Users\Anton\Documents\Source Code\Stimulsoft\Stimulsoft.Reports.Samples.SWPF\WCF\WCF_WPFViewer.Web\Reports\MasterDetail.mrt");
 
                 InvokePreviewDataSet();
@@ -48,39 +46,39 @@ namespace WCF_WPFViewer.Web
                 report.RegData(PreviewDataSet);
                 report.Render(false);
 
-                result = StiSLRenderingReportHelper.CheckReportOnInteractions(report, true);
+                return StiSLRenderingReportHelper.CheckReportOnInteractions(report, true);
             }
 
-            return result;
+            return null;
         }
 
-        public string RenderingInteractions(string xml)
+        public byte[] RenderingInteractions(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.RenderingInteractions(xml, PreviewDataSet);
+            return StiSLRenderingReportHelper.RenderingInteractions(data, PreviewDataSet);
         }
 
-        public string RequestFromUserRenderReport(string xml)
+        public byte[] RequestFromUserRenderReport(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.RequestFromUserRenderReport(xml, PreviewDataSet);
+            return StiSLRenderingReportHelper.RequestFromUserRenderReport(data, PreviewDataSet);
         }
 
-        public string PrepareRequestFromUserVariables(string xml)
+        public byte[] PrepareRequestFromUserVariables(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.PrepareRequestFromUserVariables(xml, PreviewDataSet);
+            return StiSLRenderingReportHelper.PrepareRequestFromUserVariables(data, PreviewDataSet);
         }
 
-        public string InteractiveDataBandSelection(string xml)
+        public byte[] InteractiveDataBandSelection(byte[] data)
         {
             InvokePreviewDataSet();
-            return StiSLRenderingReportHelper.InteractiveDataBandSelection(xml, PreviewDataSet);
+            return StiSLRenderingReportHelper.InteractiveDataBandSelection(data, PreviewDataSet);
         }
 
-        public byte[] ExportDocument(string xml)
+        public byte[] ExportDocument(byte[] data)
         {
-            return StiSLExportHelper.StartExport(xml);
+            return StiSLExportHelper.StartExport(data);
         }
         #endregion
     }

@@ -6,16 +6,16 @@ namespace WCF_WPFViewer.Web
     interface IViewerService
     {
         [OperationContract]
-        string LoadReport(string reportName);
+        byte[] LoadReport(string reportName);
         [OperationContract]
-        string RenderingInteractions(string xml);
+        byte[] RenderingInteractions(byte[] data);
         [OperationContract]
-        string RequestFromUserRenderReport(string xml);
+        byte[] RequestFromUserRenderReport(byte[] data);
         [OperationContract]
-        byte[] ExportDocument(string xml);
+        byte[] ExportDocument(byte[] data);
         [OperationContract]
-        string PrepareRequestFromUserVariables(string xml);
+        byte[] PrepareRequestFromUserVariables(byte[] data);
         [OperationContract]
-        string InteractiveDataBandSelection(string xml);
+        byte[] InteractiveDataBandSelection(byte[] data);
     }
 }
