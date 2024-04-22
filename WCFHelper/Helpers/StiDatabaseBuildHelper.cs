@@ -29,7 +29,7 @@ namespace WCFHelper
             public string Alias;
             public string NameInSource;
             public string ConnectionString;
-            public bool PromptUserNameAndPassword; // sqlDatabase.PromptUserNameAndPassword ? "1" : "0"
+            public bool PromptUserNameAndPassword;
             public string SqlCommand;
 
             public StiSqlAdapterService adapter;

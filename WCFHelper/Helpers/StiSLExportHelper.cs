@@ -540,12 +540,6 @@ namespace WCFHelper
         #endregion
 
         #region Methods.ParseProperties
-        private static StiPagesRange GetPagesRange(XmlNode pageRange)
-        {
-            var rangeType = (StiRangeType)int.Parse(pageRange.ChildNodes[2].FirstChild.Value);
-            return new StiPagesRange(rangeType, (pageRange.ChildNodes[1].FirstChild == null) ? string.Empty : pageRange.ChildNodes[1].FirstChild.Value, int.Parse(pageRange.ChildNodes[0].FirstChild.Value));
-        }
-
         private static Encoding ParseEncoding(int codepage)
         {
             return Encoding.GetEncoding(codepage);

@@ -471,11 +471,11 @@ namespace WCF_WpfDesigner
         private void LoadReport()
         {
             var dt = new DataSet();
-            dt.ReadXml("d:\\Data\\Demo.xml");
-            //dt.ReadXmlSchema(@"d:\Data\Demo.xsd");
+            dt.ReadXml("../../Data/Demo.xml");
+            //dt.ReadXmlSchema("../../Data/Demo.xsd");
 
             var report = new StiReport();
-            report.Load("d:\\Data\\1. Master-Detail.mrt");
+            report.Load("../../Data/1. Master-Detail.mrt");
             report.RegData("Demo", "Demo", dt);
             //report.RenderWithWpf(false);
 

@@ -12,9 +12,10 @@ namespace WCFHelper.Helpers
             this.TypeName = typeName;
         }
 
-        #region Fields
-        public readonly string TypeName;
-        public DbConnection Connection;
+        #region Properties
+        public string TypeName { get; }
+
+        public DbConnection Connection { get; set; }
         #endregion
     }
 }
