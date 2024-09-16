@@ -213,7 +213,7 @@ namespace WCFHelper
                 if (result != null)
                     return result;
 
-                // Если не удалось найти тип из стандартных, вызываем событие, чтобы пользователь сам указал тип
+                // If we couldn't find a type from the standard ones, we call an event so that the user can specify the type themselves
                 if (CreateCustomDataAdapterType != null)
                 {
                     var args = new StiCustomDataAdapterTypeEventArgs(name);
