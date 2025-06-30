@@ -482,6 +482,9 @@ All title and copyrights in and to the SOFTWARE (including but not limited to an
 ## THIRD PARTY
 The SOFTWARE contains third party software which is subject to additional notices and terms and conditions. Such required third party software notices and additional terms and conditions are located at [THIRD-PARTY.md](THIRD-PARTY.md) and are made a part of the incorporated by reference into this DLA. DEVELOPER acknowledges and agrees that certain third-party software which is not incorporated into the SOFTWARE may be required in order for DEVELOPER to use or enjoy the full benefit of the SOFTWARE. DEVELOPER shall be fully responsible for obtaining a lawful copy of such software. DEVELOPER use of such separately acquired third party software shall be in accordance with any terms and conditions of the license agreement provided with such software.
 
+## ONLINE-MAPS USAGE LIMITATION
+The Software contains the OnlineMaps component, which includes the OpenStreetMap (OSM) provider. The number of coordinate requests using the OSM provider is limited to 15000 per 1 (one) year. Exceeding this limit may result in restricted access to the service or require a separate licensing agreement for the OSM provider.
+
 ## INSTALLATION AND USE
 The license granted in this DLA for you to create your own compiled programs and distributes your programs and the Redistributables (if any), is subject to all of the following conditions:
 
@@ -514,4 +517,4 @@ This license is subject to change without notice in future updates to the SOFTWA
 
 YOU ACKNOWLEDGE THAT YOU HAVE READ THIS AGREEMENT, UNDERSTAND IT AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS. YOU FURTHER AGREE THAT IT IS THE COMPLETE AND EXCLUSIVE STATEMENT OF THE AGREEMENT BETWEEN US, WHICH SUPERSEDES ANY PROPOSAL OR PRIOR AGREEMENT, ORAL OR WRITTEN, AND ANY OTHER COMMUNICATIONS BETWEEN US RELATING TO THE SUBJECT MATTER OF THIS AGREEMENT.
 
-### Copyright (C) 2003-2023 Stimulsoft, All rights reserved.
+### Copyright (C) 2003-2025 Stimulsoft, All rights reserved.

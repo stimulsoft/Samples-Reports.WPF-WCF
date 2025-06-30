@@ -93,6 +93,40 @@
     <Post>Công bố</Post>
     <TwoDimensional>Hai chiều</TwoDimensional>
   </BarCode>
+  <Blockly>
+    <AllComponents>Tất cả thành phần</AllComponents>
+    <AllComponentsFrom>Tất cả thành phần từ</AllComponentsFrom>
+    <ColorHex>Mã màu HEX</ColorHex>
+    <ColumnName>Tên cột</ColumnName>
+    <DateTime>Ngày giờ</DateTime>
+    <GetComponentByName>Lấy thành phần theo tên</GetComponentByName>
+    <GetCurrentValue>Lấy giá trị hiện tại</GetCurrentValue>
+    <GetDataSourceByName>Lấy nguồn dữ liệu theo tên</GetDataSourceByName>
+    <GetProperty>Lấy thuộc tính</GetProperty>
+    <GetStyleByName>Lấy kiểu theo tên</GetStyleByName>
+    <GetVariable>Lấy biến</GetVariable>
+    <IndexOfRow>Chỉ số dòng</IndexOfRow>
+    <Lists>Danh sách</Lists>
+    <LocalVariables>Biến cục bộ</LocalVariables>
+    <Logic>Logic</Logic>
+    <Loops>Vòng lặp</Loops>
+    <Math>Toán học</Math>
+    <OfDataSource>của Nguồn dữ liệu</OfDataSource>
+    <OfObject>của Đối tượng</OfObject>
+    <OpenLink>Mở liên kết</OpenLink>
+    <Process>Xử lý</Process>
+    <Programming>Lập trình</Programming>
+    <RefreshViewer>Làm mới trình xem</RefreshViewer>
+    <SetCurrentValue>Đặt giá trị hiện tại</SetCurrentValue>
+    <SetProperty>Đặt thuộc tính</SetProperty>
+    <SetSqlCommand>Đặt lệnh SQL</SetSqlCommand>
+    <SetVariable>Đặt biến</SetVariable>
+    <Strings>Chuỗi</Strings>
+    <ThisComponent>Thành phần này</ThisComponent>
+    <ThisReport>Báo cáo này</ThisReport>
+    <To>Đến</To>
+    <Visuals>Giao diện</Visuals>
+  </Blockly>
   <Buttons>
     <Add>Thêm</Add>
     <AddAllColumns>Thêm tất cả các cột</AddAllColumns>
@@ -189,6 +223,7 @@
     <Gantt>Gantt</Gantt>
     <GridInterlaced>Chéo nhau</GridInterlaced>
     <GridLines>Đường lưới</GridLines>
+    <Heatmap>Biểu đồ nhiệt</Heatmap>
     <Histogram>Biểu đồ</Histogram>
     <LabelAlignment>Căn chỉnh:</LabelAlignment>
     <LabelAlignmentHorizontal>Ngang:</LabelAlignmentHorizontal>
@@ -231,6 +266,8 @@
     <LegendSpacing>Khoảng cách</LegendSpacing>
     <Line>Đường thẳng</Line>
     <ListOfValues>Danh sách giá trị</ListOfValues>
+    <ListOfXValues>Danh sách giá trị X</ListOfXValues>
+    <ListOfYValues>Danh sách giá trị Y</ListOfYValues>
     <Marker>Đánh dấu</Marker>
     <MoveConstantLineDown>Di chuyển đường cố định xuống</MoveConstantLineDown>
     <MoveConstantLineUp>Di chuyển đường cố định lên</MoveConstantLineUp>
@@ -379,6 +416,7 @@
     <ButtonRecover>Phục hồi</ButtonRecover>
     <ButtonRenew>Gia hạn</ButtonRenew>
     <ButtonResendEmail>Gửi lại thư điện tử</ButtonResendEmail>
+    <ButtonResendInvitation>Gửi lại lời mời</ButtonResendInvitation>
     <ButtonResetPassword>Đặt lại mật khẩu</ButtonResetPassword>
     <ButtonRun>Chạy</ButtonRun>
     <ButtonScheduler>Bộ lập kế hoạch</ButtonScheduler>
@@ -454,6 +492,9 @@
     <LicenseInformation>Thông tin giấy phép</LicenseInformation>
     <LicenseKey>Mã bản quyền</LicenseKey>
     <Login>Đăng nhập</Login>
+    <MyAccount>Tài khoản của tôi</MyAccount>
+    <MyCloud>Cloud của tôi</MyCloud>
+    <MyPlan>Gói dịch vụ của tôi</MyPlan>
     <MyTeam>Đội của tôi</MyTeam>
     <NofM>{0}: {1} của {2}</NofM>
     <Open>Mở</Open>
@@ -672,6 +713,7 @@
     <StiTreeView>Xem dạng cây</StiTreeView>
     <StiTreeViewBox>Hộp xem dạng cây</StiTreeViewBox>
     <StiVerticalLinePrimitive>Đường thẳng đứng</StiVerticalLinePrimitive>
+    <StiWebContent>Nội dung Web</StiWebContent>
     <StiWinControl>Cửa sổ điều khiển</StiWinControl>
     <StiZipCode>Mã bưu chính</StiZipCode>
   </Components>
@@ -897,13 +939,17 @@
     <StiPictureBoxControl>Hộp hình ảnh</StiPictureBoxControl>
     <StiRadioButtonControl>Nút radio</StiRadioButtonControl>
     <StiRadioControl>Điều khiển Radio</StiRadioControl>
+    <StiRadioGroupControl>Nhóm Radio</StiRadioGroupControl>
     <StiReportControl>Kiểm soát báo cáo</StiReportControl>
     <StiRichTextBoxControl>Hộp văn bản đa dạng</StiRichTextBoxControl>
+    <StiSliderControl>Thanh trượt</StiSliderControl>
     <StiTextBoxControl>Hộp văn bản</StiTextBoxControl>
+    <StiToggleControl>Nút chuyển đổi</StiToggleControl>
     <StiTreeViewControl>Chế độ xem dạng cây</StiTreeViewControl>
   </Dialogs>
   <Editor>
     <AllowSQLFormatting>Cho phép Định dạng SQL</AllowSQLFormatting>
+    <AutomaticallyGeneratedExpression>Đây là biểu thức được tạo tự động.</AutomaticallyGeneratedExpression>
     <BetweenMetrics>Có thể chọn từ 1 đến 10 số liệu. </BetweenMetrics>
     <CantFind>Không thể tìm thấy dữ liệu bạn đang tìm kiếm.</CantFind>
     <CollapseToDefinitions>Thu gọn để định nghĩa</CollapseToDefinitions>
@@ -914,6 +960,7 @@
     <FindWhat>Tìm gì:</FindWhat>
     <FromCursor>Từ con trỏ</FromCursor>
     <GotoLine>Đi tới dòng</GotoLine>
+    <InsertField>Chèn trường</InsertField>
     <InsertLink>Chèn đường dẫn</InsertLink>
     <InsertSymbol>Chèn biểu tượng</InsertSymbol>
     <Line>Dòng: {0}</Line>
@@ -1246,7 +1293,7 @@
     <AddLevel>Thêm cấp</AddLevel>
     <AssignExpression>Gán biểu thức</AssignExpression>
     <BreakIfTrue>Ngắt nếu đúng</BreakIfTrue>
-    <BreakIfTrueToolTip>Ngắt xử lý điều kiện hiện tại nếu nếu thỏa mãn</BreakIfTrueToolTip>
+    <BreakIfTrueToolTip>Ngắt xử lý điều kiện hiện tại nếu nếu thỏa mãn.</BreakIfTrueToolTip>
     <ChangeBorder>Thay đổi đường viền...</ChangeBorder>
     <ChangeFont>Thay đổi phông chữ...</ChangeFont>
     <ComponentIsEnabled>Thành phần được kích hoạt</ComponentIsEnabled>
@@ -1293,6 +1340,7 @@
     <InformixEdit>Chỉnh sửa kết nối Informix</InformixEdit>
     <InformixNew>Tạo mới kết nối Informix</InformixNew>
     <InitialCatalog>Mục ban đầu:</InitialCatalog>
+    <InsertSampleConnectionString>Chèn chuỗi kết nối mẫu</InsertSampleConnectionString>
     <JsonEdit>Chỉnh sửa dữ liệu JSON</JsonEdit>
     <JsonNew>Tạo mới dữ liệu JSON</JsonNew>
     <MySQLEdit>Chỉnh sửa kết nối MySQL</MySQLEdit>
@@ -1419,6 +1467,8 @@
     <EnableDataMonitor>Bật giám sát dữ liệu</EnableDataMonitor>
     <ExecutedSQLStatementSuccessfully>Thực hiện câu lệnh SQL thành công</ExecutedSQLStatementSuccessfully>
     <ExpressionNew>Tạo biểu thức mới</ExpressionNew>
+    <FunctionEdit>Chỉnh sửa hàm</FunctionEdit>
+    <FunctionNew>Hàm mới</FunctionNew>
     <GetColumnsFromAssembly>Lấy cột từ kết cấu</GetColumnsFromAssembly>
     <HideUnsupportedDatabases>Ẩn các nguồn dữ liệu không được hỗ trợ</HideUnsupportedDatabases>
     <ImportRelations>Nạp quan hệ</ImportRelations>
@@ -1444,6 +1494,7 @@
     <RetrievingDatabaseInformation>Lấy thông tin cơ sở dữ liệu...</RetrievingDatabaseInformation>
     <Run>Thực thi</Run>
     <SelectTypeOfBusinessObject>Chọn loại đối tượng công việc</SelectTypeOfBusinessObject>
+    <ShowMoreDataSources>Hiển thị thêm nguồn dữ liệu</ShowMoreDataSources>
     <SkipSchemaWizard>Bỏ qua thuật sĩ lược đồ</SkipSchemaWizard>
     <SortItems>Sắp xếp các mục</SortItems>
     <Synchronize>Đồng bộ hóa</Synchronize>
@@ -1520,7 +1571,9 @@
     <BlankReport>Báo cáo trống</BlankReport>
     <BlankScreen>Màn hình trống</BlankScreen>
     <Default>Mặc định</Default>
+    <DefaultSaveFormat>Định dạng lưu mặc định</DefaultSaveFormat>
     <DefaultScriptMode>Chế độ tập lệnh mặc định</DefaultScriptMode>
+    <DesignSize>Kích thước thiết kế</DesignSize>
     <Drawing>Vẽ</Drawing>
     <DrawMarkersWhenMoving>Vẽ đánh dấu khi di chuyển</DrawMarkersWhenMoving>
     <EditAfterInsert>Chỉnh sửa sau khi chèn</EditAfterInsert>
@@ -1566,11 +1619,13 @@
     <ShowDialogForms>Hiển thị hộp thoại</ShowDialogForms>
     <ShowDimensionLines>Hiển thị các dòng kích thước</ShowDimensionLines>
     <ShowOldGaugeEditor>Hiển thị trình chỉnh sửa thước đo cũ</ShowOldGaugeEditor>
+    <ShowSearch>Hiển thị tìm kiếm</ShowSearch>
     <ShowSmartGuides>Hiển thị Hướng dẫn thông minh</ShowSmartGuides>
     <StartScreen>Màn hình bắt đầu</StartScreen>
     <title>Tùy chọn</title>
     <UseComponentColor>Sử dụng màu của thành phần để đổ đầy</UseComponentColor>
     <UseLastFormat>Sử dụng định dạng cuối cùng</UseLastFormat>
+    <ViewSize>Kích thước xem</ViewSize>
     <Welcome>Chào mừng</Welcome>
   </FormOptions>
   <FormPageSetup>
@@ -1681,6 +1736,7 @@
   </FormSystemTextEditor>
   <FormTitles>
     <ChartWizardForm>Thuật sĩ biểu đồ</ChartWizardForm>
+    <CodeEditorForm>Trình soạn thảo mã</CodeEditorForm>
     <ConditionEditorForm>Điều kiện</ConditionEditorForm>
     <ConnectionSelectForm>Chọn loại kết nối</ConnectionSelectForm>
     <ContainerSelectForm>Chọn thành phần chứa</ContainerSelectForm>
@@ -1960,6 +2016,7 @@
     <StiTreeViewBoxElement>Phần tử được sử dụng để chọn các giá trị có danh sách thả xuống dưới dạng cây.</StiTreeViewBoxElement>
     <StiTreeViewElement>Đại diện cho phần tử được sử dụng để hiển thị dữ liệu phân cấp dưới dạng cây.</StiTreeViewElement>
     <StiVerticalLinePrimitive>Thành phần này được sử dụng để xuất các đường thẳng đứng.</StiVerticalLinePrimitive>
+    <StiWebContentElement>Thành phần cho phép thêm nội dung web vào bảng điều khiển.</StiWebContentElement>
     <StiWinControl>Thành phần cho phép hiển thị điều khiển trực quan từ. NET Framework.</StiWinControl>
     <StiZipCode>Thành phần này được sử dụng để xuất ra mã bưu điện.</StiZipCode>
   </HelpComponents>
@@ -2019,6 +2076,8 @@
     <DockStyleNone>Không gắn các thành phần đã chọn.</DockStyleNone>
     <DockStyleRight>Gắn các thành phần đã chọn vào phía bên phải.</DockStyleRight>
     <DockStyleTop>Gắn các thành phần đã chọn vào phía bên trên.</DockStyleTop>
+    <EventsAccess1>Tài liệu này sử dụng sự kiện. Nếu tài liệu đến từ nguồn đáng tin cậy, bạn có thể nhấp vào nút "Mở" để truy cập.</EventsAccess1>
+    <EventsAccess2>Nếu bạn không chắc chắn về nguồn gốc của tài liệu nhưng vẫn muốn xem, bạn có thể nhấp vào nút "Mở ở chế độ an toàn". Trong trường hợp này, các sự kiện sẽ bị bỏ qua và không được thực thi.</EventsAccess2>
     <FontGrow>Làm cho kích thước văn bản lớn hơn.</FontGrow>
     <FontName>Phông chữ.</FontName>
     <FontNameWatermark>Phông chữ thủy ấn.</FontNameWatermark>
@@ -2084,6 +2143,7 @@
     <menuViewShowSmartGuides>Hiển thị Hướng dẫn thông minh để định vị các thành phần liên quan đến nhau.</menuViewShowSmartGuides>
     <MoveBackward>Di chuyển một thành phần đến một cấp độ cao hơn theo thứ tự đặt các thành phần trên một trang.</MoveBackward>
     <MoveForward>Di chuyển một thành phần đến một cấp độ thấp hơn theo thứ tự đặt các thành phần trên một trang.</MoveForward>
+    <NotPossibleEnableCompilationMode>Không thể kích hoạt chế độ biên dịch cho báo cáo. Điều này bị cấm bởi tùy chọn 'Quyền truy cập biên dịch' trong cài đặt trình thiết kế.</NotPossibleEnableCompilationMode>
     <Orientation>Chuyển đổi các trang giữa bố cục dọc và ngang.</Orientation>
     <PageDelete>Xóa trang hiện tại khỏi một báo cáo.</PageDelete>
     <PageNew>Tạo một trang mới.</PageNew>
@@ -2423,6 +2483,7 @@
     <ActivationMaxActivationsReached1>Bạn có thể quản lý các máy tính đã đăng ký từ </ActivationMaxActivationsReached1>
     <ActivationMaxActivationsReached2>Tài khoản Stimulsoft.</ActivationMaxActivationsReached2>
     <ActivationMaxComputersReached>Bạn đã đăng ký số lượng máy tính tối đa có sẵn cho loại tài khoản của mình.</ActivationMaxComputersReached>
+    <ActivationMaxDeactivationsReached>Không thể hủy kích hoạt thiết bị vì bạn đã đạt đến giới hạn cho thao tác này. Vui lòng liên hệ với bộ phận bán hàng của chúng tôi tại sales@stimulsoft.com!</ActivationMaxDeactivationsReached>
     <ActivationServerIsNotAvailableNow>Máy chủ kích hoạt Stimulsoft hiện không có sẵn! Vui lòng thử lại sau.</ActivationServerIsNotAvailableNow>
     <ActivationServerVersionNotAllowed>Bạn không thể kích hoạt phiên bản này của Stimulsoft Server bởi vì thời gian sử dụng của bạn đã hết hạn! Vui lòng đăng nhập vào tài khoản của bạn và kiểm tra phiên bản nào của Stimulsoft Server bạn có thể cài đặt và kích hoạt.</ActivationServerVersionNotAllowed>
     <ActivationSomeTroublesOccurred>Đã xảy ra lỗi khi kích hoạt. Vui lòng thử lại sau.</ActivationSomeTroublesOccurred>
@@ -2431,6 +2492,7 @@
     <ActivationTrialExtend2>nói cho chúng tôi tại sao.</ActivationTrialExtend2>
     <ActivationUserNameOrPasswordIsWrong>Tên người dùng (thư điện tử) hoặc mật khẩu của bạn sai!</ActivationUserNameOrPasswordIsWrong>
     <ActivationWrongAccountType>Loại tài khoản của bạn không được cho phép kích hoạt Stimulsoft Server!</ActivationWrongAccountType>
+    <AITokensExhausted>Tokens của bạn đã hết! Vui lòng liên hệ với bộ phận bán hàng của chúng tôi tại sales@stimulsoft.com!</AITokensExhausted>
     <Alert>Cảnh báo</Alert>
     <AuthAccountAlreadyExists>Tài khoản có Tên người dùng (email) này đã tồn tại. Để liên kết nó với tài khoản {0} của bạn, vui lòng sử dụng mật khẩu tài khoản Stimulsoft của bạn.</AuthAccountAlreadyExists>
     <AuthAccountCantBeUsedNow>Không thể sử dụng tài khoản ngay bây giờ!</AuthAccountCantBeUsedNow>
@@ -2451,12 +2513,14 @@
     <AuthPasswordIsNotSpecified>Mật khẩu không được chỉ định!</AuthPasswordIsNotSpecified>
     <AuthPasswordIsTooLong>Mật khẩu quá dài!</AuthPasswordIsTooLong>
     <AuthPasswordIsTooShort>Mật khẩu quá ngắn (chiều dài tối thiểu là 6 ký tự)!</AuthPasswordIsTooShort>
+    <AuthRequestsLimitIsExceeded>Đã vượt quá giới hạn yêu cầu! Vui lòng liên hệ với bộ phận bán hàng của chúng tôi tại sales@stimulsoft.com!</AuthRequestsLimitIsExceeded>
     <AuthRoleCantBeDeletedBecauseUsedByUsers>Bạn không thể xóa vai trò vì nó đang được sử dụng bởi những người dùng khác.</AuthRoleCantBeDeletedBecauseUsedByUsers>
     <AuthRoleNameAlreadyExists>Vai trò với tên được chỉ định "{0}" đã tồn tại!</AuthRoleNameAlreadyExists>
     <AuthRoleNameIsSystemRole>Vai trò với tên được chỉ định "{0}" là vai trò của hệ thống!</AuthRoleNameIsSystemRole>
     <AuthSendMessageWithInstructions>Thông báo với hướng dẫn thêm được gửi tới "{0}"!</AuthSendMessageWithInstructions>
     <AuthTokenIsNotCorrect>Mã thông báo không đúng!</AuthTokenIsNotCorrect>
     <AuthUserHasLoggedOut>Bạn đã đăng xuất!</AuthUserHasLoggedOut>
+    <AuthUserHasLoggedOutPrevDevice>Bạn đã bị đăng xuất vì phát hiện có đăng nhập từ thiết bị khác!</AuthUserHasLoggedOutPrevDevice>
     <AuthUserNameAlreadyExists>Tên người dùng (thư điện tử) đã được sử dụng!</AuthUserNameAlreadyExists>
     <AuthUserNameEmailIsBlocked>Địa chỉ Email này không thể được sử dụng!</AuthUserNameEmailIsBlocked>
     <AuthUserNameIsNotSpecified>Tên người dùng (thư điện tử) chưa được chỉ định!</AuthUserNameIsNotSpecified>
@@ -2499,6 +2563,7 @@
     <NotificationItemDelete>Các mục đang xóa.</NotificationItemDelete>
     <NotificationItemDeleteComplete>Các mục đã được xóa thành công.</NotificationItemDeleteComplete>
     <NotificationItemExtraComponentRequired>Thành phần bổ sung cần thiết</NotificationItemExtraComponentRequired>
+    <NotificationItemInstallToRunWebView>Vui lòng cài đặt WebView2 Runtime để chạy thành phần Nội dung Web một cách chính xác.</NotificationItemInstallToRunWebView>
     <NotificationItemInstallWebView>Vui lòng cài đặt WebView2 Runtime để hoạt động chính xác với trình chỉnh sửa Blockly.</NotificationItemInstallWebView>
     <NotificationItemRestore>Các mục đang khôi phục.</NotificationItemRestore>
     <NotificationItemRestoreComplete>Các mục được khôi phục thành công.</NotificationItemRestoreComplete>
@@ -3065,6 +3130,8 @@
     <StiColumnShape3DBox>Hộp</StiColumnShape3DBox>
     <StiColumnShape3DPartialPyramid>Một phần kim tự tháp</StiColumnShape3DPartialPyramid>
     <StiColumnShape3DPyramid>Kim tự tháp</StiColumnShape3DPyramid>
+    <StiColumnTypeProcessingCastToColumnType>Chuyển đổi sang kiểu cột</StiColumnTypeProcessingCastToColumnType>
+    <StiColumnTypeProcessingLeaveUnprocessed>Giữ nguyên không xử lý</StiColumnTypeProcessingLeaveUnprocessed>
     <StiCompilationAccessAllow>Cho phép</StiCompilationAccessAllow>
     <StiCompilationAccessAsk>Hỏi</StiCompilationAccessAsk>
     <StiCompilationAccessDeny>Từ chối</StiCompilationAccessDeny>
@@ -3217,6 +3284,8 @@
     <StiInteractionOnHoverShowToolTip>Hiển thị mẹo công cụ</StiInteractionOnHoverShowToolTip>
     <StiInteractionOpenHyperlinkDestinationCurrentTab>Thẻ hiện tại</StiInteractionOpenHyperlinkDestinationCurrentTab>
     <StiInteractionOpenHyperlinkDestinationNewTab>Thẻ mới</StiInteractionOpenHyperlinkDestinationNewTab>
+    <StiItemFilterModeFullPath>Đường dẫn đầy đủ</StiItemFilterModeFullPath>
+    <StiItemFilterModeSelectedOnly>Chỉ những mục được chọn</StiItemFilterModeSelectedOnly>
     <StiItemOrientationHorizontal>Ngang</StiItemOrientationHorizontal>
     <StiItemOrientationVertical>Dọc</StiItemOrientationVertical>
     <StiItemSelectionModeMulti>Nhiều</StiItemSelectionModeMulti>
@@ -3498,6 +3567,7 @@
     <StiTextQualityTypographic>In</StiTextQualityTypographic>
     <StiTextQualityWysiwyg>Wysiwyg</StiTextQualityWysiwyg>
     <StiTextSizeModeFit>Vừa vặn</StiTextSizeModeFit>
+    <StiTextSizeModeFitAndWordWrap>Vừa khít và xuống dòng</StiTextSizeModeFitAndWordWrap>
     <StiTextSizeModeTrimming>Cắt</StiTextSizeModeTrimming>
     <StiTextSizeModeWordWrap>Ngắt từ</StiTextSizeModeWordWrap>
     <StiThemeAppearanceAuto>Tự động</StiThemeAppearanceAuto>
@@ -3710,6 +3780,7 @@
     <AllowUseTextBrush>Cho phép sử dụng cọ văn bản</AllowUseTextBrush>
     <AllowUseTextFormat>Cho phép sử dụng định dạng văn bản</AllowUseTextFormat>
     <AllowUseTextOptions>Cho phép sử dụng văn bản tùy chọn</AllowUseTextOptions>
+    <AllowUseTitle>Cho phép sử dụng tiêu đề</AllowUseTitle>
     <AllowUseVertAlignment>Cho phép sử dụng căn chỉnh theo chiều dọc</AllowUseVertAlignment>
     <AllowUsingAsSqlParameter>Cho phép sử dụng như tham số SQL</AllowUsingAsSqlParameter>
     <AlternatingBackColor>Màu nền luân phiên</AlternatingBackColor>
@@ -3793,6 +3864,7 @@
     <Cancel>Hủy</Cancel>
     <CanGrow>Có thể phát triển</CanGrow>
     <CanShrink>Có thể co lại</CanShrink>
+    <CastToColumnType>Chuyển đổi sang kiểu cột</CastToColumnType>
     <Categories>Các thể loại</Categories>
     <Category>Thể loại</Category>
     <CategoryConnections>Các kết nối</CategoryConnections>
@@ -3801,6 +3873,7 @@
     <CellDockStyle>Phông cách ô chứa</CellDockStyle>
     <CellForeColor>Màu viền ô</CellForeColor>
     <CellHeight>Chiều cao ô</CellHeight>
+    <Cells>Ô</Cells>
     <CellType>Loại ô</CellType>
     <CellWidth>Chiều rộng ô</CellWidth>
     <Center>Giữa</Center>
@@ -3885,6 +3958,9 @@
     <DataAdapter>Bộ điều hợp dữ liệu</DataAdapter>
     <DataAdapters>Các bộ điều hợp dữ liệu</DataAdapters>
     <DataBarCondition>Điều kiện thanh dữ liệu</DataBarCondition>
+    <DataBarsNegative>Thanh dữ liệu âm</DataBarsNegative>
+    <DataBarsOverlapped>Thanh dữ liệu chồng lấp</DataBarsOverlapped>
+    <DataBarsPositive>Thanh dữ liệu dương</DataBarsPositive>
     <DataBindings>Liên kết dữ liệu</DataBindings>
     <DataCells>Các ô dữ liệu</DataCells>
     <DataColor>Màu dữ liệu</DataColor>
@@ -3973,6 +4049,7 @@
     <Expand>Mở rộng</Expand>
     <Exponential>Lũy thừa</Exponential>
     <ExportAsImage>Xuất như hình ảnh</ExportAsImage>
+    <ExportSettings>Cài đặt xuất</ExportSettings>
     <Expression>Biểu thức</Expression>
     <ExtensionDigit>Số phần mở rộng</ExtensionDigit>
     <EyeBallBrush>Cọ bóng mắt</EyeBallBrush>
@@ -3982,8 +4059,10 @@
     <FaqPage>Trang FAQ</FaqPage>
     <Field>Trường</Field>
     <FieldIs>Trường là</FieldIs>
+    <Fields>Trường</Fields>
     <Fifth>Thứ năm</Fifth>
     <File>Tệp tin</File>
+    <FileId>ID tệp</FileId>
     <Fill>Đặc</Fill>
     <FillColor>Màu đặc</FillColor>
     <Filter>Bộ lọc</Filter>
@@ -3992,8 +4071,10 @@
     <FilterMode>Chế độ bộ lọc</FilterMode>
     <FilterOn>Bật bộ lọc</FilterOn>
     <Filters>Bộ lọc</Filters>
+    <FiltersTarget>Mục tiêu bộ lọc</FiltersTarget>
     <First>Đầu tiên</First>
     <FirstTabOffset>Khoảng cách trống Tab đầu tiên</FirstTabOffset>
+    <FixedHeight>Chiều cao cố định</FixedHeight>
     <FixedWidth>Chiều rộng cố định</FixedWidth>
     <Flat>Phẳng</Flat>
     <FlatMode>Chế độ phẳng</FlatMode>
@@ -4090,6 +4171,7 @@
     <HotColumnHeaderBackColor>Màu nền tiêu đề cột ấm</HotColumnHeaderBackColor>
     <HotForeColor>Màu viền ấm</HotForeColor>
     <HotGlyphColor>Màu nét ấm</HotGlyphColor>
+    <HotHeaderBackColor>Màu nền tiêu đề nóng</HotHeaderBackColor>
     <HotHeaderColor>Màu tiêu đề ấm</HotHeaderColor>
     <HotkeyPrefix>Tiền tố phím nóng</HotkeyPrefix>
     <HotRowHeaderBackColor>Màu nền tiêu đề hàng ấm</HotRowHeaderBackColor>
@@ -4127,6 +4209,9 @@
     <Increment>Tăng</Increment>
     <Indent>Thụt lề</Indent>
     <Indicator>Chỉ số</Indicator>
+    <IndicatorNegative>Chỉ số âm</IndicatorNegative>
+    <IndicatorNeutral>Chỉ số trung tính</IndicatorNeutral>
+    <IndicatorPositive>Chỉ số dương</IndicatorPositive>
     <IndicatorValue>Giá trị chỉ số</IndicatorValue>
     <IndividualColor>Màu cá nhân</IndividualColor>
     <InitBy>Khởi đầu bởi</InitBy>
@@ -4219,6 +4304,8 @@
     <ListOfValuesLow>Danh sách giá trị thấp</ListOfValuesLow>
     <ListOfValuesOpen>Danh sách giá trị mở</ListOfValuesOpen>
     <ListOfWeights>Danh sách trọng số </ListOfWeights>
+    <ListOfXValues>Danh sách giá trị X</ListOfXValues>
+    <ListOfYValues>Danh sách giá trị Y</ListOfYValues>
     <Localizable>Cá nhân hóa</Localizable>
     <Location>Vị trí</Location>
     <Locked>Khóa</Locked>
@@ -4326,6 +4413,7 @@
     <OnePointZoom>Phóng to một điểm</OnePointZoom>
     <OnHover>Trong một cái di chuột</OnHover>
     <OnlyText>Chỉ chữ</OnlyText>
+    <OnSelect>Khi chọn</OnSelect>
     <Opacity>Độ mờ</Opacity>
     <OpenValues>Giá trị mở</OpenValues>
     <Operation>Hoạt động</Operation>
@@ -4344,6 +4432,7 @@
     <PaperSourceOfFirstPage>Nguồn giấy của trang đầu tiên</PaperSourceOfFirstPage>
     <PaperSourceOfOtherPages>Nguồn giấy của các trang khác</PaperSourceOfOtherPages>
     <Parameter>Tham số</Parameter>
+    <ParameterAlignment>Căn chỉnh tham số</ParameterAlignment>
     <Parameters>Các tham số</Parameters>
     <ParametersDateFormat>Tham số định dạng ngày</ParametersDateFormat>
     <ParametersOrientation>Các tham số hướng</ParametersOrientation>
@@ -4465,6 +4554,8 @@
     <ScriptLanguage>Ngôn ngữ kịch bản</ScriptLanguage>
     <ScrollTime>Thời gian cuộn</ScrollTime>
     <Second>Thứ hai</Second>
+    <SegmentCount>Số lượng phân đoạn</SegmentCount>
+    <SegmentIndex>Chỉ số phân đoạn</SegmentIndex>
     <SegmentPerHeight>Phân đoạn trên chiều cao</SegmentPerHeight>
     <SegmentPerWidth>Phân đoạn trên chiều rộng</SegmentPerWidth>
     <SelectedBackColor>Màu nền được chọn</SelectedBackColor>
@@ -4511,6 +4602,7 @@
     <ShiftMode>Chế độ ca</ShiftMode>
     <ShortName>Tên ngắn</ShortName>
     <ShortValue>Giá trị ngắn</ShortValue>
+    <Show3D>Hiển thị 3D</Show3D>
     <ShowAllValue>Hiển thị tất cả giá trị</ShowAllValue>
     <ShowBehind>Hiển thị đằng sau</ShowBehind>
     <ShowBlanks>Hiển thị Trống</ShowBlanks>
@@ -4547,6 +4639,7 @@
     <ShowZeros>Hiển thị số không</ShowZeros>
     <ShrinkFontToFit>Co nhỏ phông chữ để phù hợp</ShrinkFontToFit>
     <ShrinkFontToFitMinimumSize>Co nhỏ phông chữ để phù hợp với kích cỡ nhỏ nhất</ShrinkFontToFitMinimumSize>
+    <ShrinkToFit>Co lại vừa khít</ShrinkToFit>
     <Side>Bên</Side>
     <SideBySide>Cạnh bên nhau</SideBySide>
     <Sides>Các bên</Sides>
@@ -4573,6 +4666,7 @@
     <Space>Không gian</Space>
     <SpaceRatio>Tỷ lệ không gian</SpaceRatio>
     <Spacing>Khoảng cách</Spacing>
+    <Sparkline>Đồ thị mini</Sparkline>
     <SqlCommand>Lệnh Sql</SqlCommand>
     <StartAngle>Góc bắt đầu</StartAngle>
     <StartCap>Chữ in hoa bắt đầu</StartCap>
@@ -4641,6 +4735,7 @@
     <TextFormat>Định dạng văn bản</TextFormat>
     <TextOnly>Chỉ văn bản</TextOnly>
     <TextOptions>Tùy chọn văn bản</TextOptions>
+    <TextPlacement>Vị trí văn bản</TextPlacement>
     <TextQuality>Chất lượng văn bản</TextQuality>
     <TextRightToLeft>Văn bản từ Phải sang Trái</TextRightToLeft>
     <TextShowBehind>Văn bản Hiển thị Đằng sau</TextShowBehind>
@@ -4657,10 +4752,12 @@
     <TickMarkMinorBrush>Cọ phụ đánh dấu</TickMarkMinorBrush>
     <Ticks>Đường thẳng hiển thị đơn vị, tỷ lệ</Ticks>
     <Title>Tiêu đề</Title>
+    <TitleBackColor>Màu nền tiêu đề</TitleBackColor>
     <TitleBeforeHeader>Tên báo cáo trước tiêu đề</TitleBeforeHeader>
     <TitleColor>Màu tiêu đề</TitleColor>
     <TitleDirection>Hướng tiêu đề</TitleDirection>
     <TitleFont>Phông tiêu đề</TitleFont>
+    <TitleForeColor>Màu chữ tiêu đề</TitleForeColor>
     <TitleVisible>Hiển thị tiêu đề</TitleVisible>
     <To>Tới</To>
     <Today>Hôm nay</Today>
@@ -4709,6 +4806,7 @@
     <UseExternalReport>Sử dụng báo cáo bên ngoài</UseExternalReport>
     <UseParentStyles>Sử dụng phong cách cha</UseParentStyles>
     <UseRangeColor>Sử dụng dải màu</UseRangeColor>
+    <UserBingKey>Khóa Bing người dùng</UserBingKey>
     <UseRectangularSymbols>Sử dụng biểu tượng hình chữ nhật</UseRectangularSymbols>
     <UseSeriesColor>Sử dụng dòng màu</UseSeriesColor>
     <UseStyleOfSummaryInColumnTotal>Sử dụng kiểu tổng kết trong tổng số cột</UseStyleOfSummaryInColumnTotal>
@@ -4758,14 +4856,20 @@
     <Weights>Các trọng số</Weights>
     <Width>Chiều rộng</Width>
     <WindowState>Trạng thái cửa sổ</WindowState>
+    <WinLossNegative>Thắng thua âm</WinLossNegative>
+    <WinLossPositive>Thắng thua dương</WinLossPositive>
     <WordWrap>Ngắt từ</WordWrap>
     <Wrap>Bao bọc</Wrap>
     <WrapGap>Khoảng cách dòng bao bọc</WrapGap>
     <WrapLine>Dây quấn</WrapLine>
     <XAxis>Trục X</XAxis>
     <XTopAxis>Trục X trên</XTopAxis>
+    <XValue>Giá trị X</XValue>
+    <XValuesDataColumn>Cột dữ liệu giá trị X</XValuesDataColumn>
     <YAxis>Trục Y</YAxis>
     <YRightAxis>Trục Y phải</YRightAxis>
+    <YValue>Giá trị Y</YValue>
+    <YValuesDataColumn>Cột dữ liệu giá trị Y</YValuesDataColumn>
     <ZeroColor>Không màu</ZeroColor>
     <Zoom>Thu phóng</Zoom>
   </PropertyMain>
@@ -4868,6 +4972,7 @@
   <Questions>
     <qnConfiguration>Vui lòng chọn loại cấu hình cho bảng thuộc tính. Loại cấu hình được chọn phụ thuộc vào số lượng thuộc tính có thể nhìn thấy và sự phức tạp của chúng đối với nhà phát triển báo cáo. Bạn luôn có thể thay đổi kiểu cấu hình từ trình đơn ngữ cảnh của bảng thuộc tính.</qnConfiguration>
     <qnCopyCategory>Bạn có muốn sao chép tất cả các biến của danh mục này không?</qnCopyCategory>
+    <qnCovertColumnType>Bạn đã thay đổi kiểu cột, bạn có muốn bật chuyển đổi dữ liệu cột cho nguồn dữ liệu này không?</qnCovertColumnType>
     <qnDictionaryNew>Bạn có muốn tạo từ điển mới không?</qnDictionaryNew>
     <qnLanguageNew>Bạn đã thay đổi ngôn ngữ của báo cáo. Điều này sẽ dẫn tới việc tạo mã báo cáo mới. Bạn có chắc chắn muốn lưu ngôn ngữ mới?</qnLanguageNew>
     <qnPageDelete>Bạn có muốn xóa trang không?</qnPageDelete>
@@ -4924,6 +5029,8 @@
     <Charts>Biểu đồ</Charts>
     <Checking>Kiểm tra...</Checking>
     <ClickForMoreDetails>Nhấp để biết thêm chi tiết</ClickForMoreDetails>
+    <ClickHereToCreateNewCondition>để tạo điều kiện mới</ClickHereToCreateNewCondition>
+    <ClickHereToCreateNewField>để tạo trường mới</ClickHereToCreateNewField>
     <CollapseAll>Thu gọn tất cả</CollapseAll>
     <Collection>Bộ sưu tập</Collection>
     <CompilationAccess>Quyền truy cập biên dịch</CompilationAccess>
@@ -4940,6 +5047,7 @@
     <Enhancements>Cải tiến</Enhancements>
     <EnterDataManually>Nhập thủ công dữ liệu</EnterDataManually>
     <Errors>Lỗi</Errors>
+    <EventsAccess>Truy cập sự kiện</EventsAccess>
     <EventsTab>Tab sự kiện</EventsTab>
     <ExpandAll>Mở rộng tất cả</ExpandAll>
     <FilterAnd>Và</FilterAnd>
@@ -4951,7 +5059,9 @@
     <FromDefaultState>Từ trạng thái mặc định</FromDefaultState>
     <Gallery>Bộ sưu tập</Gallery>
     <GenerateNewCode>Tạo mã mới</GenerateNewCode>
+    <HideUnlistedExportsInTheViewer>Ẩn các định dạng xuất không có trong danh sách ở trình xem</HideUnlistedExportsInTheViewer>
     <History>Lịch sử</History>
+    <IfEmpty>Nếu {0} trống</IfEmpty>
     <Infographics>Biểu đồ thông tin</Infographics>
     <InfoMessage>{0} - {1} đã được tìm thấy.</InfoMessage>
     <InformationMessages>Thông báo thông tin</InformationMessages>
@@ -5034,6 +5144,7 @@
     <VisualChecked>Đã kiểm tra</VisualChecked>
     <VisualDefault>Mặc định</VisualDefault>
     <VisualDisabled>Vô hiệu hóa</VisualDisabled>
+    <VisualFocused>Đang tập trung</VisualFocused>
     <VisualHover>Di chuột qua</VisualHover>
     <VisualPressed>Nhấn</VisualPressed>
     <Warnings>Cảnh báo</Warnings>
@@ -5200,6 +5311,22 @@
     <SignatureSavedSuccessfully>Chữ ký đã được lưu thành công.</SignatureSavedSuccessfully>
     <UseBrush>Sử dụng cọ</UseBrush>
   </Signature>
+  <StimulAI>
+    <ChangedWithAI>Đã thay đổi với Stimul AI</ChangedWithAI>
+    <CheckExpressionSuccess>Không tìm thấy vấn đề trong biểu thức đã chỉ định.</CheckExpressionSuccess>
+    <CheckQuery>Kiểm tra truy vấn</CheckQuery>
+    <CheckWithStimulAI>Kiểm tra với Stimul AI</CheckWithStimulAI>
+    <ConnectionStringExampleWithAI>Mẫu chuỗi kết nối với Stimul AI</ConnectionStringExampleWithAI>
+    <ConnectionStringTesting>Kiểm tra chuỗi kết nối</ConnectionStringTesting>
+    <ExplainQuery>Giải thích truy vấn</ExplainQuery>
+    <FixWithAI>Sửa với Stimul AI</FixWithAI>
+    <GenerateNewQuery>Tạo truy vấn mới</GenerateNewQuery>
+    <OptimizeQuery>Tối ưu hóa truy vấn</OptimizeQuery>
+    <QueryWithStimulAI>Truy vấn với Stimul AI</QueryWithStimulAI>
+    <Translate>Dịch bằng Stimul AI</Translate>
+    <Try>Thử với Stimul AI</Try>
+    <TryConvertScriptToBlockly>Thử chuyển đổi script {0} trước đó thành script {1}.</TryConvertScriptToBlockly>
+  </StimulAI>
   <SystemVariables>
     <Column>Trả về số cột hiện tại (bắt đầu từ 1).</Column>
     <GroupLine>Trả về số dòng nhóm hiện tại (bắt đầu từ 1).</GroupLine>
@@ -5316,6 +5443,20 @@
     <TextEditor>Trình soạn thảo văn bản</TextEditor>
     <title>Hộp công cụ</title>
   </Toolbox>
+  <UserFunctionEditor>
+    <ArgumentName>Tên đối số</ArgumentName>
+    <ArgumentType>Kiểu đối số</ArgumentType>
+    <ConvertScript>Chuyển đổi script</ConvertScript>
+    <CustomCategory>Danh mục tùy chỉnh</CustomCategory>
+    <EditCode>Chỉnh sửa mã</EditCode>
+    <EditWithBlockly>Chỉnh sửa với blockly</EditWithBlockly>
+    <ReturnType>Kiểu trả về</ReturnType>
+    <Script>Kịch bản</Script>
+    <ScriptMode>Chế độ kịch bản</ScriptMode>
+    <Title>Hàm người dùng</Title>
+    <UserFunctionEdit>Chỉnh sửa hàm người dùng</UserFunctionEdit>
+    <UserFunctionNew>Hàm người dùng mới</UserFunctionNew>
+  </UserFunctionEditor>
   <WelcomeScreen>
     <AllDownloadsWillCanceled>Bạn có chắc chắn muốn đóng cửa sổ này? Tất cả các tải xuống sẽ bị hủy bỏ.</AllDownloadsWillCanceled>
     <Description>Chúng tôi đã chọn cho bạn các báo cáo mà chúng tôi nghĩ là tốt nhất để bắt đầu nhanh.</Description>

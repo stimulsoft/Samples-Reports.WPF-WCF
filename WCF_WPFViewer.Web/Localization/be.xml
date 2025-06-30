@@ -93,6 +93,40 @@
     <Post>Паштовы</Post>
     <TwoDimensional>Двухмерны</TwoDimensional>
   </BarCode>
+  <Blockly>
+    <AllComponents>Усе кампаненты</AllComponents>
+    <AllComponentsFrom>Усе кампаненты з</AllComponentsFrom>
+    <ColorHex>Шаснаццатковы колер</ColorHex>
+    <ColumnName>Імя калонкі</ColumnName>
+    <DateTime>Дата і час</DateTime>
+    <GetComponentByName>Атрымаць кампанент па імі</GetComponentByName>
+    <GetCurrentValue>Атрымаць бягучае значэнне</GetCurrentValue>
+    <GetDataSourceByName>Атрымаць крыніцу дадзеных па імі</GetDataSourceByName>
+    <GetProperty>Атрымаць уласцівасць</GetProperty>
+    <GetStyleByName>Атрымаць стыль па імі</GetStyleByName>
+    <GetVariable>Атрымаць зменную</GetVariable>
+    <IndexOfRow>Індэкс радка</IndexOfRow>
+    <Lists>Спісы</Lists>
+    <LocalVariables>Лакальныя зменныя</LocalVariables>
+    <Logic>Логіка</Logic>
+    <Loops>Цыклы</Loops>
+    <Math>Матэматыка</Math>
+    <OfDataSource>крыніцы дадзеных</OfDataSource>
+    <OfObject>аб'екта</OfObject>
+    <OpenLink>Адкрыць спасылку</OpenLink>
+    <Process>Працэс</Process>
+    <Programming>Праграмаванне</Programming>
+    <RefreshViewer>Абнавіць вьювер</RefreshViewer>
+    <SetCurrentValue>Усталяваць бягучае значэнне</SetCurrentValue>
+    <SetProperty>Усталяваць уласцівасць</SetProperty>
+    <SetSqlCommand>Усталяваць SQL-каманду</SetSqlCommand>
+    <SetVariable>Усталяваць зменную</SetVariable>
+    <Strings>Радкі</Strings>
+    <ThisComponent>Гэты кампанент</ThisComponent>
+    <ThisReport>Гэта справаздача</ThisReport>
+    <To>У</To>
+    <Visuals>Візуальныя элементы</Visuals>
+  </Blockly>
   <Buttons>
     <Add>Дадаць</Add>
     <AddAllColumns>Дадаць усе калонкі</AddAllColumns>
@@ -144,8 +178,8 @@
     <Test>Праверка</Test>
     <TryToReconnect>Паспрабаваць перадалучыцца</TryToReconnect>
     <Up>Уверх</Up>
-    <Upgrade>Палепшыць</Upgrade>
-    <UpgradeNow>Палепшыць зараз</UpgradeNow>
+    <Upgrade>Абнавіць</Upgrade>
+    <UpgradeNow>Абнавіць зараз</UpgradeNow>
     <Upload>Загрузіць</Upload>
     <Waiting>Чаканне</Waiting>
     <Yes>&amp;Так</Yes>
@@ -189,6 +223,7 @@
     <Gantt>Ганта</Gantt>
     <GridInterlaced>Чаргаванне</GridInterlaced>
     <GridLines>Лініі сеткі</GridLines>
+    <Heatmap>Цеплавая карта</Heatmap>
     <Histogram>Гістаграм</Histogram>
     <LabelAlignment>Выраўнаванне:</LabelAlignment>
     <LabelAlignmentHorizontal>Гарызантальнае:</LabelAlignmentHorizontal>
@@ -231,6 +266,8 @@
     <LegendSpacing>Адлегласць</LegendSpacing>
     <Line>Лінія</Line>
     <ListOfValues>Спіс значэнняў</ListOfValues>
+    <ListOfXValues>Спіс значэнняў X</ListOfXValues>
+    <ListOfYValues>Спіс значэнняў Y</ListOfYValues>
     <Marker>Пазнака</Marker>
     <MoveConstantLineDown>Перамясціць канстантную лінію ўніз</MoveConstantLineDown>
     <MoveConstantLineUp>Перамясціць канстантную лінію ўверх</MoveConstantLineUp>
@@ -620,8 +657,8 @@
     <StiCrossHeaderBand>Крос-загаловак дадзеных</StiCrossHeaderBand>
     <StiCrossRow>Крос-радок</StiCrossRow>
     <StiCrossRowTotal>Крос-падрахунак па радку</StiCrossRowTotal>
-    <StiCrossSummary>Крос-сума</StiCrossSummary>
-    <StiCrossSummaryHeader>Крос-загаловак сумы</StiCrossSummaryHeader>
+    <StiCrossSummary>Крос-значэнні</StiCrossSummary>
+    <StiCrossSummaryHeader>Крос-загаловак значэнняў</StiCrossSummaryHeader>
     <StiCrossTab>Крос-табліца</StiCrossTab>
     <StiCrossTitle>Крос-загаловак</StiCrossTitle>
     <StiDashboard>Панэль індыкатараў</StiDashboard>
@@ -642,6 +679,7 @@
     <StiMap>Карта</StiMap>
     <StiMathFormula>Матэматычная формула</StiMathFormula>
     <StiMultipleSelection>Множны выбар</StiMultipleSelection>
+    <StiNavigatorUI>Навігатар</StiNavigatorUI>
     <StiNumberBox>Лікавае поле</StiNumberBox>
     <StiOnlineMap>Анлайн-карта</StiOnlineMap>
     <StiOverlayBand>Вадзяны знак</StiOverlayBand>
@@ -906,6 +944,7 @@
     <StiPictureBoxControl>Малюнак</StiPictureBoxControl>
     <StiRadioButtonControl>Перамыкач</StiRadioButtonControl>
     <StiRadioControl>Перамыкач</StiRadioControl>
+    <StiRadioGroupControl>Radio група</StiRadioGroupControl>
     <StiReportControl>Элемент кіравання</StiReportControl>
     <StiRichTextBoxControl>Rich Text Box</StiRichTextBoxControl>
     <StiSliderControl>Слайдар</StiSliderControl>
@@ -915,6 +954,7 @@
   </Dialogs>
   <Editor>
     <AllowSQLFormatting>Дазволіць SQL фарматаванне</AllowSQLFormatting>
+    <AutomaticallyGeneratedExpression>Гэта аўтаматычна згенераваны выраз.</AutomaticallyGeneratedExpression>
     <BetweenMetrics>Можна выбраць ад 1 да 10 метрык.</BetweenMetrics>
     <CantFind>Дадзеныя, якія задавальняюць умове пошуку, не выяўленыя.</CantFind>
     <CollapseToDefinitions>Згарнуць у азначэнні</CollapseToDefinitions>
@@ -925,6 +965,7 @@
     <FindWhat>Знайсці:</FindWhat>
     <FromCursor>Ад пазіцыі курсора</FromCursor>
     <GotoLine>Перайсці на лінію</GotoLine>
+    <InsertField>Уставіць поле</InsertField>
     <InsertLink>Уставіць спасылку</InsertLink>
     <InsertSymbol>Уставіць знак</InsertSymbol>
     <Line>Лінія: {0}</Line>
@@ -1087,6 +1128,7 @@
     <MultipleFiles>Некалькі файлаў</MultipleFiles>
     <NoMoreThan>Не больш чым</NoMoreThan>
     <OpenAfterExport>Адкрыць пасля экспарту</OpenAfterExport>
+    <Ordered>Упарадкавана</Ordered>
     <PdfACompliance>PDF/A дамова</PdfACompliance>
     <PrintingReport>Друк справаздачы</PrintingReport>
     <RemoveEmptySpaceAtBottom>Выдаліць пустое месца унізе старонкі</RemoveEmptySpaceAtBottom>
@@ -1258,7 +1300,7 @@
     <AddLevel>Дадаць узровень</AddLevel>
     <AssignExpression>Прысвоіць выраз</AssignExpression>
     <BreakIfTrue>Сапыніць апрацоўку</BreakIfTrue>
-    <BreakIfTrueToolTip>Спынiць апрацоўку умоў, калі бягучае выконваецца</BreakIfTrueToolTip>
+    <BreakIfTrueToolTip>Спынiць апрацоўку умоў, калі бягучае выконваецца.</BreakIfTrueToolTip>
     <ChangeBorder>Змяніць мяжу...</ChangeBorder>
     <ChangeFont>Змяніць шрыфт</ChangeFont>
     <ComponentIsEnabled>Кампанент уключаны</ComponentIsEnabled>
@@ -1272,7 +1314,7 @@
     <DataSource>Крыніца Дадзеных:</DataSource>
     <Properties>Уласцівасці:</Properties>
     <Rows>Радкі:</Rows>
-    <Summary>Падрахункі:</Summary>
+    <Summary>Значэнні:</Summary>
     <Swap>Абмяняць Калонкі / Радкі</Swap>
     <title>Рэдактар Крос-Справаздачы</title>
   </FormCrossTabDesigner>
@@ -1305,6 +1347,7 @@
     <InformixEdit>Старонка Informix злучэння</InformixEdit>
     <InformixNew>Новае Informix злучэнне</InformixNew>
     <InitialCatalog>Пачатковы каталог:</InitialCatalog>
+    <InsertSampleConnectionString>Уставіць прыклад радка злучэння</InsertSampleConnectionString>
     <JsonEdit>Рэдагаванне JSON дадзеных</JsonEdit>
     <JsonNew>Новыя JSON дадзеныя</JsonNew>
     <MySQLEdit>Змена MySQL злучэнні</MySQLEdit>
@@ -1366,6 +1409,7 @@
     <CompilingReport>Кампіляцыя справаздачы</CompilingReport>
     <CopyPropertyName>Капіяваць імя ўласцівасці</CopyPropertyName>
     <DockingPanels>Панэлі</DockingPanels>
+    <Four>Чатыры</Four>
     <HtmlPreview>HTML прагляд</HtmlPreview>
     <JsPreview>JS прагляд</JsPreview>
     <labelPleaseSelectTypeOfInterface>Калі ласка, вылучыце тып iнтэрфейсу</labelPleaseSelectTypeOfInterface>
@@ -1458,6 +1502,7 @@
     <RetrievingDatabaseInformation>Атрыманне iнфармацыi аб базе дадзеных...</RetrievingDatabaseInformation>
     <Run>Выканаць</Run>
     <SelectTypeOfBusinessObject>Пазначыць тып бізнес-аб'екта</SelectTypeOfBusinessObject>
+    <ShowMoreDataSources>Паказваць больш крыніц дадзеных</ShowMoreDataSources>
     <SkipSchemaWizard>Прапусціць майстар імпарту дадзеных</SkipSchemaWizard>
     <SortItems>Сартаваць элементы</SortItems>
     <Synchronize>Сінхранізаваць</Synchronize>
@@ -1536,7 +1581,9 @@
     <BlankReport>Пустая справаздача</BlankReport>
     <BlankScreen>Пусты экран</BlankScreen>
     <Default>Па змаўчанні</Default>
+    <DefaultSaveFormat>Фармат захавання па змаўчанні</DefaultSaveFormat>
     <DefaultScriptMode>Рэжым скрыпту па змаўчанні</DefaultScriptMode>
+    <DesignSize>Памер дызайну</DesignSize>
     <Drawing>Адлюстраванне</Drawing>
     <DrawMarkersWhenMoving>Маляваць маркеры кампанентаў пры перамяшчэнні</DrawMarkersWhenMoving>
     <EditAfterInsert>Рэдагаваць пасля стварэння</EditAfterInsert>
@@ -1582,11 +1629,13 @@
     <ShowDialogForms>Паказваць дыялогавыя формы</ShowDialogForms>
     <ShowDimensionLines>Паказваць памерныя лініі</ShowDimensionLines>
     <ShowOldGaugeEditor>Паказваць стары рэдактар індыкатараў</ShowOldGaugeEditor>
+    <ShowSearch>Паказваць Пошук</ShowSearch>
     <ShowSmartGuides>Паказваць хуткія скіравальныя</ShowSmartGuides>
     <StartScreen>Пачатковы экран</StartScreen>
     <title>Параметры</title>
     <UseComponentColor>Выкарыстаць колеры кампанента для запаўнення</UseComponentColor>
     <UseLastFormat>Выкарыстаць апошняе фарматаванне</UseLastFormat>
+    <ViewSize>Памер прагляду</ViewSize>
     <Welcome>Вітанне</Welcome>
   </FormOptions>
   <FormPageSetup>
@@ -1699,6 +1748,7 @@
   </FormSystemTextEditor>
   <FormTitles>
     <ChartWizardForm>Майстар дыяграм</ChartWizardForm>
+    <CodeEditorForm>Рэдактар кода</CodeEditorForm>
     <ConditionEditorForm>Умова</ConditionEditorForm>
     <ConnectionSelectForm>Вылучыце тып злучэння</ConnectionSelectForm>
     <ContainerSelectForm>Вылучыце кантэйнер</ContainerSelectForm>
@@ -2039,6 +2089,8 @@
     <DockStyleNone>Не дакiраваць вылучаныя кампаненты.</DockStyleNone>
     <DockStyleRight>Дакiраваць вылучаныя кампаненты па правым краю.</DockStyleRight>
     <DockStyleTop>Дакiраваць вылучаныя кампаненты па верхнім краю.</DockStyleTop>
+    <EventsAccess1>У гэтым дакуменце выкарыстоўваюцца падзеі. Калі дакумент атрыманы з надзейнай крыніцы, вы можаце націснуць кнопку «Адкрыць», каб атрымаць да яго доступ.</EventsAccess1>
+    <EventsAccess2>Калі вы не ўпэўнены ў крыніцы дакумента, але ўсё ж хочаце яго прагледзець, вы можаце націснуць кнопку «Адкрыць у бяспечным рэжыме». У гэтым выпадку сцэнары падзей не будуць выконвацца.</EventsAccess2>
     <FontGrow>Зрабіць памер шрыфта тэксту больш.</FontGrow>
     <FontName>Шрыфт тэксту.</FontName>
     <FontNameWatermark>Шрыфт тэксту вадзянога знака.</FontNameWatermark>
@@ -2104,6 +2156,7 @@
     <menuViewShowSmartGuides>Адлюстроўваць хуткія скіравальныя для пазіцыянавання кампанентаў адносна адзін аднаго.</menuViewShowSmartGuides>
     <MoveBackward>Прагляд кампанента на адзін узровень вышэй у парадку размяшчэння кампанентаў на старонцы.</MoveBackward>
     <MoveForward>Прагляд кампанента на адзін узровень ніжэй у парадку размяшчэння кампанентаў на старонцы.</MoveForward>
+    <NotPossibleEnableCompilationMode>Немагчыма ўключыць рэжым кампіляцыі справаздачы. Гэта забаронена опцыяй «Доступ да кампіляцыі» у наладах дызайнера.</NotPossibleEnableCompilationMode>
     <Orientation>Пераключэнне паміж кніжнай і альбомным арыентацыямi старонкі.</Orientation>
     <PageDelete>Выдаліць абраную старонку з справаздачы.</PageDelete>
     <PageNew>Стварыць новую старонку ў справаздачы.</PageNew>
@@ -2447,7 +2500,8 @@
     <ActivationMaxActivationsReached>Вы дасягнулі максімальнай колькасці актывацый ліцэнзіі. Калі ласка, звяжыцеся з нашым аддзелам продажаў па sales@stimulsoft.com!</ActivationMaxActivationsReached>
     <ActivationMaxActivationsReached1>Вы можаце кіраваць зарэгістраванымі кампутарамі пры дапамозе </ActivationMaxActivationsReached1>
     <ActivationMaxActivationsReached2>Stimulsoft акаўнта.</ActivationMaxActivationsReached2>
-    <ActivationMaxComputersReached>Вы ўжо зарэгістравалі максімальную колькасць кампутараў, даступных для вашай падпіскі.</ActivationMaxComputersReached>
+    <ActivationMaxComputersReached>Вы ўжо зарэгістравалі максімальную колькасць кампутараў, што дазваляецца ў рамках вашага плана падпіскі.</ActivationMaxComputersReached>
+    <ActivationMaxDeactivationsReached>Дэактывацыя прылады немагчыма, бо вы дасягнулі ліміту для гэтай аперацыі. Калі ласка, звяжыцеся з нашым аддзелам продажаў па адрасе sales@stimulsoft.com!</ActivationMaxDeactivationsReached>
     <ActivationServerIsNotAvailableNow>Сервер актывацыі зараз недаступны! Калі ласка, паспрабуйце актываваць ліцэнзію пазней.</ActivationServerIsNotAvailableNow>
     <ActivationServerVersionNotAllowed>Вы не можаце актываваць гэтую версію Stimulsoft Server, бо Ваша Праграма Падпіскі мінула! Калі ласка, ўвайдзіце ў Ваш рахунак на нашым сайце і праверце, якую версію Stimulsoft Server Вы можаце ўсталяваць і актываваць.</ActivationServerVersionNotAllowed>
     <ActivationSomeTroublesOccurred>Падчас актывацыі ліцэнзіі адбылася памылка. Калі ласка, паспрабуйце актываваць ліцэнзію пазней.</ActivationSomeTroublesOccurred>
@@ -2456,6 +2510,7 @@
     <ActivationTrialExtend2>напішыце нам чаму.</ActivationTrialExtend2>
     <ActivationUserNameOrPasswordIsWrong>Імя карыстальніка (Email) або пароль паказаныя няслушна!</ActivationUserNameOrPasswordIsWrong>
     <ActivationWrongAccountType>Ваш тып рахунка не дазваляе актываваць ліцэнзію Stimulsoft Server!</ActivationWrongAccountType>
+    <AITokensExhausted>Вашы токены вычарпаны! Калі ласка, звяжыцеся з нашым аддзелам продажаў па адрасе sales@stimulsoft.com!</AITokensExhausted>
     <Alert>Трывога</Alert>
     <AuthAccountAlreadyExists>Акаўнт з такім адрасам электроннай пошты ўжо існуе. Каб звязаць яго з {0} акаўнтам увядзіце пароль уліковага запісу Stimulsoft.</AuthAccountAlreadyExists>
     <AuthAccountCantBeUsedNow>Рахунак не можа быць выкарыстаны зараз!</AuthAccountCantBeUsedNow>
@@ -2487,6 +2542,7 @@
     <AuthSendMessageWithInstructions>На адрас электроннай пошты "{0}" адпраўлена паведамленне з далейшымі інструкцыямі!</AuthSendMessageWithInstructions>
     <AuthTokenIsNotCorrect>Токен не дакладны!</AuthTokenIsNotCorrect>
     <AuthUserHasLoggedOut>Вы выйшлі з сістэмы!</AuthUserHasLoggedOut>
+    <AuthUserHasLoggedOutPrevDevice>Ваш сеанс завершаны бо выяўлены ўваход з іншай прылады!</AuthUserHasLoggedOutPrevDevice>
     <AuthUserNameAlreadyExist>Паказанае імя карыстальніка ўжо выкарыстоўваецца!</AuthUserNameAlreadyExist>
     <AuthUserNameAlreadyExists>Імя карыстальніка (Email) ужо выкарыстоўваецца!</AuthUserNameAlreadyExists>
     <AuthUserNameEmailIsBlocked>Выкарыстанне дадзенай паштовай скрынкі немагчыма!</AuthUserNameEmailIsBlocked>
@@ -2497,6 +2553,7 @@
     <AuthUserNameOrPasswordIsNotCorrect>Імя карыстальніка або пароль не апазнаны!</AuthUserNameOrPasswordIsNotCorrect>
     <AuthUserNameShouldLookLikeAnEmailAddress>Неабходна паказаць Email адрас для імя карыстальніка!</AuthUserNameShouldLookLikeAnEmailAddress>
     <AuthWorkspaceNameAlreadyInUse>Найменне працоўнай прасторы ўжо выкарыстоўваецца!</AuthWorkspaceNameAlreadyInUse>
+    <CertificateNotFound>Сертыфікат не знойдзены!</CertificateNotFound>
     <CommandTimeOut>Час чакання выканання каманды скончыўся!</CommandTimeOut>
     <Congratulations>Віншаванні!</Congratulations>
     <DeveloperInformation>Інфармацыя для распрацоўнікаў</DeveloperInformation>
@@ -2521,7 +2578,7 @@
     <ItemCantBeMovedToSpecifiedPlace>Элемент не можа быць перамешчаны ў паказаны месца!</ItemCantBeMovedToSpecifiedPlace>
     <ItemDoesNotSupport>Элемент не падтрымлівае "{0}"!</ItemDoesNotSupport>
     <KeyAndToKeyAreEqual>Key і ToKey роўныя!</KeyAndToKeyAreEqual>
-    <MaximumComputers>Максімум кампутараў</MaximumComputers>
+    <MaximumComputers>Дасягнуты ліміт падпіскі!</MaximumComputers>
     <MessageMaximumFileSizeExceeded>Увага! Вы хочаце дадаць файл, але яго памер перавышае максімальна-дапушчальны памер. Усё адно дадаць гэты файл (апрацоўка справаздачы можа замарудзіцца)?</MessageMaximumFileSizeExceeded>
     <NewDesignerAvailable>Stimulsoft Designer {0} даступны.</NewDesignerAvailable>
     <NewProduct>Да Вашай падпіскі дададзены новы прадукт!</NewProduct>
@@ -2776,6 +2833,7 @@
     <LinearScaleBarCategory>Лінейная шкала</LinearScaleBarCategory>
     <LinearScaleCategory>Лінейная шкала</LinearScaleCategory>
     <ListBoxCategory>Спіс</ListBoxCategory>
+    <MacroDataCategory>Макра дадзеныя</MacroDataCategory>
     <MainCategory>Асноўныя</MainCategory>
     <MarkerCategory>Маркер</MarkerCategory>
     <MathFormulaCategory>Матэматычная формула</MathFormulaCategory>
@@ -3140,6 +3198,8 @@
     <StiColumnShape3DBox>Прастакутнік</StiColumnShape3DBox>
     <StiColumnShape3DPartialPyramid>Ссечаная піраміда</StiColumnShape3DPartialPyramid>
     <StiColumnShape3DPyramid>Піраміда</StiColumnShape3DPyramid>
+    <StiColumnTypeProcessingCastToColumnType>Прывесці да тыпу калонкі</StiColumnTypeProcessingCastToColumnType>
+    <StiColumnTypeProcessingLeaveUnprocessed>Пакінуць неапрацаваным</StiColumnTypeProcessingLeaveUnprocessed>
     <StiCompilationAccessAllow>Дазволіць</StiCompilationAccessAllow>
     <StiCompilationAccessAsk>Спытаць</StiCompilationAccessAsk>
     <StiCompilationAccessDeny>Забараніць</StiCompilationAccessDeny>
@@ -3153,9 +3213,19 @@
     <StiDashboardContentAlignmentRight>Справа</StiDashboardContentAlignmentRight>
     <StiDashboardContentAlignmentStretchX>Расцяжка X</StiDashboardContentAlignmentStretchX>
     <StiDashboardContentAlignmentStretchXY>Расцяжка XY</StiDashboardContentAlignmentStretchXY>
+    <StiDataJoinTypeCross>Крыжаванае</StiDataJoinTypeCross>
+    <StiDataJoinTypeFull>Поўнае</StiDataJoinTypeFull>
+    <StiDataJoinTypeInner>Унутранае</StiDataJoinTypeInner>
+    <StiDataJoinTypeLeft>Злева</StiDataJoinTypeLeft>
+    <StiDataJoinTypeRight>Справа</StiDataJoinTypeRight>
     <StiDateSelectionModeAutoRange>Аўтадыяпазон</StiDateSelectionModeAutoRange>
     <StiDateSelectionModeRange>Дыяпазон</StiDateSelectionModeRange>
     <StiDateSelectionModeSingle>Адзін</StiDateSelectionModeSingle>
+    <StiDateTimeStepAggregationAverage>Сярэдняе</StiDateTimeStepAggregationAverage>
+    <StiDateTimeStepAggregationCount>Колькасць</StiDateTimeStepAggregationCount>
+    <StiDateTimeStepAggregationMax>Максімум</StiDateTimeStepAggregationMax>
+    <StiDateTimeStepAggregationMin>Мінімум</StiDateTimeStepAggregationMin>
+    <StiDateTimeStepAggregationSum>Сума</StiDateTimeStepAggregationSum>
     <StiDateTimeTypeDate>Дата</StiDateTimeTypeDate>
     <StiDateTimeTypeDateAndTime>Дата і час</StiDateTimeTypeDateAndTime>
     <StiDateTimeTypeTime>Час</StiDateTimeTypeTime>
@@ -3221,6 +3291,8 @@
     <StiFilterDataTypeString>Радок</StiFilterDataTypeString>
     <StiFilterEngineReportEngine>Ядро генератара</StiFilterEngineReportEngine>
     <StiFilterEngineSQLQuery>Запрос</StiFilterEngineSQLQuery>
+    <StiFilterInclusionModeAlways>Заўсёды</StiFilterInclusionModeAlways>
+    <StiFilterInclusionModeSelectionOnly>Толькі выбранае</StiFilterInclusionModeSelectionOnly>
     <StiFilterItemArgument>Аргумент</StiFilterItemArgument>
     <StiFilterItemExpression>Выраз</StiFilterItemExpression>
     <StiFilterItemValue>Значэнне</StiFilterItemValue>
@@ -3282,6 +3354,8 @@
     <StiImageRotationRotate180>Вугол зварота - 180°</StiImageRotationRotate180>
     <StiImageRotationRotate90CCW>Вугол зварота -  90° супраць гадзіннікавай стрэлкi</StiImageRotationRotate90CCW>
     <StiImageRotationRotate90CW>Вугол зварота - 90° па гадзіннікавай стрэлке</StiImageRotationRotate90CW>
+    <StiIndicatorValueTypeValue>Значэнне</StiIndicatorValueTypeValue>
+    <StiIndicatorValueTypeValueTarget>Значэнне / Мэта</StiIndicatorValueTypeValueTarget>
     <StiInteractionOnClick>Не</StiInteractionOnClick>
     <StiInteractionOnClickApplyFilter>Ужываць фільтр</StiInteractionOnClickApplyFilter>
     <StiInteractionOnClickDrillDown>Дэталізацыя</StiInteractionOnClickDrillDown>
@@ -3292,6 +3366,8 @@
     <StiInteractionOnHoverShowToolTip>Паказаць падказку</StiInteractionOnHoverShowToolTip>
     <StiInteractionOpenHyperlinkDestinationCurrentTab>Бягучая закладка</StiInteractionOpenHyperlinkDestinationCurrentTab>
     <StiInteractionOpenHyperlinkDestinationNewTab>Новая закладка</StiInteractionOpenHyperlinkDestinationNewTab>
+    <StiItemFilterModeFullPath>Поўны шлях</StiItemFilterModeFullPath>
+    <StiItemFilterModeSelectedOnly>Толькі абраныя</StiItemFilterModeSelectedOnly>
     <StiItemOrientationHorizontal>Гарызантальна</StiItemOrientationHorizontal>
     <StiItemOrientationVertical>Вертыкальна</StiItemOrientationVertical>
     <StiItemSelectionModeMulti>Шмат элементаў</StiItemSelectionModeMulti>
@@ -3358,6 +3434,16 @@
     <StiMarkerTypeStar7>Зорка 7</StiMarkerTypeStar7>
     <StiMarkerTypeStar8>Зорка з 8 промнямі</StiMarkerTypeStar8>
     <StiMarkerTypeTriangle>Трыкутнік</StiMarkerTypeTriangle>
+    <StiNavigatorButtonVisibilityCancel>Адмена</StiNavigatorButtonVisibilityCancel>
+    <StiNavigatorButtonVisibilityDelete>Выдаліць</StiNavigatorButtonVisibilityDelete>
+    <StiNavigatorButtonVisibilityEdit>Змяніць</StiNavigatorButtonVisibilityEdit>
+    <StiNavigatorButtonVisibilityFirst>Першы</StiNavigatorButtonVisibilityFirst>
+    <StiNavigatorButtonVisibilityInsert>Уставіць</StiNavigatorButtonVisibilityInsert>
+    <StiNavigatorButtonVisibilityLast>Апошні</StiNavigatorButtonVisibilityLast>
+    <StiNavigatorButtonVisibilityNext>Далей</StiNavigatorButtonVisibilityNext>
+    <StiNavigatorButtonVisibilityPost>Ужыць</StiNavigatorButtonVisibilityPost>
+    <StiNavigatorButtonVisibilityPrior>Папярэдні</StiNavigatorButtonVisibilityPrior>
+    <StiNavigatorButtonVisibilityRefresh>Абнавіць</StiNavigatorButtonVisibilityRefresh>
     <StiNestedFactorHigh>Высокі</StiNestedFactorHigh>
     <StiNestedFactorLow>Нізкі</StiNestedFactorLow>
     <StiNestedFactorNormal>Нармальны</StiNestedFactorNormal>
@@ -3440,6 +3526,10 @@
     <StiProgressElementModeCircle>Кальцо</StiProgressElementModeCircle>
     <StiProgressElementModeDataBars>Гістаграма</StiProgressElementModeDataBars>
     <StiProgressElementModePie>Кола</StiProgressElementModePie>
+    <StiProgressValueTypeNone>Няма</StiProgressValueTypeNone>
+    <StiProgressValueTypePercentage>Працэнт</StiProgressValueTypePercentage>
+    <StiProgressValueTypeValue>Значэнне</StiProgressValueTypeValue>
+    <StiProgressValueTypeValueTarget>Значэнне / Мэта</StiProgressValueTypeValueTarget>
     <StiQRCodeBodyShapeTypeCircle>Кола</StiQRCodeBodyShapeTypeCircle>
     <StiQRCodeBodyShapeTypeCircular>Закруглены</StiQRCodeBodyShapeTypeCircular>
     <StiQRCodeBodyShapeTypeDiamond>Ромб</StiQRCodeBodyShapeTypeDiamond>
@@ -3485,6 +3575,7 @@
     <StiSeriesLabelsValueTypeSeriesTitleArgument>Найменне шэрагу - Аргумент</StiSeriesLabelsValueTypeSeriesTitleArgument>
     <StiSeriesLabelsValueTypeSeriesTitleValue>Найменне шэрагу - Значэнне</StiSeriesLabelsValueTypeSeriesTitleValue>
     <StiSeriesLabelsValueTypeTag>Тэг</StiSeriesLabelsValueTypeTag>
+    <StiSeriesLabelsValueTypeTotal>Вынік</StiSeriesLabelsValueTypeTotal>
     <StiSeriesLabelsValueTypeValue>Значэнне</StiSeriesLabelsValueTypeValue>
     <StiSeriesLabelsValueTypeValueArgument>Значэнне - Аргумент</StiSeriesLabelsValueTypeValueArgument>
     <StiSeriesLabelsValueTypeWeight>Вага</StiSeriesLabelsValueTypeWeight>
@@ -3576,6 +3667,7 @@
     <StiTextQualityTypographic>Друкарскі</StiTextQualityTypographic>
     <StiTextQualityWysiwyg>Wysiwyg</StiTextQualityWysiwyg>
     <StiTextSizeModeFit>Змясціць</StiTextSizeModeFit>
+    <StiTextSizeModeFitAndWordWrap>Змясціць і перанесці</StiTextSizeModeFitAndWordWrap>
     <StiTextSizeModeTrimming>Абразаць</StiTextSizeModeTrimming>
     <StiTextSizeModeWordWrap>Перанос словаў</StiTextSizeModeWordWrap>
     <StiThemeAppearanceAuto>Аўта</StiThemeAppearanceAuto>
@@ -3759,6 +3851,7 @@
     <Advanced>Пашыраны</Advanced>
     <AggregateFunction>Агрэгатная функцыя</AggregateFunction>
     <AggregateFunctions>Агрэгатныя функцыі</AggregateFunctions>
+    <Aggregation>Агрэгацыя</Aggregation>
     <Alias>Псеўданім</Alias>
     <Alignment>Выраўнаванне</Alignment>
     <AllowApplyBorderColor>Дазв. выкар. колер мяжы</AllowApplyBorderColor>
@@ -3771,6 +3864,8 @@
     <AllowExpressions>Дазволіць выразы</AllowExpressions>
     <AllowHtmlTags>Дазволiць Html тэгi</AllowHtmlTags>
     <AllowNull>Дазволіць null</AllowNull>
+    <AllowScriptsInExpressions>Дазволіць скрыпты ў выразах</AllowScriptsInExpressions>
+    <AllowScriptsToRun>Дазволіць выкананне скрыптоў</AllowScriptsToRun>
     <AllowSeries>Дазволіць шэрагі</AllowSeries>
     <AllowSeriesElements>Дазволіць элементы шэрагаў</AllowSeriesElements>
     <AllowSorting>Сартаванне</AllowSorting>
@@ -3789,6 +3884,7 @@
     <AllowUseTextBrush>Дазволіць выкарыст. пэндзаль тексту</AllowUseTextBrush>
     <AllowUseTextFormat>Дазволіць фармат тэксту</AllowUseTextFormat>
     <AllowUseTextOptions>Дазволіць выкарыст. параметры тэксту</AllowUseTextOptions>
+    <AllowUseTitle>Дазволіць скарыстаць загаловак</AllowUseTitle>
     <AllowUseVertAlignment>Дазволіць выкарыст. верт. выраўнаванне</AllowUseVertAlignment>
     <AllowUsingAsSqlParameter>Дазволіць выкарыстоўваць як SQL параметр</AllowUsingAsSqlParameter>
     <AlternatingBackColor>Альтэрнатыўны колер фону</AlternatingBackColor>
@@ -3873,6 +3969,7 @@
     <Cancel>Адмена</Cancel>
     <CanGrow>Можа расці</CanGrow>
     <CanShrink>Можа сціскацца</CanShrink>
+    <CastToColumnType>Прывесці да тыпу калонкі</CastToColumnType>
     <Categories>Катэгорыі</Categories>
     <Category>Катэгорыя</Category>
     <CategoryConnections>Злучэнні</CategoryConnections>
@@ -3881,6 +3978,7 @@
     <CellDockStyle>Стыль стыкоўкі</CellDockStyle>
     <CellForeColor>Колер тэксту ячэйкі</CellForeColor>
     <CellHeight>Вышыня вочка</CellHeight>
+    <Cells>Вочкі</Cells>
     <CellType>Тып ячэйкі</CellType>
     <CellWidth>Шырыня вочка</CellWidth>
     <Center>Цэнтр </Center>
@@ -3966,6 +4064,9 @@
     <DataAdapter>Адаптэр дадзеных</DataAdapter>
     <DataAdapters>Адаптэры дадзеных</DataAdapters>
     <DataBarCondition>Гістаграмы</DataBarCondition>
+    <DataBarsNegative>Негатыўны колер гістаграмы</DataBarsNegative>
+    <DataBarsOverlapped>Колер накладання гістаграмы</DataBarsOverlapped>
+    <DataBarsPositive>Пазітыўны колер гістаграмы</DataBarsPositive>
     <DataBindings>Злучэнне дадзеных</DataBindings>
     <DataCells>Вочкі дадзеных</DataCells>
     <DataColor>Колер дадзеных</DataColor>
@@ -4054,7 +4155,9 @@
     <Expand>Разгарнуць</Expand>
     <Exponential>Экспаненцыяльная</Exponential>
     <ExportAsImage>Экспартаваць як малюнак</ExportAsImage>
+    <ExportSettings>Параметры экспарту</ExportSettings>
     <Expression>Выраз</Expression>
+    <Extended>Пашыраны</Extended>
     <ExtensionDigit>Дадатковы Разрад</ExtensionDigit>
     <EyeBallBrush>Пэндзаль для вачэй</EyeBallBrush>
     <EyeBallShape>Геаметрыя для вачэй</EyeBallShape>
@@ -4063,8 +4166,10 @@
     <FaqPage>Faq старонка</FaqPage>
     <Field>Поле</Field>
     <FieldIs>Поле</FieldIs>
+    <Fields>Палі</Fields>
     <Fifth>Пятая</Fifth>
     <File>Файл</File>
+    <FileId>Ідэнтыфікатар файла</FileId>
     <Fill>Запаўненне</Fill>
     <FillColor>Колер запаўнення</FillColor>
     <Filter>Фільтр</Filter>
@@ -4073,8 +4178,10 @@
     <FilterMode>Рэжым фільтрацыі</FilterMode>
     <FilterOn>Фільтр уключаны</FilterOn>
     <Filters>Фільтры</Filters>
+    <FiltersTarget>Мэта фільтраў</FiltersTarget>
     <First>Першая</First>
     <FirstTabOffset>Пазіцыя першага знака</FirstTabOffset>
+    <FixedHeight>Фіксаваная вышыня</FixedHeight>
     <FixedWidth>Фіксаваная шырыня</FixedWidth>
     <Flat>Плоскі</Flat>
     <FlatMode>Плоскі рэжым</FlatMode>
@@ -4171,6 +4278,7 @@
     <HotColumnHeaderBackColor>Колер фону загалоўка калонкі пры навядзенні</HotColumnHeaderBackColor>
     <HotForeColor>Колер тэксту пры навядзенні</HotForeColor>
     <HotGlyphColor>Колер сімвала пры навядзенні</HotGlyphColor>
+    <HotHeaderBackColor>Колер фону загалоўка пры навядзенні</HotHeaderBackColor>
     <HotHeaderColor>Колер загалоўка пры навядзенні</HotHeaderColor>
     <HotkeyPrefix>Прэфікс гарачай клавішы</HotkeyPrefix>
     <HotRowHeaderBackColor>Колер фону загалоўка радка пры навядзенні</HotRowHeaderBackColor>
@@ -4206,9 +4314,13 @@
     <ImageURL>Гіперспасылка на малюнак</ImageURL>
     <ImageVertAlignment>Вертыкальнае выраўноўванне малюнка</ImageVertAlignment>
     <ImportRelations>Імпарт сувязяў</ImportRelations>
+    <InclusionMode>Рэжым з'яднання</InclusionMode>
     <Increment>Прырашчэнне</Increment>
     <Indent>Водступ</Indent>
     <Indicator>Індыкатар</Indicator>
+    <IndicatorNegative>Негатыўны колер індыкатара</IndicatorNegative>
+    <IndicatorNeutral>Нейтральны колер індыкатара</IndicatorNeutral>
+    <IndicatorPositive>Пазітыўны колер індыкатара</IndicatorPositive>
     <IndicatorValue>Значэнне індыкатара</IndicatorValue>
     <IndividualColor>Індывідуальны колер</IndividualColor>
     <InfographicsTitle>Title</InfographicsTitle>
@@ -4232,6 +4344,7 @@
     <Item>Элемент</Item>
     <ItemHeight>Вышыня элемента</ItemHeight>
     <Items>Элементы</Items>
+    <JoinType>Тып злучэння</JoinType>
     <KeepChildTogether>Трымаць падпарадкаваныя разам</KeepChildTogether>
     <KeepCrossTabTogether>Трымаць крос-табліцу разам</KeepCrossTabTogether>
     <KeepDetails>Трымаць дэталі</KeepDetails>
@@ -4303,6 +4416,8 @@
     <ListOfValuesLow>Спіс мінімумаў</ListOfValuesLow>
     <ListOfValuesOpen>Спіс значэнняў адкрыцця</ListOfValuesOpen>
     <ListOfWeights>Спіс вагавых значэнняў</ListOfWeights>
+    <ListOfXValues>Спіс значэнняў X</ListOfXValues>
+    <ListOfYValues>Спіс значэнняў Y</ListOfYValues>
     <Localizable>Перакладаць</Localizable>
     <Location>Пазіцыя</Location>
     <Locked>Замак</Locked>
@@ -4409,6 +4524,7 @@
     <OnDataManipulation>Пры кіраванні дадзенымі</OnDataManipulation>
     <OnePointZoom>Аднапунктавы маштаб</OnePointZoom>
     <OnHover>Пры навядзенні</OnHover>
+    <OnlineMapAdminLevel>Узровень адміністравання</OnlineMapAdminLevel>
     <OnlyText>Толькі тэкст</OnlyText>
     <OnSelect>Пры выбары</OnSelect>
     <Opacity>Непразрыстасць</Opacity>
@@ -4460,6 +4576,7 @@
     <PreviewSettings>Налада прагляду</PreviewSettings>
     <Printable>Друкаваць</Printable>
     <PrintAtBottom>Друкаваць унізе</PrintAtBottom>
+    <PrintDialogType>Тып дыялогу друку</PrintDialogType>
     <PrinterName>Найменне друкаркі</PrinterName>
     <PrinterSettings>Налада друкаркі</PrinterSettings>
     <PrintHeadersFootersFromPreviousPage>Выкарыстаць Загалоўкі і Падрахункі з папярэдняй старонкі</PrintHeadersFootersFromPreviousPage>
@@ -4551,8 +4668,11 @@
     <Scale>Маштаб</Scale>
     <ScaleHor>Маштабаванне па гарызанталі</ScaleHor>
     <ScriptLanguage>Скрыптовая мова</ScriptLanguage>
+    <ScriptTimeout>Час чакання скрыпта</ScriptTimeout>
     <ScrollTime>Час прагорткі</ScrollTime>
     <Second>Другая</Second>
+    <SegmentCount>Колькасць сегментаў</SegmentCount>
+    <SegmentIndex>Індэкс сегмента</SegmentIndex>
     <SegmentPerHeight>Сегментаў па вышыні</SegmentPerHeight>
     <SegmentPerWidth>Сегментаў па шырыні</SegmentPerWidth>
     <SelectedBackColor>Колер фону выбару</SelectedBackColor>
@@ -4600,6 +4720,7 @@
     <ShortName>Кароткая назва</ShortName>
     <ShortValue>Кароткае значэнне
 Кароткае значэнне</ShortValue>
+    <Show3D>Паказваць 3D</Show3D>
     <ShowAllValue>Паказваць усе значэнні</ShowAllValue>
     <ShowBehind>Паказваць ззаду</ShowBehind>
     <ShowBlanks>Паказваць (Пусты)</ShowBlanks>
@@ -4638,6 +4759,7 @@
     <ShowZeros>Паказваць нулі</ShowZeros>
     <ShrinkFontToFit>Паменшыць шрыфт каб змясціць</ShrinkFontToFit>
     <ShrinkFontToFitMinimumSize>Паменшыць шрыфт каб змясціць мінімальны памер</ShrinkFontToFitMinimumSize>
+    <ShrinkToFit>Зменшыць да патрэбнага памеру</ShrinkToFit>
     <Side>Бок</Side>
     <SideBySide>Бок да боку</SideBySide>
     <Sides>Бакi</Sides>
@@ -4664,7 +4786,9 @@
     <Space>Прабел</Space>
     <SpaceRatio>Міжзнакавы інтэрвал</SpaceRatio>
     <Spacing>Адлегласць</Spacing>
+    <Sparkline>Спарклайны</Sparkline>
     <SqlCommand>SQL запыт</SqlCommand>
+    <Standard>Стандартны</Standard>
     <StartAngle>Пачатковы вугал</StartAngle>
     <StartCap>Тып пачатку</StartCap>
     <StartColor>Пачатковы колер</StartColor>
@@ -4696,12 +4820,13 @@
     <SubmissionMessage>Паведамленне пра адпраўленне</SubmissionMessage>
     <SubReportPage>Старонка укл.-справаздачы</SubReportPage>
     <Summaries>Вынікі</Summaries>
-    <Summary>Падрахунак</Summary>
+    <Summary>Функцыя значэнняў</Summary>
     <SummaryAlignment>Выраўнанне падрахунка</SummaryAlignment>
     <SummaryExpression>Выраз сумавання</SummaryExpression>
+    <SummaryForFieldsInExpression>Функцыя для палёў у выразе</SummaryForFieldsInExpression>
     <SummarySortDirection>Кірунак сартавання сумавання</SummarySortDirection>
     <SummaryType>Тып сумавання</SummaryType>
-    <SummaryValues>Значэння падрахунку</SummaryValues>
+    <SummaryValues>Апрацоўка значэнняў</SummaryValues>
     <SupplementCode>Код дапаўнення</SupplementCode>
     <SupplementType>Тып дапаўнення</SupplementType>
     <SweepAngle>Кут павароту</SweepAngle>
@@ -4732,6 +4857,7 @@
     <TextFormat>Фармат</TextFormat>
     <TextOnly>Толькі тэкст</TextOnly>
     <TextOptions>Параметры тэксту</TextOptions>
+    <TextPlacement>Месцаванне тэксту</TextPlacement>
     <TextQuality>Якасць тэксту</TextQuality>
     <TextRightToLeft>Тэкст справа налева</TextRightToLeft>
     <TextShowBehind>Паказваць тэкст ззаду</TextShowBehind>
@@ -4748,10 +4874,12 @@
     <TickMarkMinorBrush>Пэндзаль маркера дапаможнай пазнакі</TickMarkMinorBrush>
     <Ticks>Пазнакі</Ticks>
     <Title>Загаловак</Title>
+    <TitleBackColor>Колер фону загалоўка</TitleBackColor>
     <TitleBeforeHeader>Тытул да загалоўка</TitleBeforeHeader>
     <TitleColor>Колер загалоўка</TitleColor>
     <TitleDirection>Кірунак загалоўка</TitleDirection>
     <TitleFont>Шрыфт загалоўка</TitleFont>
+    <TitleForeColor>Колер тэксту загалоўка</TitleForeColor>
     <TitleVisible>Даступнасць</TitleVisible>
     <To>Па</To>
     <Today>Сёння</Today>
@@ -4803,8 +4931,8 @@
     <UserBingKey>Карыстацкі ключ Bing</UserBingKey>
     <UseRectangularSymbols>Выкарыстоўваць прамавугольныя сімвалы</UseRectangularSymbols>
     <UseSeriesColor>Выкарыстаць колеры шэрагаў</UseSeriesColor>
-    <UseStyleOfSummaryInColumnTotal>Выкарыстоўваць стыль падрахунку ў падрахунку калонкі</UseStyleOfSummaryInColumnTotal>
-    <UseStyleOfSummaryInRowTotal>Выкарыстоўваць стыль падрахунку ў падрахунку радка</UseStyleOfSummaryInRowTotal>
+    <UseStyleOfSummaryInColumnTotal>Скарыстаць стыль значэнняў у выніку калонкі</UseStyleOfSummaryInColumnTotal>
+    <UseStyleOfSummaryInRowTotal>Скарыстаць стыль значэнняў у выніку радка</UseStyleOfSummaryInRowTotal>
     <UseUserPicture>Скарыстаць выяву карыстальніка</UseUserPicture>
     <UseValuesFromTheSpecifiedRange>Выкарыстоўваць значэннi з названага дыяпазону</UseValuesFromTheSpecifiedRange>
     <Value>Значэнне</Value>
@@ -4850,14 +4978,20 @@
     <Weights>Вагі</Weights>
     <Width>Шырыня</Width>
     <WindowState>Стан акна</WindowState>
+    <WinLossNegative>Негатыўны колер Перамога / пройгрыш</WinLossNegative>
+    <WinLossPositive>Пазітыўны колер Перамога / пройгрыш</WinLossPositive>
     <WordWrap>Перанос тэксту</WordWrap>
     <Wrap>Перанос</Wrap>
     <WrapGap>Прамежак пераносу</WrapGap>
     <WrapLine>Лінія пераносу</WrapLine>
     <XAxis>Вось X</XAxis>
     <XTopAxis>Вось X Верхняя</XTopAxis>
+    <XValue>Значэнне X</XValue>
+    <XValuesDataColumn>Значэнне калонкі дадзеных X</XValuesDataColumn>
     <YAxis>Вось Y</YAxis>
     <YRightAxis>Вось Y Правая</YRightAxis>
+    <YValue>Значэнне Y</YValue>
+    <YValuesDataColumn>Значэнне калонкі дадзеных Y</YValuesDataColumn>
     <ZeroColor>Колер нуля</ZeroColor>
     <Zoom>Маштаб</Zoom>
   </PropertyMain>
@@ -4960,6 +5094,7 @@
   <Questions>
     <qnConfiguration>Калі ласка, вылучыце тып канфігурацыі для панэлі ўласцівасцяў. Ад тыпу абранай канфігурацыі залежыць колькасць паказаных уласцівасцяў і іх складанасці для распрацоўніка справаздач. Вы заўсёды зможаце змяніць тып канфігурацыі з кантэкстнага меню панэлі уласцівасцяў.</qnConfiguration>
     <qnCopyCategory>Скапіяваць усе зменныя з гэтай катэгорыі?</qnCopyCategory>
+    <qnCovertColumnType>Вы змянілі тып калонкі. Ціхочаце вы ўключыць ператварэнне дадзеных калонкі для гэтай крыніцы дадзеных?</qnCovertColumnType>
     <qnDictionaryNew>Стварыць новы слоўнік?</qnDictionaryNew>
     <qnLanguageNew>Вы змянілі мову справаздачы, гэта прывядзе да генеравання новага кода справаздачы. Вы ўпэўненыя, што жадаеце захаваць новую мову?</qnLanguageNew>
     <qnPageDelete>Выдаліць старонку?</qnPageDelete>
@@ -5016,6 +5151,8 @@
     <Charts>Дыяграмы</Charts>
     <Checking>Праверка...</Checking>
     <ClickForMoreDetails>Націсніце каб праглядзець</ClickForMoreDetails>
+    <ClickHereToCreateNewCondition>каб стварыць новую ўмову</ClickHereToCreateNewCondition>
+    <ClickHereToCreateNewField>каб стварыць новае поле</ClickHereToCreateNewField>
     <CollapseAll>Згарнуць усё</CollapseAll>
     <Collection>Калекцыя</Collection>
     <CompilationAccess>Доступ да кампіляцыі</CompilationAccess>
@@ -5027,12 +5164,16 @@
     <CreateNewReportPageForm>Стварыць новую справаздачу, дадаць старонку або форму</CreateNewReportPageForm>
     <CreatingReport>Стварэнне справаздачы</CreatingReport>
     <CrossBands>Крос</CrossBands>
+    <CustomRange>Карыстальніцкі дыяпазон</CustomRange>
     <Dashboard>Панэль індыкатараў</Dashboard>
+    <DashboardOnly>Толькі Дашборд і Пераўтварэнне дадзеных</DashboardOnly>
     <Dialogs>Элементы кіравання</Dialogs>
     <EditStyles>Рэдагаваць стылі</EditStyles>
+    <EnableCacheAllDataMode>Уключыць рэжым "Кэшаваць усе дадзеныя"</EnableCacheAllDataMode>
     <Enhancements>Паляпшэнні</Enhancements>
     <EnterDataManually>Увядзіце дадзеныя ручна</EnterDataManually>
     <Errors>Памылкі</Errors>
+    <EventsAccess>Доступ да падзей</EventsAccess>
     <EventsTab>Падзеі</EventsTab>
     <ExpandAll>Разгарнуць усё</ExpandAll>
     <FilterAnd>І</FilterAnd>
@@ -5044,7 +5185,9 @@
     <FromDefaultState>Са стану па змаўчанні</FromDefaultState>
     <Gallery>Галерэя</Gallery>
     <GenerateNewCode>Згенераваць новы код</GenerateNewCode>
+    <HideUnlistedExportsInTheViewer>Схаваць непералічаныя экспарты ў вьювере</HideUnlistedExportsInTheViewer>
     <History>Гісторыя</History>
+    <IfEmpty>Калі {0} пусты</IfEmpty>
     <Infographics>Інфаграфіка</Infographics>
     <InfoMessage>{0} - {1} знойдзены.</InfoMessage>
     <InformationMessages>Інфармацыйныя паведамленні</InformationMessages>
@@ -5115,6 +5258,7 @@
     <StiGradientBrush>Градыент</StiGradientBrush>
     <StiHatchBrush>Тэкстура</StiHatchBrush>
     <StiSolidBrush>Суцэльная</StiSolidBrush>
+    <StoresPrintingOutputToAFile>Захоўвае вывад друку ў файл</StoresPrintingOutputToAFile>
     <StoreUserFirstLastNameInReportAuthor>Скарыстаць імя і прозвішча карыстача як 'Аўтар справаздачы'</StoreUserFirstLastNameInReportAuthor>
     <StoreUserNameInReportAuthor>Захоўваць 'Імя карыстача' як 'Аўтар справаздачы'</StoreUserNameInReportAuthor>
     <StyleBad>Дрэнны</StyleBad>
@@ -5294,6 +5438,22 @@
     <SignatureSavedSuccessfully>Подпіс паспяхова захаваны.</SignatureSavedSuccessfully>
     <UseBrush>Скарыстаць пэндзаль</UseBrush>
   </Signature>
+  <StimulAI>
+    <ChangedWithAI>Змяніць з Stimul AI</ChangedWithAI>
+    <CheckExpressionSuccess>У паказаным выразе праблем не выяўлена.</CheckExpressionSuccess>
+    <CheckQuery>Праверыць запыт</CheckQuery>
+    <CheckWithStimulAI>Праверыць з Stimul AI</CheckWithStimulAI>
+    <ConnectionStringExampleWithAI>Прыклады радка злучэння з Stimul AI</ConnectionStringExampleWithAI>
+    <ConnectionStringTesting>Праверка радка злучэння</ConnectionStringTesting>
+    <ExplainQuery>Растлумачыць запыт</ExplainQuery>
+    <FixWithAI>Выправіць з Stimul AI</FixWithAI>
+    <GenerateNewQuery>Згенераваць новы запыт</GenerateNewQuery>
+    <OptimizeQuery>Аптымізаваць запыт</OptimizeQuery>
+    <QueryWithStimulAI>Запыт з Stimul AI</QueryWithStimulAI>
+    <Translate>Пераклад з Stimul AI</Translate>
+    <Try>Паспрабаваць з Stimul AI</Try>
+    <TryConvertScriptToBlockly>Паспрабаваць ператварыць папярэдні сцэнар {0} у сцэнар {1}.</TryConvertScriptToBlockly>
+  </StimulAI>
   <SystemVariables>
     <Column>Нумар бягучай калонкі (Пачынаецца з 1).</Column>
     <GroupLine>Нумар бягучай групы (Пачынаецца з 1).</GroupLine>
@@ -5411,11 +5571,18 @@
     <title>Інструментар</title>
   </Toolbox>
   <UserFunctionEditor>
+    <ArgumentName>Назва аргумента</ArgumentName>
+    <ArgumentType>Тып аргумента</ArgumentType>
+    <ConvertScript>Ператварыць сцэнар</ConvertScript>
     <CustomCategory>Карыстацкая катэгорыя</CustomCategory>
+    <EditCode>Рэдактар кода</EditCode>
+    <EditWithBlockly>Рэдагаваць з Blockly</EditWithBlockly>
     <ReturnType>Тып вяртанага значэння</ReturnType>
     <Script>Сцэнар</Script>
     <ScriptMode>Рэжым сцэнара</ScriptMode>
     <Title>Карыстацкая функцыя</Title>
+    <UserFunctionEdit>Змена карыстацкай функцыі</UserFunctionEdit>
+    <UserFunctionNew>Новая карыстацкая функцыя</UserFunctionNew>
   </UserFunctionEditor>
   <WelcomeScreen>
     <AllDownloadsWillCanceled>Вы ўпэўнены, што хочаце зачыніць гэта акно? Усе загрузкі будуць скасаваны.</AllDownloadsWillCanceled>
@@ -5443,8 +5610,10 @@
     <DataSource>Крыніца дадзеных</DataSource>
     <DataSources>Крыніцы Дадзеных</DataSources>
     <DefaultThemes>Убудаваныя тэмы</DefaultThemes>
+    <Examples>Прыклады</Examples>
     <Filters>Фільтры</Filters>
     <FromReportTemplate>Справаздача з шаблону</FromReportTemplate>
+    <GenerateDataWithAI>Згенераваць дадзеныя з дапамогай ШІ</GenerateDataWithAI>
     <GetData>Атрымаць дадзеныя</GetData>
     <groupCreateNewDashboard>Стварыць новую панэль індыкатараў</groupCreateNewDashboard>
     <groupCreateNewPageOrForm>Стварыць новую старонку або форму</groupCreateNewPageOrForm>
@@ -5497,6 +5666,7 @@
     <SelectTemplate>Шаблон</SelectTemplate>
     <Sort>Сартаванне</Sort>
     <StandardReport>Стандартная справаздача</StandardReport>
+    <SuggestWithAI>Рэкамендацыя ШІ</SuggestWithAI>
     <Themes>Тэмы</Themes>
     <title>Новая справаздача</title>
     <Totals>Падрахункі</Totals>
